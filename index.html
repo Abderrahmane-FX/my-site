@@ -149,6 +149,8 @@
         .preview-box h2 { font-size: 1.6rem; }
         .preview-box h3 { font-size: 1.3rem; }
         .preview-box p { margin: 8px 0; }
+        .preview-box ul, .preview-box ol { margin: 8px 0; padding-right: 20px; }
+        .preview-box li { margin: 4px 0; }
 
         .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:20px; }
         .btn { 
@@ -189,6 +191,7 @@
         .img-upload-area .preview-img { width:80px; height:80px; object-fit:cover; border-radius:8px; border:1px solid #ddd; background:#fff; }
         .img-upload-area .upload-btn { background:#f4f1ea; border:1px solid #c6b9a8; border-radius:8px; padding:8px 14px; cursor:pointer; font-size:0.9rem; font-weight:600; color:#4a3f35; }
         .img-upload-area .remove-btn { background:transparent; border:1px solid #c6b9a8; color:#d4837a; padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:600; }
+
         .format-bar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
         .format-btn { padding: 4px 10px; font-size: 0.85rem; }
         .dir-btn { background: #dfd7c8; border:1px solid #c6b9a8; }
@@ -236,10 +239,8 @@
             const homeBtn = document.getElementById('homeBtn');
             const settingsBtn = document.getElementById('settingsBtn');
 
-            // توليد معرف فريد
             function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
 
-            // دالة إنشاء 100 مسألة فارغة
             function makeProblems() {
                 const arr = [];
                 for (let i = 1; i <= 100; i++) {
@@ -260,7 +261,6 @@
                     const raw = localStorage.getItem(STORAGE_KEY);
                     if (raw) groups = JSON.parse(raw);
                 } catch(e) { groups = []; }
-                // إذا كانت المجموعات فارغة (أول تشغيل)، أنشئ المجموعات الأربع الافتراضية
                 if (!groups.length) {
                     groups = [
                         { id: generateId(), name: 'Inégalités', lessons: [], problems: makeProblems() },
@@ -281,50 +281,53 @@
             function escapeHtml(t) { return String(t).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m]); }
             function typeset(el) { if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(console.log); }
 
-            function processMarkdownHeadings(text) {
+            // معالجة Markdown كاملة (عناوين، تنسيقات، قوائم، خطوط)
+            function processMarkdown(text) {
                 if (!text) return '';
-                return text.split('\n').map(line => {
-                    if (line.startsWith('### ')) return `<h3>${line.substring(4)}</h3>`;
-                    if (line.startsWith('## ')) return `<h2>${line.substring(3)}</h2>`;
-                    if (line.startsWith('# ')) return `<h1>${line.substring(2)}</h1>`;
-                    return line;
-                }).join('\n');
+                let lines = text.split('\n');
+                let inList = false;
+                let html = '';
+                for (let line of lines) {
+                    // كود مضمن
+                    line = line.replace(/`([^`]+)`/g, '<code>$1</code>');
+                    // عريض ومائل
+                    line = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                    line = line.replace(/\*(.+?)\*/g, '<em>$1</em>');
+                    
+                    if (line.startsWith('### ')) {
+                        if (inList) { html += '</ul>'; inList = false; }
+                        html += `<h3>${line.substring(4)}</h3>`;
+                    } else if (line.startsWith('## ')) {
+                        if (inList) { html += '</ul>'; inList = false; }
+                        html += `<h2>${line.substring(3)}</h2>`;
+                    } else if (line.startsWith('# ')) {
+                        if (inList) { html += '</ul>'; inList = false; }
+                        html += `<h1>${line.substring(2)}</h1>`;
+                    } else if (line.startsWith('- ') || line.startsWith('* ')) {
+                        if (!inList) { html += '<ul>'; inList = true; }
+                        html += `<li>${line.substring(2)}</li>`;
+                    } else if (line.trim() === '---') {
+                        if (inList) { html += '</ul>'; inList = false; }
+                        html += '<hr>';
+                    } else {
+                        if (inList) { html += '</ul>'; inList = false; }
+                        html += line + '<br>';
+                    }
+                }
+                if (inList) html += '</ul>';
+                return html;
             }
 
             function updatePreviewFromTextarea(textarea, previewDiv) {
                 let rawText = textarea.value || ' ';
-                let html = processMarkdownHeadings(rawText).replace(/\n/g, '<br>');
+                let html = processMarkdown(rawText);
                 previewDiv.innerHTML = html;
                 previewDiv.dir = textarea.dir || 'auto';
                 typeset(previewDiv);
             }
 
+            // شريط التنسيق الجديد - فقط أزرار الاتجاه
             function bindFormatBar(bar) {
-                bar.querySelectorAll('.format-btn[data-action]').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const action = btn.dataset.action;
-                        const prefix = { h1: '# ', h2: '## ', h3: '### ' }[action];
-                        const textarea = bar.parentElement.querySelector('textarea');
-                        if (textarea && prefix) {
-                            const start = textarea.selectionStart;
-                            const end = textarea.selectionEnd;
-                            const selected = textarea.value.substring(start, end);
-                            if (start !== end) {
-                                textarea.value = textarea.value.substring(0, start) + prefix + selected + textarea.value.substring(end);
-                                textarea.selectionStart = start + prefix.length;
-                                textarea.selectionEnd = start + prefix.length + selected.length;
-                            } else {
-                                textarea.value = textarea.value.substring(0, start) + '\n' + prefix + textarea.value.substring(end);
-                                textarea.selectionStart = start + 1 + prefix.length;
-                                textarea.selectionEnd = start + 1 + prefix.length;
-                            }
-                            textarea.focus();
-                            textarea.dispatchEvent(new Event('input'));
-                        }
-                    });
-                });
-
                 const textarea = bar.parentElement.querySelector('textarea');
                 const previewDiv = bar.parentElement.querySelector('.preview-box');
                 bar.querySelectorAll('.dir-btn').forEach(btn => {
@@ -503,7 +506,7 @@
 
                     let contentHtml = '';
                     if (activeItemType === 'lesson') {
-                        let processed = processMarkdownHeadings(item.content || 'لا يوجد محتوى').replace(/\n/g, '<br>');
+                        let processed = processMarkdown(item.content || 'لا يوجد محتوى');
                         contentHtml = `
                             <div class="field">
                                 <label>📖 محتوى الدرس</label>
@@ -511,8 +514,8 @@
                                 ${item.image ? `<div style="margin-top:10px;"><img src="${item.image}" alt="صورة الدرس" style="max-width:100%; border-radius:8px; border:1px solid #ddd;"></div>` : ''}
                             </div>`;
                     } else {
-                        let processedProb = processMarkdownHeadings(item.problem || 'لا يوجد نص').replace(/\n/g, '<br>');
-                        let processedSol = processMarkdownHeadings(item.solution || 'لا يوجد حل بعد').replace(/\n/g, '<br>');
+                        let processedProb = processMarkdown(item.problem || 'لا يوجد نص');
+                        let processedSol = processMarkdown(item.solution || 'لا يوجد حل بعد');
                         contentHtml = `
                             <div class="field">
                                 <label>📝 المسألة</label>
@@ -555,11 +558,9 @@
                     else item = group?.problems?.find(p => p.id === activeItemId);
                     if (!group || !item) { view = 'group'; renderAll(); return; }
 
-                    const formatBar = (textareaId) => `
+                    // شريط تنسيق مبسط: فقط أزرار الاتجاه
+                    const formatBar = `
                         <div class="format-bar">
-                            <button class="btn format-btn" data-action="h1">H1</button>
-                            <button class="btn format-btn" data-action="h2">H2</button>
-                            <button class="btn format-btn" data-action="h3">H3</button>
                             <button class="btn format-btn dir-btn" data-dir="rtl" title="اتجاه عربي">↩ عربي</button>
                             <button class="btn format-btn dir-btn" data-dir="ltr" title="اتجاه فرنسي">↪ Français</button>
                         </div>`;
@@ -572,8 +573,8 @@
                                 <input type="text" id="editTitle" value="${escapeHtml(item.title)}">
                             </div>
                             <div class="field">
-                                <label>المحتوى (يدعم Markdown للعناوين)</label>
-                                ${formatBar('editContent')}
+                                <label>المحتوى (Markdown مدعوم)</label>
+                                ${formatBar}
                                 <textarea id="editContent" dir="auto">${escapeHtml(item.content)}</textarea>
                                 <div class="preview-box" id="previewContent" dir="auto"></div>
                                 <div class="img-upload-area">
@@ -591,8 +592,8 @@
                                 <input type="text" id="editTitle" value="${escapeHtml(item.title)}">
                             </div>
                             <div class="field">
-                                <label>نص المسألة</label>
-                                ${formatBar('editProblem')}
+                                <label>نص المسألة (Markdown مدعوم)</label>
+                                ${formatBar}
                                 <textarea id="editProblem" dir="auto">${escapeHtml(item.problem)}</textarea>
                                 <div class="preview-box" id="previewProblem" dir="auto"></div>
                                 <div class="img-upload-area">
@@ -604,8 +605,8 @@
                                 </div>
                             </div>
                             <div class="field">
-                                <label>الحل</label>
-                                ${formatBar('editSolution')}
+                                <label>الحل (Markdown مدعوم)</label>
+                                ${formatBar}
                                 <textarea id="editSolution" dir="auto">${escapeHtml(item.solution)}</textarea>
                                 <div class="preview-box" id="previewSolution" dir="auto"></div>
                                 <div class="img-upload-area">
