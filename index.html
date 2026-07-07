@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OM — Olympiad Mathematics</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2360a5fa'/%3E%3Cstop offset='1' stop-color='%23fbbf24'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%230a0e14'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='52' font-weight='bold' text-anchor='middle' fill='url(%23g)'%3EOM%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -11,6 +12,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-sans-arabic@latest/arabic-600-normal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-sans-arabic@latest/arabic-700-normal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@latest/latin-400-normal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-500-normal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-600-normal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-700-normal.css">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
         :root{
@@ -19,16 +23,20 @@
             --text:#e2e8f0;--text2:#8899aa;--text3:#5a6a7a;
             --accent:#60a5fa;--accent2:#93c5fd;--accent-glow:rgba(96,165,250,.12);
             --red:#ef4444;--red-light:#f87171;--red-bg:rgba(239,68,68,.08);
+            --red-deep:#991b1b;--red-grad:linear-gradient(135deg,#7f1d1d,#991b1b,#b91c1c);
             --blue:#3b82f6;--blue-light:#60a5fa;--blue-bg:rgba(59,130,246,.08);
+            --blue-deep:#1e3a8a;--blue-grad:linear-gradient(135deg,#1e3a8a,#1d4ed8,#2563eb);
             --gold:#fbbf24;--gold-light:#fde68a;--gold-bg:rgba(251,191,36,.1);
+            --gold-deep:#92400e;--gold-grad:linear-gradient(135deg,#78350f,#92400e,#b45309);
             --green:#4ade80;
-            --radius:14px;--radius-sm:8px;
+            --radius:16px;--radius-sm:10px;
             --shadow:0 8px 32px rgba(0,0,0,.4);
-            --font:'IBM Plex Sans Arabic',sans-serif;
+            --font-ar:'IBM Plex Sans Arabic',sans-serif;
+            --font-en:'Inter',sans-serif;
             --mono:'IBM Plex Mono',monospace;
         }
         html,body{height:100%;overflow:hidden}
-        body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7}
+        body{font-family:var(--font-ar);background:var(--bg);color:var(--text);line-height:1.7}
 
         .screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .4s,transform .4s;z-index:1}
         .screen.hidden{opacity:0;pointer-events:none;transform:scale(.96)}
@@ -37,23 +45,24 @@
         /* ===== HOME SCREEN ===== */
         .home-header{
             display:flex;align-items:center;justify-content:space-between;
-            padding:.7rem 1rem;background:var(--bg2);
+            padding:.8rem 1rem;background:var(--bg2);
             border-bottom:1px solid var(--border);flex-shrink:0;gap:.5rem;
         }
         .btn-add-top{
-            display:flex;align-items:center;gap:.35rem;
+            display:flex;align-items:center;gap:.4rem;
             background:linear-gradient(135deg,var(--accent),#3b82f6);
-            color:#fff;border:none;padding:.5rem .9rem;
-            border-radius:20px;font-family:var(--font);font-size:.82rem;
+            color:#fff;border:none;padding:.55rem 1rem;
+            border-radius:22px;font-family:var(--font-ar);font-size:.82rem;
             font-weight:600;cursor:pointer;transition:all .2s;
-            box-shadow:0 2px 10px rgba(96,165,250,.3);white-space:nowrap;
+            box-shadow:0 2px 12px rgba(96,165,250,.3);white-space:nowrap;
         }
-        .btn-add-top:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(96,165,250,.4)}
+        .btn-add-top:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(96,165,250,.4)}
         .btn-add-top:active{transform:translateY(0)}
         .btn-add-top svg{width:15px;height:15px}
 
         .logo{
-            font-size:1.7rem;font-weight:700;letter-spacing:1px;
+            font-size:1.6rem;font-weight:700;letter-spacing:1.5px;
+            font-family:Georgia,serif;
             background:linear-gradient(135deg,var(--accent),var(--gold));
             -webkit-background-clip:text;-webkit-text-fill-color:transparent;
             background-clip:text;
@@ -61,42 +70,98 @@
 
         .btn-icon{
             background:none;border:none;color:var(--text2);
-            width:40px;height:40px;border-radius:50%;
+            width:42px;height:42px;border-radius:50%;
             display:flex;align-items:center;justify-content:center;
             cursor:pointer;transition:all .2s;flex-shrink:0;
         }
         .btn-icon:hover{background:rgba(255,255,255,.06);color:var(--text)}
         .btn-icon svg{width:20px;height:20px}
 
-        .home-body{flex:1;overflow-y:auto;padding:1.5rem 1rem 2rem}
-        .books-list{display:flex;flex-direction:column;gap:.7rem;max-width:500px;margin:0 auto}
+        .home-body{
+            flex:1;overflow-y:auto;
+            padding:1.8rem 1.2rem 2rem;
+            background:
+                radial-gradient(circle at 20% 10%, rgba(96,165,250,.04) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(251,191,36,.03) 0%, transparent 50%);
+        }
+        .home-subtitle{
+            text-align:center;font-size:.8rem;color:var(--text3);
+            margin-bottom:1.5rem;letter-spacing:.5px;
+        }
 
+        .books-list{
+            display:flex;flex-direction:column;gap:1rem;
+            max-width:440px;margin:0 auto;
+        }
+
+        /* ===== NEW BOOK DESIGN ===== */
         .book-item{
-            display:flex;align-items:center;gap:1rem;
-            background:var(--bg2);border:1px solid var(--border);
-            border-radius:var(--radius);padding:1rem 1.2rem;
-            cursor:pointer;transition:all .2s;position:relative;overflow:hidden;
+            position:relative;display:flex;align-items:stretch;
+            border-radius:var(--radius);overflow:hidden;
+            cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);
+            box-shadow:0 4px 20px rgba(0,0,0,.3),0 0 0 1px var(--border);
+            min-height:110px;
         }
-        .book-item:hover{border-color:var(--border2);transform:translateX(-4px)}
-        .book-item:active{transform:scale(.98)}
-        .book-item::before{
-            content:'';position:absolute;right:0;top:0;bottom:0;width:4px;
-        }
-        .book-item.arithmetique::before{background:var(--red)}
-        .book-item.arithmetique{background:linear-gradient(135deg,var(--bg2),var(--red-bg))}
-        .book-item.inegalite::before{background:var(--blue)}
-        .book-item.inegalite{background:linear-gradient(135deg,var(--bg2),var(--blue-bg))}
-        .book-item.favorites::before{background:var(--gold)}
-        .book-item.favorites{background:linear-gradient(135deg,var(--bg2),var(--gold-bg))}
+        .book-item:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.45),0 0 0 1px var(--border2)}
+        .book-item:active{transform:translateY(-1px) scale(.99)}
 
-        .book-icon{font-size:2rem;flex-shrink:0}
-        .book-info{flex:1;min-width:0}
-        .book-name{font-size:1.05rem;font-weight:600;margin-bottom:.15rem}
+        .book-spine{
+            width:8px;flex-shrink:0;position:relative;
+        }
+        .book-spine::after{
+            content:'';position:absolute;inset:0;
+            background:linear-gradient(90deg,rgba(255,255,255,.15),transparent);
+        }
+        .book-item.arithmetique .book-spine{background:var(--red-grad)}
+        .book-item.inegalite .book-spine{background:var(--blue-grad)}
+        .book-item.favorites .book-spine{background:var(--gold-grad)}
+
+        .book-cover{
+            flex:1;padding:1.1rem 1.2rem;
+            display:flex;align-items:center;gap:1rem;
+            position:relative;overflow:hidden;
+        }
+        .book-item.arithmetique .book-cover{background:linear-gradient(135deg,#1a0a0a 0%,#2a0f0f 60%,#1a0a0a 100%)}
+        .book-item.inegalite .book-cover{background:linear-gradient(135deg,#0a0f1f 0%,#0f1a35 60%,#0a0f1f 100%)}
+        .book-item.favorites .book-cover{background:linear-gradient(135deg,#1a1408 0%,#2a1f0a 60%,#1a1408 100%)}
+
+        .book-cover::before{
+            content:'';position:absolute;inset:0;opacity:.06;
+            background-image:radial-gradient(circle at 2px 2px, rgba(255,255,255,.4) 1px, transparent 0);
+            background-size:18px 18px;
+        }
+
+        .book-icon-wrap{
+            width:56px;height:56px;border-radius:14px;
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.8rem;flex-shrink:0;position:relative;z-index:1;
+            box-shadow:0 4px 12px rgba(0,0,0,.3);
+        }
+        .book-item.arithmetique .book-icon-wrap{background:linear-gradient(135deg,#7f1d1d,#b91c1c)}
+        .book-item.inegalite .book-icon-wrap{background:linear-gradient(135deg,#1e3a8a,#2563eb)}
+        .book-item.favorites .book-icon-wrap{background:linear-gradient(135deg,#78350f,#d97706)}
+
+        .book-info{flex:1;min-width:0;position:relative;z-index:1}
+        .book-name{
+            font-size:1.1rem;font-weight:700;margin-bottom:.2rem;
+            font-family:var(--font-en);letter-spacing:.3px;
+        }
         .book-item.arithmetique .book-name{color:var(--red-light)}
         .book-item.inegalite .book-name{color:var(--blue-light)}
         .book-item.favorites .book-name{color:var(--gold-light)}
-        .book-count{font-size:.78rem;color:var(--text2)}
-        .book-arrow{color:var(--text3);flex-shrink:0}
+        .book-count{
+            display:inline-flex;align-items:center;gap:.3rem;
+            font-size:.75rem;color:var(--text2);
+            background:rgba(255,255,255,.05);
+            padding:.2rem .6rem;border-radius:12px;
+            backdrop-filter:blur(4px);
+        }
+
+        .book-arrow{
+            color:var(--text3);flex-shrink:0;
+            display:flex;align-items:center;
+            padding:0 .3rem;position:relative;z-index:1;
+        }
         .book-arrow svg{width:18px;height:18px}
 
         /* ===== BOOK SCREEN ===== */
@@ -111,7 +176,7 @@
         .book-topbar-right{display:flex;align-items:center;gap:.1rem;flex-shrink:0}
         .btn-back{
             background:none;border:none;color:var(--text);cursor:pointer;
-            display:flex;align-items:center;gap:.2rem;font-family:var(--font);
+            display:flex;align-items:center;gap:.2rem;font-family:var(--font-ar);
             font-size:.8rem;padding:.35rem .5rem;border-radius:var(--radius-sm);
             transition:background .2s;
         }
@@ -121,7 +186,7 @@
 
         .btn-tool{
             background:none;border:none;color:var(--text2);
-            width:34px;height:34px;border-radius:50%;
+            width:36px;height:36px;border-radius:50%;
             display:flex;align-items:center;justify-content:center;
             cursor:pointer;transition:all .2s;
         }
@@ -130,7 +195,6 @@
         .btn-tool svg{width:17px;height:17px}
         .btn-tool.focus-active{color:var(--gold);background:var(--gold-bg)}
 
-        /* Search Bar */
         .search-bar{
             display:flex;align-items:center;gap:.5rem;
             padding:0 1rem;background:var(--bg3);
@@ -140,8 +204,8 @@
         .search-bar.open{max-height:60px;padding:.5rem 1rem}
         .search-bar input{
             flex:1;background:var(--bg);border:1px solid var(--border);
-            border-radius:20px;padding:.4rem 1rem;color:var(--text);
-            font-family:var(--font);font-size:.85rem;
+            border-radius:20px;padding:.45rem 1rem;color:var(--text);
+            font-family:var(--font-ar);font-size:.85rem;
         }
         .search-bar input:focus{outline:none;border-color:var(--accent)}
         .search-bar input::placeholder{color:var(--text3)}
@@ -176,9 +240,17 @@
         .page-empty svg{width:56px;height:56px;opacity:.4}
         .page-empty p{font-size:.9rem}
 
-        .page-title{font-size:1.1rem;font-weight:700;color:var(--accent2);margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
-        .page-content{font-size:.88rem;line-height:1.9;color:var(--text);flex:1;word-wrap:break-word;overflow-wrap:break-word}
+        .page-title{
+            font-size:1.1rem;font-weight:700;color:var(--accent2);
+            margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);
+        }
+        .page-content{
+            font-size:.9rem;line-height:1.9;color:var(--text);
+            flex:1;word-wrap:break-word;overflow-wrap:break-word;
+        }
         .page-content .katex{font-size:1em}
+        .page-content.rtl{font-family:var(--font-ar);text-align:right;direction:rtl}
+        .page-content.ltr{font-family:var(--font-en);text-align:left;direction:ltr}
 
         .page-content h1{font-size:1.3rem;font-weight:700;color:var(--accent2);margin:1rem 0 .5rem;padding-bottom:.3rem;border-bottom:1px solid var(--border)}
         .page-content h2{font-size:1.15rem;font-weight:700;color:var(--accent2);margin:.9rem 0 .4rem}
@@ -188,31 +260,54 @@
         .page-content strong{color:var(--gold-light);font-weight:600}
         .page-content em{color:var(--accent2);font-style:italic}
         .page-content hr{border:none;height:1px;background:var(--border);margin:1rem 0}
-        .page-content ul{margin:.5rem 0;padding-right:1.4rem}
+        .page-content.rtl ul{margin:.5rem 0;padding-right:1.4rem}
+        .page-content.ltr ul{margin:.5rem 0;padding-left:1.4rem;padding-right:0}
         .page-content li{margin-bottom:.25rem;color:var(--text)}
         .page-content li::marker{color:var(--accent)}
         .page-content code{background:var(--bg3);color:var(--accent2);padding:.1rem .4rem;border-radius:4px;font-family:var(--mono);font-size:.82rem}
-        .page-content blockquote{border-right:3px solid var(--accent);padding:.4rem .8rem;margin:.5rem 0;background:var(--accent-glow);border-radius:0 var(--radius-sm) var(--radius-sm) 0;color:var(--text2)}
+        .page-content.rtl blockquote{border-right:3px solid var(--accent);padding:.4rem .8rem;margin:.5rem 0;background:var(--accent-glow);border-radius:0 var(--radius-sm) var(--radius-sm) 0;color:var(--text2)}
+        .page-content.ltr blockquote{border-left:3px solid var(--accent);border-right:none;padding:.4rem .8rem;margin:.5rem 0;background:var(--accent-glow);border-radius:var(--radius-sm) 0 0 var(--radius-sm);color:var(--text2)}
 
         .page-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.8rem;padding-top:.6rem;border-top:1px solid var(--border)}
         .page-tag{background:var(--accent-glow);color:var(--accent);padding:.15rem .55rem;border-radius:4px;font-size:.72rem;font-weight:500}
 
-        .page-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:.6rem;padding-bottom:.8rem;flex-wrap:wrap}
+        .page-actions{
+            display:flex;justify-content:flex-end;gap:.5rem;
+            margin-top:.8rem;padding-bottom:.8rem;flex-wrap:wrap;
+        }
+
+        /* ===== IMPROVED FAVORITE BUTTON ===== */
         .btn-fav{
-            background:none;border:1px solid var(--border);color:var(--text3);
-            padding:.3rem .7rem;border-radius:var(--radius-sm);font-size:.75rem;
-            font-family:var(--font);cursor:pointer;transition:all .2s;
-            display:flex;align-items:center;gap:.3rem;
+            background:var(--bg3);border:1px solid var(--border);
+            color:var(--text2);padding:.5rem .9rem;border-radius:22px;
+            font-size:.82rem;font-family:var(--font-ar);font-weight:600;
+            cursor:pointer;transition:all .25s;
+            display:flex;align-items:center;gap:.4rem;
+            position:relative;overflow:hidden;
         }
-        .btn-fav:hover{border-color:var(--gold);color:var(--gold)}
-        .btn-fav.active{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
-        .btn-fav svg{width:14px;height:14px}
+        .btn-fav:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
+        .btn-fav.active{
+            border-color:var(--gold);color:var(--gold);
+            background:linear-gradient(135deg,rgba(251,191,36,.15),rgba(217,119,6,.1));
+            box-shadow:0 0 16px rgba(251,191,36,.2);
+        }
+        .btn-fav svg{width:16px;height:16px;transition:transform .3s}
+        .btn-fav.active svg{animation:starPop .5s ease}
+        .btn-fav:active svg{transform:scale(.8)}
+
+        @keyframes starPop{
+            0%{transform:scale(1) rotate(0)}
+            30%{transform:scale(1.4) rotate(-15deg)}
+            60%{transform:scale(.9) rotate(10deg)}
+            100%{transform:scale(1) rotate(0)}
+        }
+
         .btn-del-page{
-            background:none;border:1px solid var(--border);color:var(--text3);
-            padding:.3rem .7rem;border-radius:var(--radius-sm);font-size:.75rem;
-            font-family:var(--font);cursor:pointer;transition:all .2s;
+            background:var(--bg3);border:1px solid var(--border);color:var(--text2);
+            padding:.5rem .9rem;border-radius:22px;font-size:.82rem;
+            font-family:var(--font-ar);cursor:pointer;transition:all .2s;
         }
-        .btn-del-page:hover{border-color:var(--red);color:var(--red)}
+        .btn-del-page:hover{border-color:var(--red);color:var(--red);background:var(--red-bg)}
 
         /* Page Nav */
         .page-nav{
@@ -256,9 +351,7 @@
         /* Focus Mode */
         body.focus-mode .book-topbar,
         body.focus-mode .search-bar,
-        body.focus-mode .page-nav{
-            display:none !important;
-        }
+        body.focus-mode .page-nav{display:none !important}
         body.focus-mode .page{padding:1.5rem}
         body.focus-mode .btn-focus-exit{display:flex !important}
 
@@ -289,7 +382,7 @@
         .settings-section p{font-size:.82rem;color:var(--text2);margin-bottom:1rem;line-height:1.6}
         .btn-settings{
             width:100%;padding:.75rem;border:none;border-radius:var(--radius-sm);
-            font-family:var(--font);font-size:.88rem;font-weight:600;
+            font-family:var(--font-ar);font-size:.88rem;font-weight:600;
             cursor:pointer;transition:all .2s;display:flex;
             align-items:center;justify-content:center;gap:.5rem;
         }
@@ -304,8 +397,8 @@
 
         /* ===== MODAL ===== */
         .modal-overlay{
-            position:fixed;inset:0;background:rgba(0,0,0,.6);
-            backdrop-filter:blur(4px);z-index:100;
+            position:fixed;inset:0;background:rgba(0,0,0,.65);
+            backdrop-filter:blur(6px);z-index:100;
             display:flex;align-items:center;justify-content:center;
             padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s;
         }
@@ -330,23 +423,39 @@
         .btn-close-modal:hover{color:var(--text);background:rgba(255,255,255,.06)}
         .btn-close-modal svg{width:20px;height:20px}
         .modal-body{padding:1.2rem}
-        .form-group{margin-bottom:1rem}
-        .form-group label{display:block;font-size:.8rem;color:var(--text2);margin-bottom:.35rem;font-weight:500}
+        .form-group{margin-bottom:1.1rem}
+        .form-group label{display:block;font-size:.82rem;color:var(--text2);margin-bottom:.4rem;font-weight:500}
         .form-group input,.form-group textarea,.form-group select{
-            width:100%;padding:.65rem .9rem;background:var(--bg);
+            width:100%;padding:.7rem 1rem;background:var(--bg);
             border:1px solid var(--border);border-radius:var(--radius-sm);
-            color:var(--text);font-size:.88rem;font-family:var(--font);transition:border-color .2s;
+            color:var(--text);font-size:.9rem;font-family:var(--font-ar);transition:border-color .2s;
         }
         .form-group select{cursor:pointer}
         .form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--accent)}
-        .form-group textarea{min-height:130px;resize:vertical;font-family:var(--mono);line-height:1.6}
+        .form-group textarea{min-height:140px;resize:vertical;font-family:var(--mono);line-height:1.6}
         .form-group input::placeholder,.form-group textarea::placeholder{color:var(--text3)}
-        .form-hint{font-size:.7rem;color:var(--text3);margin-top:.25rem;line-height:1.5}
+        .form-hint{font-size:.7rem;color:var(--text3);margin-top:.3rem;line-height:1.6}
         .form-hint code{background:var(--bg3);color:var(--accent2);padding:.05rem .3rem;border-radius:3px;font-family:var(--mono);font-size:.68rem}
+
+        /* Language selector */
+        .lang-selector{display:flex;gap:.5rem}
+        .lang-option{
+            flex:1;padding:.65rem;border:1px solid var(--border);
+            background:var(--bg);border-radius:var(--radius-sm);
+            color:var(--text2);font-family:var(--font-ar);font-size:.85rem;
+            cursor:pointer;transition:all .2s;text-align:center;
+            display:flex;align-items:center;justify-content:center;gap:.4rem;
+        }
+        .lang-option:hover{border-color:var(--border2)}
+        .lang-option.selected{
+            border-color:var(--accent);color:var(--accent);
+            background:var(--accent-glow);font-weight:600;
+        }
+
         .btn-submit{
-            width:100%;padding:.75rem;border:none;border-radius:var(--radius-sm);
+            width:100%;padding:.8rem;border:none;border-radius:var(--radius-sm);
             background:linear-gradient(135deg,var(--accent),#3b82f6);
-            color:#fff;font-size:.9rem;font-weight:600;font-family:var(--font);
+            color:#fff;font-size:.92rem;font-weight:600;font-family:var(--font-ar);
             cursor:pointer;transition:all .2s;margin-top:.5rem;
         }
         .btn-submit:hover{box-shadow:0 4px 16px rgba(96,165,250,.3)}
@@ -357,8 +466,8 @@
             position:fixed;bottom:2rem;left:50%;
             transform:translateX(-50%) translateY(20px);
             background:var(--bg3);border:1px solid var(--border);
-            color:var(--text);padding:.6rem 1.2rem;border-radius:20px;
-            font-size:.82rem;font-family:var(--font);
+            color:var(--text);padding:.6rem 1.2rem;border-radius:22px;
+            font-size:.82rem;font-family:var(--font-ar);
             box-shadow:var(--shadow);opacity:0;transition:all .3s;z-index:200;white-space:nowrap;
         }
         .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -369,13 +478,15 @@
         ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-        .book-item{animation:fadeUp .4s ease both}
-        .book-item:nth-child(2){animation-delay:.05s}
-        .book-item:nth-child(3){animation-delay:.1s}
+        .book-item{animation:fadeUp .5s ease both}
+        .book-item:nth-child(2){animation-delay:.08s}
+        .book-item:nth-child(3){animation-delay:.16s}
 
         @media(min-width:600px){
-            .books-list{max-width:600px}
+            .books-list{max-width:560px}
             .page-viewport{max-width:600px;margin:0 auto;width:100%}
+            .book-item{min-height:120px}
+            .book-icon-wrap{width:64px;height:64px;font-size:2rem}
         }
     </style>
 </head>
@@ -397,6 +508,7 @@
         </button>
     </header>
     <div class="home-body">
+        <p class="home-subtitle">📚 مكتبتك الرياضية</p>
         <div class="books-list" id="booksList"></div>
     </div>
 </div>
@@ -532,6 +644,17 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label>لغة التدوينة</label>
+                    <div class="lang-selector" id="langSelector">
+                        <button type="button" class="lang-option selected" data-lang="ar">
+                            <span>🇸🇦</span> عربي
+                        </button>
+                        <button type="button" class="lang-option" data-lang="en">
+                            <span>🇬🇧</span> English
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label>العنوان / المصدر</label>
                     <input type="text" id="titleInput" placeholder="مثال: متباينة كوشي-شفارتز" required>
                 </div>
@@ -558,7 +681,7 @@
 
 <script>
 // ===== DATA =====
-const STORAGE_KEY = 'om_notebook_v5';
+const STORAGE_KEY = 'om_notebook_v6';
 const BOOKS = {
     arithmetique: { name: 'Arithmétique', nameAr: 'نظرية الأعداد', color: 'arithmetique', icon: '🔢' },
     inegalite: { name: 'Inégalité', nameAr: 'المتباينات', color: 'inegalite', icon: '⚖️' },
@@ -576,6 +699,7 @@ let currentBook = null;
 let currentPage = 0;
 let searchQuery = '';
 let focusMode = false;
+let selectedLang = 'ar';
 
 // ===== TOAST =====
 function showToast(msg, type='') {
@@ -684,15 +808,18 @@ function renderHome() {
     
     list.innerHTML = books.map(book => `
         <div class="book-item ${book.color}" onclick="openBook('${book.key}')">
-            <span class="book-icon">${book.icon}</span>
-            <div class="book-info">
-                <div class="book-name">${book.name}</div>
-                <div class="book-count">${book.count} تدوينة</div>
-            </div>
-            <div class="book-arrow">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"/>
-                </svg>
+            <div class="book-spine"></div>
+            <div class="book-cover">
+                <div class="book-icon-wrap">${book.icon}</div>
+                <div class="book-info">
+                    <div class="book-name">${book.name}</div>
+                    <div class="book-count">📄 ${book.count} تدوينة</div>
+                </div>
+                <div class="book-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </div>
             </div>
         </div>
     `).join('');
@@ -720,7 +847,7 @@ function openBook(key) {
     renderPage();
 }
 
-// ===== GET ENTRIES FOR CURRENT BOOK =====
+// ===== GET ENTRIES =====
 function getEntries() {
     if (currentBook === 'favorites') {
         let favs = [];
@@ -767,24 +894,28 @@ function renderPage(direction) {
                 </div>
             </div>`;
     } else {
+        const lang = entry.lang || 'ar';
+        const dirClass = lang === 'ar' ? 'rtl' : 'ltr';
         const tagsHtml = entry.tags.length
             ? `<div class="page-tags">${entry.tags.map(t => `<span class="page-tag">${esc(t)}</span>`).join('')}</div>`
             : '';
         const contentHtml = parseMarkdown(entry.content);
         const favClass = entry.favorite ? 'active' : '';
-        const favText = entry.favorite ? '⭐ مفضلة' : '☆ إضافة للمفضلة';
+        const favLabel = entry.favorite ? '⭐ مفضلة' : '☆ إضافة للمفضلة';
+        const titleDir = lang === 'ar' ? 'rtl' : 'ltr';
+        const titleFont = lang === 'ar' ? 'var(--font-ar)' : 'var(--font-en)';
 
         viewport.innerHTML = `
             <div class="page ${animClass}" id="currentPageEl">
-                <div class="page-title">${esc(entry.title)}</div>
-                <div class="page-content">${contentHtml}</div>
+                <div class="page-title" style="direction:${titleDir};font-family:${titleFont}">${esc(entry.title)}</div>
+                <div class="page-content ${dirClass}">${contentHtml}</div>
                 ${tagsHtml}
                 <div class="page-actions">
                     <button class="btn-fav ${favClass}" onclick="toggleFavorite('${entry.id}')">
                         <svg viewBox="0 0 24 24" fill="${entry.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                         </svg>
-                        ${favText}
+                        ${favLabel}
                     </button>
                     <button class="btn-del-page" onclick="deletePage('${entry.id}')">🗑️ حذف</button>
                 </div>
@@ -1026,6 +1157,42 @@ document.getElementById('btnClearAll').addEventListener('click', () => {
     }
 });
 
+// ===== LANGUAGE SELECTOR =====
+document.querySelectorAll('.lang-option').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.lang-option').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedLang = this.dataset.lang;
+        
+        // Update placeholders and textarea direction
+        const titleInput = document.getElementById('titleInput');
+        const contentInput = document.getElementById('contentInput');
+        const tagsInput = document.getElementById('tagsInput');
+        
+        if (selectedLang === 'ar') {
+            titleInput.dir = 'rtl';
+            titleInput.style.fontFamily = 'var(--font-ar)';
+            titleInput.placeholder = 'مثال: متباينة كوشي-شفارتز';
+            contentInput.dir = 'rtl';
+            contentInput.style.fontFamily = 'var(--mono)';
+            contentInput.placeholder = 'اكتب المسألة أو التقنية هنا...';
+            tagsInput.dir = 'rtl';
+            tagsInput.style.fontFamily = 'var(--font-ar)';
+            tagsInput.placeholder = 'جبر، متباينات، IMO';
+        } else {
+            titleInput.dir = 'ltr';
+            titleInput.style.fontFamily = 'var(--font-en)';
+            titleInput.placeholder = 'e.g. Cauchy-Schwarz Inequality';
+            contentInput.dir = 'ltr';
+            contentInput.style.fontFamily = 'var(--mono)';
+            contentInput.placeholder = 'Write the problem or technique here...\n\n#### Subtitle\n**Bold** and *italic*';
+            tagsInput.dir = 'ltr';
+            tagsInput.style.fontFamily = 'var(--font-en)';
+            tagsInput.placeholder = 'algebra, inequalities, IMO';
+        }
+    });
+});
+
 // ===== MODAL =====
 const modalOverlay = document.getElementById('modalOverlay');
 function openModal(bookKey) {
@@ -1034,6 +1201,16 @@ function openModal(bookKey) {
     } else if (currentBook && currentBook !== 'favorites') {
         document.getElementById('bookSelect').value = currentBook;
     }
+    // Reset language to Arabic by default
+    selectedLang = 'ar';
+    document.querySelectorAll('.lang-option').forEach(b => b.classList.remove('selected'));
+    document.querySelector('.lang-option[data-lang="ar"]').classList.add('selected');
+    document.getElementById('titleInput').dir = 'rtl';
+    document.getElementById('titleInput').style.fontFamily = 'var(--font-ar)';
+    document.getElementById('contentInput').dir = 'rtl';
+    document.getElementById('tagsInput').dir = 'rtl';
+    document.getElementById('tagsInput').style.fontFamily = 'var(--font-ar)';
+    
     modalOverlay.classList.add('open');
     setTimeout(() => document.getElementById('titleInput').focus(), 300);
 }
@@ -1064,6 +1241,7 @@ document.getElementById('entryForm').addEventListener('submit', function(e) {
     const entry = {
         id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
         title, content, tags,
+        lang: selectedLang,
         favorite: false,
         createdAt: new Date().toISOString()
     };
