@@ -42,215 +42,98 @@
         .screen.hidden{opacity:0;pointer-events:none;transform:scale(.96)}
         .screen.active{opacity:1;pointer-events:all;transform:scale(1)}
 
-        /* ===== HOME SCREEN ===== */
-        .home-header{
-            display:flex;align-items:center;justify-content:space-between;
-            padding:.8rem 1rem;background:var(--bg2);
-            border-bottom:1px solid var(--border);flex-shrink:0;gap:.5rem;
-        }
-        .btn-add-top{
-            display:flex;align-items:center;gap:.4rem;
-            background:linear-gradient(135deg,var(--accent),#3b82f6);
-            color:#fff;border:none;padding:.55rem 1rem;
-            border-radius:22px;font-family:var(--font-ar);font-size:.82rem;
-            font-weight:600;cursor:pointer;transition:all .2s;
-            box-shadow:0 2px 12px rgba(96,165,250,.3);white-space:nowrap;
-        }
+        /* HOME */
+        .home-header{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;gap:.5rem}
+        .btn-add-top{display:flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,var(--accent),#3b82f6);color:#fff;border:none;padding:.55rem 1rem;border-radius:22px;font-family:var(--font-ar);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(96,165,250,.3);white-space:nowrap}
         .btn-add-top:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(96,165,250,.4)}
         .btn-add-top:active{transform:translateY(0)}
         .btn-add-top svg{width:15px;height:15px}
-
-        .logo{
-            font-size:1.6rem;font-weight:700;letter-spacing:1.5px;
-            font-family:Georgia,serif;
-            background:linear-gradient(135deg,var(--accent),var(--gold));
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            background-clip:text;
-        }
-
-        .btn-icon{
-            background:none;border:none;color:var(--text2);
-            width:42px;height:42px;border-radius:50%;
-            display:flex;align-items:center;justify-content:center;
-            cursor:pointer;transition:all .2s;flex-shrink:0;
-        }
+        .logo{font-size:1.6rem;font-weight:700;letter-spacing:1.5px;font-family:Georgia,serif;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .btn-icon{background:none;border:none;color:var(--text2);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
         .btn-icon:hover{background:rgba(255,255,255,.06);color:var(--text)}
         .btn-icon svg{width:20px;height:20px}
 
-        .home-body{
-            flex:1;overflow-y:auto;
-            padding:1.8rem 1.2rem 2rem;
-            background:
-                radial-gradient(circle at 20% 10%, rgba(96,165,250,.04) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(251,191,36,.03) 0%, transparent 50%);
-        }
-        .home-subtitle{
-            text-align:center;font-size:.8rem;color:var(--text3);
-            margin-bottom:1.5rem;letter-spacing:.5px;
-        }
+        .home-body{flex:1;overflow-y:auto;padding:1.8rem 1.2rem 2rem;background:radial-gradient(circle at 20% 10%,rgba(96,165,250,.04) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(251,191,36,.03) 0%,transparent 50%)}
+        .home-subtitle{text-align:center;font-size:.8rem;color:var(--text3);margin-bottom:1.5rem;letter-spacing:.5px}
+        .books-list{display:flex;flex-direction:column;gap:1rem;max-width:440px;margin:0 auto}
 
-        .books-list{
-            display:flex;flex-direction:column;gap:1rem;
-            max-width:440px;margin:0 auto;
-        }
-
-        /* ===== NEW BOOK DESIGN ===== */
-        .book-item{
-            position:relative;display:flex;align-items:stretch;
-            border-radius:var(--radius);overflow:hidden;
-            cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);
-            box-shadow:0 4px 20px rgba(0,0,0,.3),0 0 0 1px var(--border);
-            min-height:110px;
-        }
+        .book-item{position:relative;display:flex;align-items:stretch;border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 20px rgba(0,0,0,.3),0 0 0 1px var(--border);min-height:110px}
         .book-item:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.45),0 0 0 1px var(--border2)}
         .book-item:active{transform:translateY(-1px) scale(.99)}
-
-        .book-spine{
-            width:8px;flex-shrink:0;position:relative;
-        }
-        .book-spine::after{
-            content:'';position:absolute;inset:0;
-            background:linear-gradient(90deg,rgba(255,255,255,.15),transparent);
-        }
+        .book-spine{width:8px;flex-shrink:0;position:relative}
+        .book-spine::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.15),transparent)}
         .book-item.arithmetique .book-spine{background:var(--red-grad)}
         .book-item.inegalite .book-spine{background:var(--blue-grad)}
         .book-item.favorites .book-spine{background:var(--gold-grad)}
-
-        .book-cover{
-            flex:1;padding:1.1rem 1.2rem;
-            display:flex;align-items:center;gap:1rem;
-            position:relative;overflow:hidden;
-        }
+        .book-cover{flex:1;padding:1.1rem 1.2rem;display:flex;align-items:center;gap:1rem;position:relative;overflow:hidden}
         .book-item.arithmetique .book-cover{background:linear-gradient(135deg,#1a0a0a 0%,#2a0f0f 60%,#1a0a0a 100%)}
         .book-item.inegalite .book-cover{background:linear-gradient(135deg,#0a0f1f 0%,#0f1a35 60%,#0a0f1f 100%)}
         .book-item.favorites .book-cover{background:linear-gradient(135deg,#1a1408 0%,#2a1f0a 60%,#1a1408 100%)}
-
-        .book-cover::before{
-            content:'';position:absolute;inset:0;opacity:.06;
-            background-image:radial-gradient(circle at 2px 2px, rgba(255,255,255,.4) 1px, transparent 0);
-            background-size:18px 18px;
-        }
-
-        .book-icon-wrap{
-            width:56px;height:56px;border-radius:14px;
-            display:flex;align-items:center;justify-content:center;
-            font-size:1.8rem;flex-shrink:0;position:relative;z-index:1;
-            box-shadow:0 4px 12px rgba(0,0,0,.3);
-        }
+        .book-cover::before{content:'';position:absolute;inset:0;opacity:.06;background-image:radial-gradient(circle at 2px 2px,rgba(255,255,255,.4) 1px,transparent 0);background-size:18px 18px}
+        .book-icon-wrap{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;position:relative;z-index:1;box-shadow:0 4px 12px rgba(0,0,0,.3)}
         .book-item.arithmetique .book-icon-wrap{background:linear-gradient(135deg,#7f1d1d,#b91c1c)}
         .book-item.inegalite .book-icon-wrap{background:linear-gradient(135deg,#1e3a8a,#2563eb)}
         .book-item.favorites .book-icon-wrap{background:linear-gradient(135deg,#78350f,#d97706)}
-
         .book-info{flex:1;min-width:0;position:relative;z-index:1}
-        .book-name{
-            font-size:1.1rem;font-weight:700;margin-bottom:.2rem;
-            font-family:var(--font-en);letter-spacing:.3px;
-        }
+        .book-name{font-size:1.1rem;font-weight:700;margin-bottom:.2rem;font-family:var(--font-en);letter-spacing:.3px}
         .book-item.arithmetique .book-name{color:var(--red-light)}
         .book-item.inegalite .book-name{color:var(--blue-light)}
         .book-item.favorites .book-name{color:var(--gold-light)}
-        .book-count{
-            display:inline-flex;align-items:center;gap:.3rem;
-            font-size:.75rem;color:var(--text2);
-            background:rgba(255,255,255,.05);
-            padding:.2rem .6rem;border-radius:12px;
-            backdrop-filter:blur(4px);
-        }
-
-        .book-arrow{
-            color:var(--text3);flex-shrink:0;
-            display:flex;align-items:center;
-            padding:0 .3rem;position:relative;z-index:1;
-        }
+        .book-count{display:inline-flex;align-items:center;gap:.3rem;font-size:.75rem;color:var(--text2);background:rgba(255,255,255,.05);padding:.2rem .6rem;border-radius:12px;backdrop-filter:blur(4px)}
+        .book-arrow{color:var(--text3);flex-shrink:0;display:flex;align-items:center;padding:0 .3rem;position:relative;z-index:1}
         .book-arrow svg{width:18px;height:18px}
 
-        /* ===== BOOK SCREEN ===== */
-        .book-topbar{
-            display:flex;align-items:center;justify-content:space-between;
-            padding:.5rem .8rem;background:var(--bg2);
-            border-bottom:1px solid var(--border);flex-shrink:0;
-            min-height:48px;gap:.3rem;
-        }
+        /* BOOK SCREEN */
+        .book-topbar{display:flex;align-items:center;justify-content:space-between;padding:.5rem .8rem;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;min-height:48px;gap:.3rem}
         .book-topbar-left{display:flex;align-items:center;gap:.2rem;flex-shrink:0}
         .book-topbar-center{flex:1;text-align:center;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 .3rem}
         .book-topbar-right{display:flex;align-items:center;gap:.1rem;flex-shrink:0}
-        .btn-back{
-            background:none;border:none;color:var(--text);cursor:pointer;
-            display:flex;align-items:center;gap:.2rem;font-family:var(--font-ar);
-            font-size:.8rem;padding:.35rem .5rem;border-radius:var(--radius-sm);
-            transition:background .2s;
-        }
+        .btn-back{background:none;border:none;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:.2rem;font-family:var(--font-ar);font-size:.8rem;padding:.35rem .5rem;border-radius:var(--radius-sm);transition:background .2s}
         .btn-back:hover{background:rgba(255,255,255,.06)}
         .btn-back svg{width:18px;height:18px}
         .book-topbar-title{font-size:.9rem;font-weight:600}
-
-        .btn-tool{
-            background:none;border:none;color:var(--text2);
-            width:36px;height:36px;border-radius:50%;
-            display:flex;align-items:center;justify-content:center;
-            cursor:pointer;transition:all .2s;
-        }
+        .btn-tool{background:none;border:none;color:var(--text2);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
         .btn-tool:hover{background:rgba(255,255,255,.06);color:var(--text)}
         .btn-tool.active{color:var(--accent);background:var(--accent-glow)}
         .btn-tool svg{width:17px;height:17px}
         .btn-tool.focus-active{color:var(--gold);background:var(--gold-bg)}
 
-        .search-bar{
-            display:flex;align-items:center;gap:.5rem;
-            padding:0 1rem;background:var(--bg3);
-            border-bottom:1px solid var(--border);flex-shrink:0;
-            max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;
-        }
+        .search-bar{display:flex;align-items:center;gap:.5rem;padding:0 1rem;background:var(--bg3);border-bottom:1px solid var(--border);flex-shrink:0;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s}
         .search-bar.open{max-height:60px;padding:.5rem 1rem}
-        .search-bar input{
-            flex:1;background:var(--bg);border:1px solid var(--border);
-            border-radius:20px;padding:.45rem 1rem;color:var(--text);
-            font-family:var(--font-ar);font-size:.85rem;
-        }
+        .search-bar input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:.45rem 1rem;color:var(--text);font-family:var(--font-ar);font-size:.85rem}
         .search-bar input:focus{outline:none;border-color:var(--accent)}
         .search-bar input::placeholder{color:var(--text3)}
-        .btn-close-search{
-            background:none;border:none;color:var(--text2);
-            width:30px;height:30px;border-radius:50%;
-            display:flex;align-items:center;justify-content:center;
-            cursor:pointer;transition:all .2s;
-        }
+        .btn-close-search{background:none;border:none;color:var(--text2);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
         .btn-close-search:hover{background:rgba(255,255,255,.06);color:var(--text)}
         .btn-close-search svg{width:15px;height:15px}
 
         .book-body{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;background:var(--bg)}
-
         .page-viewport{flex:1;position:relative;overflow:hidden}
-        .page{
-            position:absolute;inset:0;display:flex;flex-direction:column;
-            padding:1.2rem 1.2rem 0;overflow-y:auto;
-            background:var(--bg2);border-left:1px solid var(--border);border-right:1px solid var(--border);
-            transition:transform .5s cubic-bezier(.4,.0,.2,1),opacity .35s;
-            transform-origin:right center;
-        }
+        .page{position:absolute;inset:0;display:flex;flex-direction:column;padding:1.2rem 1.2rem 0;overflow-y:auto;background:var(--bg2);border-left:1px solid var(--border);border-right:1px solid var(--border);transition:transform .5s cubic-bezier(.4,.0,.2,1),opacity .35s;transform-origin:right center}
         .page.flip-in-right{transform:rotateY(60deg);opacity:0}
         .page.flip-in-left{transform:rotateY(-60deg);opacity:0}
         .page.page-center{transform:rotateY(0);opacity:1}
-
-        .page-empty{
-            flex:1;display:flex;flex-direction:column;
-            align-items:center;justify-content:center;
-            color:var(--text3);text-align:center;gap:.8rem;
-        }
+        .page-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text3);text-align:center;gap:.8rem}
         .page-empty svg{width:56px;height:56px;opacity:.4}
         .page-empty p{font-size:.9rem}
 
-        .page-title{
-            font-size:1.1rem;font-weight:700;color:var(--accent2);
-            margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);
-        }
-        .page-content{
-            font-size:.9rem;line-height:1.9;color:var(--text);
-            flex:1;word-wrap:break-word;overflow-wrap:break-word;
-        }
+        .page-title{font-size:1.1rem;font-weight:700;color:var(--accent2);margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+        .page-content{font-size:.9rem;line-height:1.9;color:var(--text);flex:1;word-wrap:break-word;overflow-wrap:break-word}
         .page-content .katex{font-size:1em}
         .page-content.rtl{font-family:var(--font-ar);text-align:right;direction:rtl}
         .page-content.ltr{font-family:var(--font-en);text-align:left;direction:ltr}
+
+        /* Force math to always be LTR */
+        .page-content .katex,
+        .page-content .katex-display,
+        .page-content .katex-html,
+        .page-content .base{
+            direction:ltr !important;
+            unicode-bidi:isolate !important;
+            text-align:left !important;
+        }
+        .page-content .katex-display{margin:1rem 0;display:block !important}
+        .page-content.rtl .katex-display{margin-right:0;margin-left:0}
 
         .page-content h1{font-size:1.3rem;font-weight:700;color:var(--accent2);margin:1rem 0 .5rem;padding-bottom:.3rem;border-bottom:1px solid var(--border)}
         .page-content h2{font-size:1.15rem;font-weight:700;color:var(--accent2);margin:.9rem 0 .4rem}
@@ -268,168 +151,82 @@
         .page-content.rtl blockquote{border-right:3px solid var(--accent);padding:.4rem .8rem;margin:.5rem 0;background:var(--accent-glow);border-radius:0 var(--radius-sm) var(--radius-sm) 0;color:var(--text2)}
         .page-content.ltr blockquote{border-left:3px solid var(--accent);border-right:none;padding:.4rem .8rem;margin:.5rem 0;background:var(--accent-glow);border-radius:var(--radius-sm) 0 0 var(--radius-sm);color:var(--text2)}
 
-        .page-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.8rem;padding-top:.6rem;border-top:1px solid var(--border)}
-        .page-tag{background:var(--accent-glow);color:var(--accent);padding:.15rem .55rem;border-radius:4px;font-size:.72rem;font-weight:500}
+        .page-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:.8rem;padding-bottom:.8rem;flex-wrap:wrap}
 
-        .page-actions{
-            display:flex;justify-content:flex-end;gap:.5rem;
-            margin-top:.8rem;padding-bottom:.8rem;flex-wrap:wrap;
-        }
-
-        /* ===== IMPROVED FAVORITE BUTTON ===== */
-        .btn-fav{
-            background:var(--bg3);border:1px solid var(--border);
-            color:var(--text2);padding:.5rem .9rem;border-radius:22px;
-            font-size:.82rem;font-family:var(--font-ar);font-weight:600;
-            cursor:pointer;transition:all .25s;
-            display:flex;align-items:center;gap:.4rem;
-            position:relative;overflow:hidden;
-        }
+        .btn-fav{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.5rem .9rem;border-radius:22px;font-size:.82rem;font-family:var(--font-ar);font-weight:600;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:.4rem;position:relative;overflow:hidden}
         .btn-fav:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
-        .btn-fav.active{
-            border-color:var(--gold);color:var(--gold);
-            background:linear-gradient(135deg,rgba(251,191,36,.15),rgba(217,119,6,.1));
-            box-shadow:0 0 16px rgba(251,191,36,.2);
-        }
+        .btn-fav.active{border-color:var(--gold);color:var(--gold);background:linear-gradient(135deg,rgba(251,191,36,.15),rgba(217,119,6,.1));box-shadow:0 0 16px rgba(251,191,36,.2)}
         .btn-fav svg{width:16px;height:16px;transition:transform .3s}
         .btn-fav.active svg{animation:starPop .5s ease}
         .btn-fav:active svg{transform:scale(.8)}
+        @keyframes starPop{0%{transform:scale(1) rotate(0)}30%{transform:scale(1.4) rotate(-15deg)}60%{transform:scale(.9) rotate(10deg)}100%{transform:scale(1) rotate(0)}}
 
-        @keyframes starPop{
-            0%{transform:scale(1) rotate(0)}
-            30%{transform:scale(1.4) rotate(-15deg)}
-            60%{transform:scale(.9) rotate(10deg)}
-            100%{transform:scale(1) rotate(0)}
-        }
+        .btn-edit{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.5rem .9rem;border-radius:22px;font-size:.82rem;font-family:var(--font-ar);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.4rem}
+        .btn-edit:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
+        .btn-edit svg{width:14px;height:14px}
 
-        .btn-del-page{
-            background:var(--bg3);border:1px solid var(--border);color:var(--text2);
-            padding:.5rem .9rem;border-radius:22px;font-size:.82rem;
-            font-family:var(--font-ar);cursor:pointer;transition:all .2s;
-        }
+        .btn-del-page{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.5rem .9rem;border-radius:22px;font-size:.82rem;font-family:var(--font-ar);cursor:pointer;transition:all .2s}
         .btn-del-page:hover{border-color:var(--red);color:var(--red);background:var(--red-bg)}
 
-        /* Page Nav */
-        .page-nav{
-            display:flex;align-items:center;gap:.5rem;
-            padding:.35rem .8rem;background:var(--bg2);
-            border-top:1px solid var(--border);flex-shrink:0;height:44px;
-        }
-        .btn-nav{
-            background:var(--bg3);border:1px solid var(--border);
-            color:var(--text);width:32px;height:32px;border-radius:50%;
-            display:flex;align-items:center;justify-content:center;
-            cursor:pointer;transition:all .2s;flex-shrink:0;
-        }
+        .page-nav{display:flex;align-items:center;gap:.5rem;padding:.35rem .8rem;background:var(--bg2);border-top:1px solid var(--border);flex-shrink:0;height:44px}
+        .btn-nav{background:var(--bg3);border:1px solid var(--border);color:var(--text);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
         .btn-nav:hover:not(:disabled){background:var(--bg4);border-color:var(--accent)}
         .btn-nav:disabled{opacity:.2;cursor:default}
         .btn-nav svg{width:14px;height:14px}
-
         .slider-wrap{flex:1;display:flex;align-items:center;gap:.5rem;min-width:0}
-        .page-slider{
-            -webkit-appearance:none;appearance:none;
-            flex:1;height:4px;border-radius:2px;
-            background:var(--border);outline:none;cursor:pointer;
-            direction:ltr;
-        }
-        .page-slider::-webkit-slider-thumb{
-            -webkit-appearance:none;appearance:none;
-            width:16px;height:16px;border-radius:50%;
-            background:var(--accent);border:2px solid var(--bg2);
-            box-shadow:0 0 6px rgba(96,165,250,.4);
-            cursor:pointer;transition:transform .15s;
-        }
+        .page-slider{-webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:2px;background:var(--border);outline:none;cursor:pointer;direction:ltr}
+        .page-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);border:2px solid var(--bg2);box-shadow:0 0 6px rgba(96,165,250,.4);cursor:pointer;transition:transform .15s}
         .page-slider::-webkit-slider-thumb:active{transform:scale(1.3)}
-        .page-slider::-moz-range-thumb{
-            width:16px;height:16px;border-radius:50%;
-            background:var(--accent);border:2px solid var(--bg2);
-            box-shadow:0 0 6px rgba(96,165,250,.4);
-            cursor:pointer;
-        }
+        .page-slider::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);border:2px solid var(--bg2);box-shadow:0 0 6px rgba(96,165,250,.4);cursor:pointer}
         .page-num-label{font-size:.72rem;color:var(--text2);white-space:nowrap;min-width:36px;text-align:center;font-family:var(--mono)}
 
-        /* Focus Mode */
-        body.focus-mode .book-topbar,
-        body.focus-mode .search-bar,
-        body.focus-mode .page-nav{display:none !important}
+        body.focus-mode .book-topbar,body.focus-mode .search-bar,body.focus-mode .page-nav{display:none !important}
         body.focus-mode .page{padding:1.5rem}
         body.focus-mode .btn-focus-exit{display:flex !important}
-
-        .btn-focus-exit{
-            display:none;position:fixed;top:1rem;left:1rem;z-index:100;
-            background:var(--bg3);border:1px solid var(--border);
-            color:var(--text);width:40px;height:40px;border-radius:50%;
-            align-items:center;justify-content:center;cursor:pointer;
-            transition:all .2s;box-shadow:var(--shadow);
-        }
+        .btn-focus-exit{display:none;position:fixed;top:1rem;left:1rem;z-index:100;background:var(--bg3);border:1px solid var(--border);color:var(--text);width:40px;height:40px;border-radius:50%;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
         .btn-focus-exit:hover{background:var(--bg4);border-color:var(--accent)}
         .btn-focus-exit svg{width:20px;height:20px}
 
-        /* ===== SETTINGS SCREEN ===== */
-        .settings-header{
-            display:flex;align-items:center;gap:.5rem;
-            padding:.7rem 1rem;background:var(--bg2);
-            border-bottom:1px solid var(--border);flex-shrink:0;
-        }
+        /* SETTINGS */
+        .settings-header{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0}
         .settings-title{font-size:1.05rem;font-weight:600;flex:1}
         .settings-body{flex:1;overflow-y:auto;padding:1.5rem 1rem}
-        .settings-section{
-            background:var(--bg2);border:1px solid var(--border);
-            border-radius:var(--radius);padding:1.2rem;margin-bottom:1rem;
-            max-width:500px;margin-left:auto;margin-right:auto;
-        }
+        .settings-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;margin-bottom:1rem;max-width:500px;margin-left:auto;margin-right:auto}
         .settings-section h3{font-size:1rem;font-weight:600;margin-bottom:.6rem;color:var(--accent2)}
         .settings-section p{font-size:.82rem;color:var(--text2);margin-bottom:1rem;line-height:1.6}
-        .btn-settings{
-            width:100%;padding:.75rem;border:none;border-radius:var(--radius-sm);
-            font-family:var(--font-ar);font-size:.88rem;font-weight:600;
-            cursor:pointer;transition:all .2s;display:flex;
-            align-items:center;justify-content:center;gap:.5rem;
-        }
+        .btn-settings{width:100%;padding:.75rem;border:none;border-radius:var(--radius-sm);font-family:var(--font-ar);font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.5rem}
+        .btn-settings:last-child{margin-bottom:0}
         .btn-settings svg{width:18px;height:18px}
-        .btn-export{background:linear-gradient(135deg,var(--accent),#3b82f6);color:#fff;margin-bottom:.6rem}
+        .btn-export{background:linear-gradient(135deg,var(--accent),#3b82f6);color:#fff}
         .btn-export:hover{box-shadow:0 4px 16px rgba(96,165,250,.3)}
         .btn-import{background:var(--bg3);border:1px solid var(--border);color:var(--text)}
         .btn-import:hover{border-color:var(--accent);color:var(--accent)}
-        .btn-danger{background:rgba(239,68,68,.1);border:1px solid var(--red);color:var(--red);margin-top:.6rem}
+        .btn-danger{background:rgba(239,68,68,.1);border:1px solid var(--red);color:var(--red)}
         .btn-danger:hover{background:rgba(239,68,68,.2)}
-        #importInput{display:none}
+        .import-file{display:none}
 
-        /* ===== MODAL ===== */
-        .modal-overlay{
-            position:fixed;inset:0;background:rgba(0,0,0,.65);
-            backdrop-filter:blur(6px);z-index:100;
-            display:flex;align-items:center;justify-content:center;
-            padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s;
-        }
+        .book-section-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+        .book-section-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+        .book-section-icon.arith{background:linear-gradient(135deg,#7f1d1d,#b91c1c)}
+        .book-section-icon.ineg{background:linear-gradient(135deg,#1e3a8a,#2563eb)}
+        .book-section-name{font-family:var(--font-en);font-weight:600;font-size:.95rem}
+        .book-section-name.arith{color:var(--red-light)}
+        .book-section-name.ineg{color:var(--blue-light)}
+
+        /* MODAL */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s}
         .modal-overlay.open{opacity:1;pointer-events:all}
-        .modal{
-            background:var(--bg2);border:1px solid var(--border);
-            border-radius:var(--radius);width:100%;max-width:480px;
-            max-height:90vh;overflow-y:auto;
-            transform:translateY(30px) scale(.95);transition:transform .3s;
-        }
+        .modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;transform:translateY(30px) scale(.95);transition:transform .3s}
         .modal-overlay.open .modal{transform:translateY(0) scale(1)}
-        .modal-header{
-            display:flex;align-items:center;justify-content:space-between;
-            padding:.9rem 1.2rem;border-bottom:1px solid var(--border);
-            position:sticky;top:0;background:var(--bg2);z-index:2;
-        }
+        .modal-header{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:2}
         .modal-header h3{font-size:1rem;font-weight:600}
-        .btn-close-modal{
-            background:none;border:none;color:var(--text2);cursor:pointer;
-            padding:.3rem;border-radius:var(--radius-sm);transition:all .2s;
-        }
+        .btn-close-modal{background:none;border:none;color:var(--text2);cursor:pointer;padding:.3rem;border-radius:var(--radius-sm);transition:all .2s}
         .btn-close-modal:hover{color:var(--text);background:rgba(255,255,255,.06)}
         .btn-close-modal svg{width:20px;height:20px}
         .modal-body{padding:1.2rem}
         .form-group{margin-bottom:1.1rem}
         .form-group label{display:block;font-size:.82rem;color:var(--text2);margin-bottom:.4rem;font-weight:500}
-        .form-group input,.form-group textarea,.form-group select{
-            width:100%;padding:.7rem 1rem;background:var(--bg);
-            border:1px solid var(--border);border-radius:var(--radius-sm);
-            color:var(--text);font-size:.9rem;font-family:var(--font-ar);transition:border-color .2s;
-        }
+        .form-group input,.form-group textarea,.form-group select{width:100%;padding:.7rem 1rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:.9rem;font-family:var(--font-ar);transition:border-color .2s}
         .form-group select{cursor:pointer}
         .form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--accent)}
         .form-group textarea{min-height:140px;resize:vertical;font-family:var(--mono);line-height:1.6}
@@ -437,39 +234,16 @@
         .form-hint{font-size:.7rem;color:var(--text3);margin-top:.3rem;line-height:1.6}
         .form-hint code{background:var(--bg3);color:var(--accent2);padding:.05rem .3rem;border-radius:3px;font-family:var(--mono);font-size:.68rem}
 
-        /* Language selector */
         .lang-selector{display:flex;gap:.5rem}
-        .lang-option{
-            flex:1;padding:.65rem;border:1px solid var(--border);
-            background:var(--bg);border-radius:var(--radius-sm);
-            color:var(--text2);font-family:var(--font-ar);font-size:.85rem;
-            cursor:pointer;transition:all .2s;text-align:center;
-            display:flex;align-items:center;justify-content:center;gap:.4rem;
-        }
+        .lang-option{flex:1;padding:.65rem;border:1px solid var(--border);background:var(--bg);border-radius:var(--radius-sm);color:var(--text2);font-family:var(--font-ar);font-size:.85rem;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:.4rem}
         .lang-option:hover{border-color:var(--border2)}
-        .lang-option.selected{
-            border-color:var(--accent);color:var(--accent);
-            background:var(--accent-glow);font-weight:600;
-        }
+        .lang-option.selected{border-color:var(--accent);color:var(--accent);background:var(--accent-glow);font-weight:600}
 
-        .btn-submit{
-            width:100%;padding:.8rem;border:none;border-radius:var(--radius-sm);
-            background:linear-gradient(135deg,var(--accent),#3b82f6);
-            color:#fff;font-size:.92rem;font-weight:600;font-family:var(--font-ar);
-            cursor:pointer;transition:all .2s;margin-top:.5rem;
-        }
+        .btn-submit{width:100%;padding:.8rem;border:none;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--accent),#3b82f6);color:#fff;font-size:.92rem;font-weight:600;font-family:var(--font-ar);cursor:pointer;transition:all .2s;margin-top:.5rem}
         .btn-submit:hover{box-shadow:0 4px 16px rgba(96,165,250,.3)}
         .btn-submit:active{transform:scale(.98)}
 
-        /* ===== TOAST ===== */
-        .toast{
-            position:fixed;bottom:2rem;left:50%;
-            transform:translateX(-50%) translateY(20px);
-            background:var(--bg3);border:1px solid var(--border);
-            color:var(--text);padding:.6rem 1.2rem;border-radius:22px;
-            font-size:.82rem;font-family:var(--font-ar);
-            box-shadow:var(--shadow);opacity:0;transition:all .3s;z-index:200;white-space:nowrap;
-        }
+        .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.6rem 1.2rem;border-radius:22px;font-size:.82rem;font-family:var(--font-ar);box-shadow:var(--shadow);opacity:0;transition:all .3s;z-index:200;white-space:nowrap}
         .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
         .toast.success{border-color:var(--green)}
 
@@ -492,7 +266,7 @@
 </head>
 <body>
 
-<!-- HOME SCREEN -->
+<!-- HOME -->
 <div class="screen active" id="homeScreen">
     <header class="home-header">
         <button class="btn-add-top" id="btnAddHome">
@@ -513,7 +287,7 @@
     </div>
 </div>
 
-<!-- BOOK SCREEN -->
+<!-- BOOK -->
 <div class="screen hidden" id="bookScreen">
     <div class="book-topbar" id="bookTopbar">
         <div class="book-topbar-left">
@@ -553,21 +327,21 @@
     <div class="book-body">
         <div class="page-viewport" id="pageViewport"></div>
         <div class="page-nav" id="pageNav">
-            <button class="btn-nav" id="btnPrev" title="السابقة">
+            <button class="btn-nav" id="btnPrev">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
             <div class="slider-wrap">
                 <input type="range" class="page-slider" id="pageSlider" min="1" max="1" value="1">
                 <span class="page-num-label" id="pageNum">0/0</span>
             </div>
-            <button class="btn-nav" id="btnNext" title="التالية">
+            <button class="btn-nav" id="btnNext">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
         </div>
     </div>
 </div>
 
-<!-- SETTINGS SCREEN -->
+<!-- SETTINGS -->
 <div class="screen hidden" id="settingsScreen">
     <header class="settings-header">
         <button class="btn-back" id="btnBackSettings">
@@ -577,46 +351,55 @@
         <span class="settings-title">⚙️ الإعدادات</span>
     </header>
     <div class="settings-body">
+        <!-- Arithmétique -->
         <div class="settings-section">
-            <h3>📤 تصدير البيانات</h3>
-            <p>احفظ نسخة احتياطية من جميع تدويناتك في ملف JSON.</p>
-            <button class="btn-settings btn-export" id="btnExport">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                تصدير إلى JSON
+            <div class="book-section-header">
+                <div class="book-section-icon arith">🔢</div>
+                <span class="book-section-name arith">Arithmétique</span>
+            </div>
+            <p>تصدير أو استيراد كتاب نظرية الأعداد كملف JSON مستقل.</p>
+            <button class="btn-settings btn-export" onclick="exportBook('arithmetique')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                تصدير Arithmétique
             </button>
+            <button class="btn-settings btn-import" onclick="document.getElementById('importArith').click()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                استيراد Arithmétique
+            </button>
+            <input type="file" id="importArith" class="import-file" accept=".json" onchange="importBook('arithmetique', this)">
         </div>
+
+        <!-- Inégalité -->
         <div class="settings-section">
-            <h3>📥 استيراد البيانات</h3>
-            <p>استعد تدويناتك من ملف JSON محفوظ مسبقاً.</p>
-            <button class="btn-settings btn-import" id="btnImport">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="17 8 12 3 7 8"/>
-                    <line x1="12" y1="3" x2="12" y2="15"/>
-                </svg>
-                استيراد من JSON
+            <div class="book-section-header">
+                <div class="book-section-icon ineg">⚖️</div>
+                <span class="book-section-name ineg">Inégalité</span>
+            </div>
+            <p>تصدير أو استيراد كتاب المتباينات كملف JSON مستقل.</p>
+            <button class="btn-settings btn-export" onclick="exportBook('inegalite')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                تصدير Inégalité
             </button>
-            <input type="file" id="importInput" accept=".json">
+            <button class="btn-settings btn-import" onclick="document.getElementById('importIneg').click()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                استيراد Inégalité
+            </button>
+            <input type="file" id="importIneg" class="import-file" accept=".json" onchange="importBook('inegalite', this)">
         </div>
+
+        <!-- Danger -->
         <div class="settings-section">
             <h3>🗑️ مسح البيانات</h3>
-            <p>احذف جميع التدوينات نهائياً. هذا الإجراء لا يمكن التراجع عنه.</p>
+            <p>احذف جميع التدوينات من جميع الكتب نهائياً.</p>
             <button class="btn-settings btn-danger" id="btnClearAll">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="3 6 5 6 21 6"/>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                 مسح جميع البيانات
             </button>
         </div>
     </div>
 </div>
 
-<!-- FOCUS MODE EXIT BUTTON -->
+<!-- FOCUS EXIT -->
 <button class="btn-focus-exit" id="btnFocusExit" title="الخروج من وضع التركيز">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -629,7 +412,7 @@
 <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
         <div class="modal-header">
-            <h3>📝 تدوينة جديدة</h3>
+            <h3 id="modalTitle">📝 تدوينة جديدة</h3>
             <button class="btn-close-modal" id="btnCloseModal">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
@@ -666,12 +449,7 @@
                         LaTeX: <code>$...$</code> سطري · <code>$$...$$</code> عرضي
                     </p>
                 </div>
-                <div class="form-group">
-                    <label>الوسوم</label>
-                    <input type="text" id="tagsInput" placeholder="جبر، متباينات، IMO">
-                    <p class="form-hint">افصل بين الوسوم بفاصلة</p>
-                </div>
-                <button type="submit" class="btn-submit">💾 حفظ التدوينة</button>
+                <button type="submit" class="btn-submit" id="btnSubmit">💾 حفظ التدوينة</button>
             </form>
         </div>
     </div>
@@ -681,7 +459,7 @@
 
 <script>
 // ===== DATA =====
-const STORAGE_KEY = 'om_notebook_v6';
+const STORAGE_KEY = 'om_notebook_v7';
 const BOOKS = {
     arithmetique: { name: 'Arithmétique', nameAr: 'نظرية الأعداد', color: 'arithmetique', icon: '🔢' },
     inegalite: { name: 'Inégalité', nameAr: 'المتباينات', color: 'inegalite', icon: '⚖️' },
@@ -700,6 +478,7 @@ let currentPage = 0;
 let searchQuery = '';
 let focusMode = false;
 let selectedLang = 'ar';
+let editingId = null; // null = new, string = editing existing
 
 // ===== TOAST =====
 function showToast(msg, type='') {
@@ -710,14 +489,13 @@ function showToast(msg, type='') {
     setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// ===== ESCAPE HTML =====
 function esc(text) {
     const d = document.createElement('div');
     d.textContent = text;
     return d.innerHTML;
 }
 
-// ===== MARKDOWN PARSER =====
+// ===== MARKDOWN =====
 function parseMarkdown(text) {
     const latexBlocks = [];
     text = text.replace(/\$\$([\s\S]*?)\$\$/g, (m) => { latexBlocks.push(m); return `\x00LATEX${latexBlocks.length - 1}\x00`; });
@@ -727,57 +505,41 @@ function parseMarkdown(text) {
 
     const lines = text.split('\n');
     let html = '';
-    let inList = false;
-    let inParagraph = false;
+    let inList = false, inParagraph = false;
 
     function closeList() { if (inList) { html += '</ul>'; inList = false; } }
     function closeParagraph() { if (inParagraph) { html += '</p>'; inParagraph = false; } }
 
     for (let i = 0; i < lines.length; i++) {
-        let line = lines[i];
-        let trimmed = line.trim();
+        let trimmed = lines[i].trim();
 
         if (/^[-]{3,}$/.test(trimmed) || /^[*]{3,}$/.test(trimmed) || /^[_]{3,}$/.test(trimmed)) {
-            closeList(); closeParagraph();
-            html += '<hr>';
-            continue;
+            closeList(); closeParagraph(); html += '<hr>'; continue;
         }
-
         let headerMatch = trimmed.match(/^(#{1,4})\s+(.+)/);
         if (headerMatch) {
             closeList(); closeParagraph();
-            let level = headerMatch[1].length;
-            html += `<h${level}>${inlineFormat(headerMatch[2])}</h${level}>`;
+            html += `<h${headerMatch[1].length}>${inlineFormat(headerMatch[2])}</h${headerMatch[1].length}>`;
             continue;
         }
-
         if (/^>\s*(.*)/.test(trimmed)) {
             closeList(); closeParagraph();
-            let content = trimmed.replace(/^>\s*/, '');
-            html += `<blockquote>${inlineFormat(content)}</blockquote>`;
+            html += `<blockquote>${inlineFormat(trimmed.replace(/^>\s*/, ''))}</blockquote>`;
             continue;
         }
-
         if (/^[-*+]\s+(.+)/.test(trimmed)) {
             closeParagraph();
             if (!inList) { html += '<ul>'; inList = true; }
             html += `<li>${inlineFormat(trimmed.replace(/^[-*+]\s+/, ''))}</li>`;
             continue;
         }
-
-        if (trimmed === '') {
-            closeList(); closeParagraph();
-            continue;
-        }
-
+        if (trimmed === '') { closeList(); closeParagraph(); continue; }
         closeList();
         if (!inParagraph) { html += '<p>'; inParagraph = true; }
         else { html += '<br>'; }
         html += inlineFormat(trimmed);
     }
-    closeList();
-    closeParagraph();
-
+    closeList(); closeParagraph();
     html = html.replace(/\x00LATEX(\d+)\x00/g, (m, idx) => latexBlocks[parseInt(idx)]);
     return html;
 }
@@ -789,23 +551,18 @@ function inlineFormat(text) {
     return text;
 }
 
-// ===== RENDER HOME =====
+// ===== HOME =====
 function renderHome() {
     const list = document.getElementById('booksList');
-    
     let favCount = 0;
     ['arithmetique', 'inegalite'].forEach(key => {
-        (data[key] || []).forEach(entry => {
-            if (entry.favorite) favCount++;
-        });
+        (data[key] || []).forEach(entry => { if (entry.favorite) favCount++; });
     });
-    
     const books = [
         { key: 'arithmetique', ...BOOKS.arithmetique, count: (data.arithmetique || []).length },
         { key: 'inegalite', ...BOOKS.inegalite, count: (data.inegalite || []).length },
         { key: 'favorites', ...BOOKS.favorites, count: favCount }
     ];
-    
     list.innerHTML = books.map(book => `
         <div class="book-item ${book.color}" onclick="openBook('${book.key}')">
             <div class="book-spine"></div>
@@ -816,23 +573,19 @@ function renderHome() {
                     <div class="book-count">📄 ${book.count} تدوينة</div>
                 </div>
                 <div class="book-arrow">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                 </div>
             </div>
         </div>
     `).join('');
 }
 
-// ===== SCREENS =====
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.classList.add('hidden'); });
     document.getElementById(id).classList.remove('hidden');
     document.getElementById(id).classList.add('active');
 }
 
-// ===== OPEN BOOK =====
 function openBook(key) {
     currentBook = key;
     currentPage = 0;
@@ -840,22 +593,17 @@ function openBook(key) {
     document.getElementById('searchInput').value = '';
     document.getElementById('searchBar').classList.remove('open');
     document.getElementById('btnSearchToggle').classList.remove('active');
-    
-    const book = BOOKS[key];
-    document.getElementById('bookTopTitle').textContent = book.icon + ' ' + book.name;
+    document.getElementById('bookTopTitle').textContent = BOOKS[key].icon + ' ' + BOOKS[key].name;
     showScreen('bookScreen');
     renderPage();
 }
 
-// ===== GET ENTRIES =====
 function getEntries() {
     if (currentBook === 'favorites') {
         let favs = [];
         ['arithmetique', 'inegalite'].forEach(key => {
             (data[key] || []).forEach(entry => {
-                if (entry.favorite) {
-                    favs.push({ ...entry, _sourceBook: key });
-                }
+                if (entry.favorite) favs.push({ ...entry, _sourceBook: key });
             });
         });
         return favs;
@@ -863,15 +611,18 @@ function getEntries() {
     return data[currentBook] || [];
 }
 
-// ===== RENDER PAGE =====
-function renderPage(direction) {
+function getFilteredEntries() {
     let entries = getEntries();
-    
     if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
         entries = entries.filter(e => e.title.toLowerCase().includes(q));
     }
-    
+    return entries;
+}
+
+// ===== RENDER PAGE =====
+function renderPage(direction) {
+    let entries = getFilteredEntries();
     const viewport = document.getElementById('pageViewport');
     const total = entries.length;
 
@@ -896,9 +647,6 @@ function renderPage(direction) {
     } else {
         const lang = entry.lang || 'ar';
         const dirClass = lang === 'ar' ? 'rtl' : 'ltr';
-        const tagsHtml = entry.tags.length
-            ? `<div class="page-tags">${entry.tags.map(t => `<span class="page-tag">${esc(t)}</span>`).join('')}</div>`
-            : '';
         const contentHtml = parseMarkdown(entry.content);
         const favClass = entry.favorite ? 'active' : '';
         const favLabel = entry.favorite ? '⭐ مفضلة' : '☆ إضافة للمفضلة';
@@ -909,13 +657,19 @@ function renderPage(direction) {
             <div class="page ${animClass}" id="currentPageEl">
                 <div class="page-title" style="direction:${titleDir};font-family:${titleFont}">${esc(entry.title)}</div>
                 <div class="page-content ${dirClass}">${contentHtml}</div>
-                ${tagsHtml}
                 <div class="page-actions">
                     <button class="btn-fav ${favClass}" onclick="toggleFavorite('${entry.id}')">
                         <svg viewBox="0 0 24 24" fill="${entry.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                         </svg>
                         ${favLabel}
+                    </button>
+                    <button class="btn-edit" onclick="editEntry('${entry.id}')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                        تعديل
                     </button>
                     <button class="btn-del-page" onclick="deletePage('${entry.id}')">🗑️ حذف</button>
                 </div>
@@ -931,6 +685,11 @@ function renderPage(direction) {
             throwOnError: false
         });
 
+        // Force LTR on all math elements
+        viewport.querySelectorAll('.katex, .katex-display, .katex-html').forEach(el => {
+            el.setAttribute('dir', 'ltr');
+        });
+
         if (direction) {
             requestAnimationFrame(() => {
                 const el = document.getElementById('currentPageEl');
@@ -942,11 +701,9 @@ function renderPage(direction) {
     const slider = document.getElementById('pageSlider');
     slider.max = Math.max(1, total);
     slider.value = total > 0 ? currentPage + 1 : 0;
-
     document.getElementById('pageNum').textContent = total > 0 ? `${currentPage + 1}/${total}` : '0/0';
     document.getElementById('btnPrev').disabled = currentPage <= 0;
     document.getElementById('btnNext').disabled = currentPage >= total - 1;
-
     updateSliderFill(slider);
 }
 
@@ -955,40 +712,62 @@ function updateSliderFill(slider) {
     slider.style.background = `linear-gradient(to right, var(--accent) 0%, var(--accent) ${val}%, var(--border) ${val}%, var(--border) 100%)`;
 }
 
-// ===== TOGGLE FAVORITE =====
+// ===== FAVORITE =====
 function toggleFavorite(id) {
-    let found = false;
     let newFavState = false;
     ['arithmetique', 'inegalite'].forEach(key => {
         (data[key] || []).forEach(entry => {
             if (entry.id === id) {
                 entry.favorite = !entry.favorite;
                 newFavState = entry.favorite;
-                found = true;
             }
         });
     });
-    if (found) {
-        saveData(data);
-        renderPage();
-        showToast(newFavState ? 'تمت الإضافة للمفضلة ⭐' : 'تمت الإزالة من المفضلة');
-    }
+    saveData(data);
+    renderPage();
+    showToast(newFavState ? 'تمت الإضافة للمفضلة ⭐' : 'تمت الإزالة من المفضلة');
 }
 
-// ===== NAV BUTTONS =====
+// ===== EDIT =====
+function editEntry(id) {
+    let entry = null;
+    let sourceBook = null;
+    ['arithmetique', 'inegalite'].forEach(key => {
+        (data[key] || []).forEach(e => {
+            if (e.id === id) { entry = e; sourceBook = key; }
+        });
+    });
+    if (!entry) return;
+
+    editingId = id;
+    document.getElementById('modalTitle').textContent = '✏️ تعديل التدوينة';
+    document.getElementById('btnSubmit').textContent = '💾 حفظ التعديلات';
+    document.getElementById('bookSelect').value = sourceBook;
+
+    // Set language
+    const lang = entry.lang || 'ar';
+    selectedLang = lang;
+    document.querySelectorAll('.lang-option').forEach(b => b.classList.remove('selected'));
+    document.querySelector(`.lang-option[data-lang="${lang}"]`).classList.add('selected');
+
+    document.getElementById('titleInput').value = entry.title;
+    document.getElementById('contentInput').value = entry.content;
+
+    // Apply direction
+    applyLangDirection(lang);
+
+    modalOverlay.classList.add('open');
+}
+
+// ===== NAV =====
 document.getElementById('btnPrev').addEventListener('click', () => {
     if (currentPage > 0) { currentPage--; renderPage('prev'); }
 });
 document.getElementById('btnNext').addEventListener('click', () => {
-    let entries = getEntries();
-    if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim();
-        entries = entries.filter(e => e.title.toLowerCase().includes(q));
-    }
+    const entries = getFilteredEntries();
     if (currentPage < entries.length - 1) { currentPage++; renderPage('next'); }
 });
 
-// ===== SLIDER =====
 document.getElementById('pageSlider').addEventListener('input', function() {
     const val = parseInt(this.value);
     const newPage = val - 1;
@@ -1013,11 +792,7 @@ document.getElementById('pageViewport').addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = e.changedTouches[0].clientY - touchStartY;
     if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx)) return;
-    let entries = getEntries();
-    if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim();
-        entries = entries.filter(e => e.title.toLowerCase().includes(q));
-    }
+    const entries = getFilteredEntries();
     if (dx > 0 && currentPage > 0) { currentPage--; renderPage('prev'); }
     if (dx < 0 && currentPage < entries.length - 1) { currentPage++; renderPage('next'); }
 });
@@ -1038,14 +813,8 @@ function deletePage(id) {
         data[key] = (data[key] || []).filter(e => e.id !== id);
     });
     saveData(data);
-    let entries = getEntries();
-    if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim();
-        entries = entries.filter(e => e.title.toLowerCase().includes(q));
-    }
-    if (currentPage >= entries.length) {
-        currentPage = Math.max(0, entries.length - 1);
-    }
+    const entries = getFilteredEntries();
+    if (currentPage >= entries.length) currentPage = Math.max(0, entries.length - 1);
     renderPage();
     showToast('تم حذف الصفحة');
 }
@@ -1064,7 +833,6 @@ document.getElementById('btnSearchToggle').addEventListener('click', function() 
         renderPage();
     }
 });
-
 document.getElementById('btnCloseSearch').addEventListener('click', () => {
     document.getElementById('searchBar').classList.remove('open');
     document.getElementById('btnSearchToggle').classList.remove('active');
@@ -1073,20 +841,18 @@ document.getElementById('btnCloseSearch').addEventListener('click', () => {
     currentPage = 0;
     renderPage();
 });
-
 document.getElementById('searchInput').addEventListener('input', function() {
     searchQuery = this.value;
     currentPage = 0;
     renderPage();
 });
 
-// ===== FOCUS MODE =====
+// ===== FOCUS =====
 document.getElementById('btnFocus').addEventListener('click', function() {
     focusMode = !focusMode;
     document.body.classList.toggle('focus-mode', focusMode);
     this.classList.toggle('focus-active', focusMode);
 });
-
 document.getElementById('btnFocusExit').addEventListener('click', () => {
     focusMode = false;
     document.body.classList.remove('focus-mode');
@@ -1094,48 +860,74 @@ document.getElementById('btnFocusExit').addEventListener('click', () => {
 });
 
 // ===== SETTINGS =====
-document.getElementById('btnSettings').addEventListener('click', () => {
-    showScreen('settingsScreen');
-});
-
+document.getElementById('btnSettings').addEventListener('click', () => showScreen('settingsScreen'));
 document.getElementById('btnBackSettings').addEventListener('click', () => {
     showScreen('homeScreen');
     renderHome();
 });
 
-// ===== EXPORT =====
-document.getElementById('btnExport').addEventListener('click', () => {
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+// ===== EXPORT SINGLE BOOK =====
+function exportBook(bookKey) {
+    const entries = data[bookKey] || [];
+    if (entries.length === 0) {
+        showToast('الكتاب فارغ، لا يوجد ما يُصدَّر');
+        return;
+    }
+    const exportData = {
+        book: bookKey,
+        name: BOOKS[bookKey].name,
+        exportedAt: new Date().toISOString(),
+        entries: entries
+    };
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `om-notebook-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `om-${bookKey}-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast('تم تصدير البيانات ✓', 'success');
-});
+    showToast(`تم تصدير ${BOOKS[bookKey].name} ✓`, 'success');
+}
 
-// ===== IMPORT =====
-document.getElementById('btnImport').addEventListener('click', () => {
-    document.getElementById('importInput').click();
-});
-
-document.getElementById('importInput').addEventListener('change', function(e) {
-    if (e.target.files.length === 0) return;
-    const file = e.target.files[0];
+// ===== IMPORT SINGLE BOOK =====
+function importBook(bookKey, input) {
+    if (input.files.length === 0) return;
+    const file = input.files[0];
     const reader = new FileReader();
     reader.onload = function(event) {
         try {
             const imported = JSON.parse(event.target.result);
-            if (!imported.arithmetique || !imported.inegalite) {
+            let entries = [];
+
+            // Support both formats: { book, entries } or just an array
+            if (Array.isArray(imported)) {
+                entries = imported;
+            } else if (imported.entries && Array.isArray(imported.entries)) {
+                entries = imported.entries;
+            } else {
                 throw new Error('Invalid format');
             }
-            if (confirm('هل تريد استبدال البيانات الحالية؟')) {
-                data = imported;
+
+            if (entries.length === 0) {
+                showToast('الملف لا يحتوي على تدوينات');
+                return;
+            }
+
+            const action = confirm(`استيراد ${entries.length} تدوينة إلى ${BOOKS[bookKey].name}؟\n\n"موافق" = دمج مع التدوينات الموجودة\n"إلغاء" = استبدال جميع التدوينات`);
+
+            if (action) {
+                // Merge - avoid duplicates by id
+                const existingIds = new Set((data[bookKey] || []).map(e => e.id));
+                const newEntries = entries.filter(e => !existingIds.has(e.id));
+                data[bookKey] = [...(data[bookKey] || []), ...newEntries];
                 saveData(data);
-                showToast('تم استيراد البيانات ✓', 'success');
+                showToast(`تم دمج ${newEntries.length} تدوينة جديدة ✓`, 'success');
+            } else {
+                data[bookKey] = entries;
+                saveData(data);
+                showToast(`تم استبدال全部内容 بـ ${entries.length} تدوينة ✓`, 'success');
             }
         } catch (err) {
             showToast('خطأ في قراءة الملف');
@@ -1143,12 +935,12 @@ document.getElementById('importInput').addEventListener('change', function(e) {
         }
     };
     reader.readAsText(file);
-    this.value = '';
-});
+    input.value = '';
+}
 
 // ===== CLEAR ALL =====
 document.getElementById('btnClearAll').addEventListener('click', () => {
-    if (confirm('هل أنت متأكد من حذف جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه!')) {
+    if (confirm('هل أنت متأكد من حذف جميع البيانات؟')) {
         if (confirm('تأكيد نهائي: سيتم حذف كل شيء!')) {
             data = { arithmetique: [], inegalite: [] };
             saveData(data);
@@ -1157,66 +949,66 @@ document.getElementById('btnClearAll').addEventListener('click', () => {
     }
 });
 
-// ===== LANGUAGE SELECTOR =====
+// ===== LANGUAGE =====
+function applyLangDirection(lang) {
+    const titleInput = document.getElementById('titleInput');
+    const contentInput = document.getElementById('contentInput');
+
+    if (lang === 'ar') {
+        titleInput.dir = 'rtl';
+        titleInput.style.fontFamily = 'var(--font-ar)';
+        titleInput.placeholder = 'مثال: متباينة كوشي-شفارتز';
+        contentInput.dir = 'ltr'; // Content is always LTR for code/math compatibility
+        contentInput.style.fontFamily = 'var(--mono)';
+        contentInput.placeholder = 'اكتب المسألة أو التقنية هنا...';
+    } else {
+        titleInput.dir = 'ltr';
+        titleInput.style.fontFamily = 'var(--font-en)';
+        titleInput.placeholder = 'e.g. Cauchy-Schwarz Inequality';
+        contentInput.dir = 'ltr';
+        contentInput.style.fontFamily = 'var(--mono)';
+        contentInput.placeholder = 'Write the problem or technique here...';
+    }
+}
+
 document.querySelectorAll('.lang-option').forEach(btn => {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.lang-option').forEach(b => b.classList.remove('selected'));
         this.classList.add('selected');
         selectedLang = this.dataset.lang;
-        
-        // Update placeholders and textarea direction
-        const titleInput = document.getElementById('titleInput');
-        const contentInput = document.getElementById('contentInput');
-        const tagsInput = document.getElementById('tagsInput');
-        
-        if (selectedLang === 'ar') {
-            titleInput.dir = 'rtl';
-            titleInput.style.fontFamily = 'var(--font-ar)';
-            titleInput.placeholder = 'مثال: متباينة كوشي-شفارتز';
-            contentInput.dir = 'rtl';
-            contentInput.style.fontFamily = 'var(--mono)';
-            contentInput.placeholder = 'اكتب المسألة أو التقنية هنا...';
-            tagsInput.dir = 'rtl';
-            tagsInput.style.fontFamily = 'var(--font-ar)';
-            tagsInput.placeholder = 'جبر، متباينات، IMO';
-        } else {
-            titleInput.dir = 'ltr';
-            titleInput.style.fontFamily = 'var(--font-en)';
-            titleInput.placeholder = 'e.g. Cauchy-Schwarz Inequality';
-            contentInput.dir = 'ltr';
-            contentInput.style.fontFamily = 'var(--mono)';
-            contentInput.placeholder = 'Write the problem or technique here...\n\n#### Subtitle\n**Bold** and *italic*';
-            tagsInput.dir = 'ltr';
-            tagsInput.style.fontFamily = 'var(--font-en)';
-            tagsInput.placeholder = 'algebra, inequalities, IMO';
-        }
+        applyLangDirection(selectedLang);
     });
 });
 
 // ===== MODAL =====
 const modalOverlay = document.getElementById('modalOverlay');
 function openModal(bookKey) {
+    editingId = null;
+    document.getElementById('modalTitle').textContent = '📝 تدوينة جديدة';
+    document.getElementById('btnSubmit').textContent = '💾 حفظ التدوينة';
+
     if (bookKey && bookKey !== 'favorites') {
         document.getElementById('bookSelect').value = bookKey;
     } else if (currentBook && currentBook !== 'favorites') {
         document.getElementById('bookSelect').value = currentBook;
     }
-    // Reset language to Arabic by default
+
     selectedLang = 'ar';
     document.querySelectorAll('.lang-option').forEach(b => b.classList.remove('selected'));
     document.querySelector('.lang-option[data-lang="ar"]').classList.add('selected');
-    document.getElementById('titleInput').dir = 'rtl';
-    document.getElementById('titleInput').style.fontFamily = 'var(--font-ar)';
-    document.getElementById('contentInput').dir = 'rtl';
-    document.getElementById('tagsInput').dir = 'rtl';
-    document.getElementById('tagsInput').style.fontFamily = 'var(--font-ar)';
-    
+    applyLangDirection('ar');
+
+    document.getElementById('entryForm').reset();
+    // Re-apply after reset
+    applyLangDirection('ar');
+
     modalOverlay.classList.add('open');
     setTimeout(() => document.getElementById('titleInput').focus(), 300);
 }
 function closeModal() {
     modalOverlay.classList.remove('open');
     document.getElementById('entryForm').reset();
+    editingId = null;
 }
 
 document.getElementById('btnAddHome').addEventListener('click', () => openModal());
@@ -1230,34 +1022,60 @@ document.getElementById('entryForm').addEventListener('submit', function(e) {
     const bookKey = document.getElementById('bookSelect').value;
     const title = document.getElementById('titleInput').value.trim();
     const content = document.getElementById('contentInput').value.trim();
-    const tagsStr = document.getElementById('tagsInput').value;
 
     if (!title || !content) {
         showToast('يرجى ملء العنوان والمحتوى');
         return;
     }
 
-    const tags = tagsStr.split(',').map(t => t.trim()).filter(t => t);
-    const entry = {
-        id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
-        title, content, tags,
-        lang: selectedLang,
-        favorite: false,
-        createdAt: new Date().toISOString()
-    };
+    if (editingId) {
+        // UPDATE existing entry
+        let found = false;
+        ['arithmetique', 'inegalite'].forEach(key => {
+            (data[key] || []).forEach(entry => {
+                if (entry.id === editingId) {
+                    entry.title = title;
+                    entry.content = content;
+                    entry.lang = selectedLang;
+                    // If book changed, move entry
+                    if (key !== bookKey) {
+                        data[key] = data[key].filter(e => e.id !== editingId);
+                        if (!data[bookKey]) data[bookKey] = [];
+                        data[bookKey].push(entry);
+                    }
+                    found = true;
+                }
+            });
+        });
+        if (found) {
+            saveData(data);
+            closeModal();
+            showToast('تم تحديث التدوينة ✓', 'success');
+            renderPage();
+            renderHome();
+        }
+    } else {
+        // CREATE new entry
+        const entry = {
+            id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+            title, content,
+            lang: selectedLang,
+            favorite: false,
+            createdAt: new Date().toISOString()
+        };
+        if (!data[bookKey]) data[bookKey] = [];
+        data[bookKey].push(entry);
+        saveData(data);
 
-    if (!data[bookKey]) data[bookKey] = [];
-    data[bookKey].push(entry);
-    saveData(data);
+        closeModal();
+        showToast('تم حفظ التدوينة ✓', 'success');
 
-    closeModal();
-    showToast('تم حفظ التدوينة ✓', 'success');
-
-    if (currentBook === bookKey) {
-        currentPage = data[bookKey].length - 1;
-        renderPage('next');
+        if (currentBook === bookKey) {
+            currentPage = data[bookKey].length - 1;
+            renderPage('next');
+        }
+        renderHome();
     }
-    renderHome();
 });
 
 // ===== INIT =====
