@@ -2,810 +2,1089 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدير الدروس والمسائل | LaTeX</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' rx='15' fill='%237c9cc7'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>📐</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <script>
-        MathJax = {
-            tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']], processEscapes: true },
-            options: { ignoreHtmlClass: 'tex2jax_ignore', processHtmlClass: 'tex2jax_process' }
-        };
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OM — Olympiad Mathematics</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-sans-arabic@latest/arabic-400-normal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-sans-arabic@latest/arabic-600-normal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-sans-arabic@latest/arabic-700-normal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@latest/latin-400-normal.css">
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #fef9f0 0%, #fdf3e0 100%);
-            color: #2c3e50;
-            min-height: 100vh;
-            display: flex;
-            line-height: 1.6;
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        :root{
+            --bg:#0a0e14;--bg2:#111820;--bg3:#1a2230;--bg4:#222d3d;
+            --border:#2a3545;--border2:#3a4a5e;
+            --text:#e2e8f0;--text2:#8899aa;--text3:#5a6a7a;
+            --accent:#60a5fa;--accent2:#93c5fd;--accent-glow:rgba(96,165,250,.12);
+            --red:#ef4444;--red-light:#f87171;--red-bg:rgba(239,68,68,.08);
+            --blue:#3b82f6;--blue-light:#60a5fa;--blue-bg:rgba(59,130,246,.08);
+            --gold:#fbbf24;--gold-light:#fde68a;--gold-bg:rgba(251,191,36,.1);
+            --green:#4ade80;
+            --radius:14px;--radius-sm:8px;
+            --shadow:0 8px 32px rgba(0,0,0,.4);
+            --font:'IBM Plex Sans Arabic',sans-serif;
+            --mono:'IBM Plex Mono',monospace;
         }
-        .menu-toggle {
-            position: fixed; top:12px; right:12px; z-index:600;
-            background: #ffffff; border:1px solid #e0d3c0; border-radius:12px;
-            padding:10px 16px; font-size:1.2rem; cursor:pointer;
-            box-shadow:0 4px 12px rgba(0,0,0,0.04); color:#4a3f35;
-            display:flex; align-items:center; gap:6px; font-weight:600;
-            background: #fffaee;
-        }
-        .menu-toggle:hover { background:#f8f6f1; }
+        html,body{height:100%;overflow:hidden}
+        body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7}
 
-        .sidebar {
-            position:fixed; top:0; right:-320px; width:300px; height:100%;
-            background:#fffbf5; border-left:1px solid #e6dfd3;
-            z-index:500; transition:right 0.35s cubic-bezier(0.4,0,0.2,1);
-            box-shadow: -4px 0 20px rgba(0,0,0,0.04);
-            display:flex; flex-direction:column; padding:20px 16px; overflow-y:auto;
-        }
-        .sidebar.open { right:0; }
-        .sidebar-overlay {
-            display:none; position:fixed; top:0; left:0; right:0; bottom:0;
-            background:rgba(0,0,0,0.18); z-index:450; backdrop-filter: blur(2px);
-        }
-        .sidebar-overlay.show { display:block; }
-        .sidebar h2 {
-            font-family:'Amiri',serif; font-size:1.7rem; color:#5c554a;
-            text-align:center; margin:40px 0 16px; border-bottom:1px solid #e0d8cc; padding-bottom:12px;
-        }
-        .add-group-row { display:flex; gap:8px; margin:12px 0; }
-        .add-group-row input {
-            flex:1; padding:12px; border:1px solid #ddd7c9; border-radius:10px;
-            font-family:'Cairo',sans-serif; font-size:0.95rem; background:#ffffff;
-            box-shadow:0 2px 6px rgba(0,0,0,0.02);
-        }
-        .icon-btn {
-            background:#ffffff; border:1px solid #ddd7c9; border-radius:10px;
-            padding:10px 16px; cursor:pointer; font-size:1.3rem; color:#4a3f35;
-            display:flex; align-items:center; justify-content:center;
-            box-shadow:0 2px 6px rgba(0,0,0,0.02);
-        }
-        .icon-btn:hover { background:#f2efe8; }
+        .screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .4s,transform .4s;z-index:1}
+        .screen.hidden{opacity:0;pointer-events:none;transform:scale(.96)}
+        .screen.active{opacity:1;pointer-events:all;transform:scale(1)}
 
-        .group-list { list-style:none; flex:1; overflow-y:auto; margin:8px 0; }
+        /* ===== HOME SCREEN ===== */
+        .home-header{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:.7rem 1rem;background:var(--bg2);
+            border-bottom:1px solid var(--border);flex-shrink:0;gap:.5rem;
+        }
+        .btn-add-top{
+            display:flex;align-items:center;gap:.35rem;
+            background:linear-gradient(135deg,var(--accent),#3b82f6);
+            color:#fff;border:none;padding:.5rem .9rem;
+            border-radius:20px;font-family:var(--font);font-size:.82rem;
+            font-weight:600;cursor:pointer;transition:all .2s;
+            box-shadow:0 2px 10px rgba(96,165,250,.3);white-space:nowrap;
+        }
+        .btn-add-top:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(96,165,250,.4)}
+        .btn-add-top:active{transform:translateY(0)}
+        .btn-add-top svg{width:15px;height:15px}
 
-        .group-folder { margin-bottom:10px; }
-        .folder-header {
-            display:flex; align-items:center; gap:8px; padding:12px 14px;
-            background:#ffffff; border:1px solid #e8e2d4; border-radius:10px;
-            cursor:pointer; font-weight:600; transition:0.2s;
-            justify-content:space-between; box-shadow:0 2px 8px rgba(0,0,0,0.03);
-            background: #fefaf2;
+        .logo{
+            font-size:1.7rem;font-weight:700;letter-spacing:1px;
+            background:linear-gradient(135deg,var(--accent),var(--gold));
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+            background-clip:text;
         }
-        .folder-header:hover { background:#faf7f0; }
-        .folder-header .arrow {
-            font-size:0.8rem; transition:transform 0.3s ease;
-        }
-        .folder-header.expanded .arrow { transform:rotate(90deg); }
 
-        .group-content {
-            max-height:0; overflow:hidden;
-            transition:max-height 0.4s ease;
+        .btn-icon{
+            background:none;border:none;color:var(--text2);
+            width:40px;height:40px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;transition:all .2s;flex-shrink:0;
         }
-        .group-content.open { max-height:800px; }
+        .btn-icon:hover{background:rgba(255,255,255,.06);color:var(--text)}
+        .btn-icon svg{width:20px;height:20px}
 
-        .section-header {
-            display:flex; align-items:center; gap:6px;
-            padding:10px 14px; margin:6px 0 0 0;
-            background:#f5f0e8; border-radius:8px;
-            cursor:pointer; font-weight:600; font-size:0.9rem;
-            color:#4a3f35; transition:0.2s;
-        }
-        .section-header:hover { background:#eae3d5; }
-        .section-header .arrow {
-            font-size:0.7rem; transition:transform 0.3s ease;
-        }
-        .section-header.expanded .arrow { transform:rotate(90deg); }
+        .home-body{flex:1;overflow-y:auto;padding:1.5rem 1rem 2rem}
+        .books-list{display:flex;flex-direction:column;gap:.7rem;max-width:500px;margin:0 auto}
 
-        .section-content {
-            max-height:0; overflow:hidden;
-            transition:max-height 0.4s ease;
+        .book-item{
+            display:flex;align-items:center;gap:1rem;
+            background:var(--bg2);border:1px solid var(--border);
+            border-radius:var(--radius);padding:1rem 1.2rem;
+            cursor:pointer;transition:all .2s;position:relative;overflow:hidden;
         }
-        .section-content.open { max-height:500px; }
+        .book-item:hover{border-color:var(--border2);transform:translateX(-4px)}
+        .book-item:active{transform:scale(.98)}
+        .book-item::before{
+            content:'';position:absolute;right:0;top:0;bottom:0;width:4px;
+        }
+        .book-item.arithmetique::before{background:var(--red)}
+        .book-item.arithmetique{background:linear-gradient(135deg,var(--bg2),var(--red-bg))}
+        .book-item.inegalite::before{background:var(--blue)}
+        .book-item.inegalite{background:linear-gradient(135deg,var(--bg2),var(--blue-bg))}
+        .book-item.favorites::before{background:var(--gold)}
+        .book-item.favorites{background:linear-gradient(135deg,var(--bg2),var(--gold-bg))}
 
-        .subitem {
-            padding:8px 12px; background:#fdfbf7; border:1px solid #ece5d7;
-            border-radius:6px; margin:4px 0 4px 16px; font-size:0.85rem; cursor:pointer;
-            color:#4a3f35; transition:0.2s;
-        }
-        .subitem:hover { background:#eef3fa; border-color:#b6c8dd; }
+        .book-icon{font-size:2rem;flex-shrink:0}
+        .book-info{flex:1;min-width:0}
+        .book-name{font-size:1.05rem;font-weight:600;margin-bottom:.15rem}
+        .book-item.arithmetique .book-name{color:var(--red-light)}
+        .book-item.inegalite .book-name{color:var(--blue-light)}
+        .book-item.favorites .book-name{color:var(--gold-light)}
+        .book-count{font-size:.78rem;color:var(--text2)}
+        .book-arrow{color:var(--text3);flex-shrink:0}
+        .book-arrow svg{width:18px;height:18px}
 
-        .main { flex:1; padding:20px; max-width:820px; margin:0 auto; }
-        .card { 
-            background:#ffffff; border:1px solid #e8e2d6; border-radius:16px; 
-            padding:30px 24px; box-shadow:0 8px 24px rgba(0,0,0,0.04); margin-bottom:24px; 
-            background: #fffbf5;
+        /* ===== BOOK SCREEN ===== */
+        .book-topbar{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:.5rem .8rem;background:var(--bg2);
+            border-bottom:1px solid var(--border);flex-shrink:0;
+            min-height:48px;gap:.3rem;
         }
-        .home-stats { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin:40px 0; }
-        .stat-box { 
-            background:#f9f6ef; border-radius:16px; padding:28px 24px; text-align:center; min-width:140px; border:1px solid #e3dacc; 
-            background: #fef7ec;
+        .book-topbar-left{display:flex;align-items:center;gap:.2rem;flex-shrink:0}
+        .book-topbar-center{flex:1;text-align:center;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 .3rem}
+        .book-topbar-right{display:flex;align-items:center;gap:.1rem;flex-shrink:0}
+        .btn-back{
+            background:none;border:none;color:var(--text);cursor:pointer;
+            display:flex;align-items:center;gap:.2rem;font-family:var(--font);
+            font-size:.8rem;padding:.35rem .5rem;border-radius:var(--radius-sm);
+            transition:background .2s;
         }
-        .stat-box .number { font-size:2.4rem; font-weight:700; color:#6a8eb8; }
-        .stat-box .label { font-size:1.1rem; color:#6b6055; margin-top:4px; font-weight:500; }
-        .field { margin-bottom:22px; }
-        .field label { 
-            font-family:'Amiri',serif; font-size:1.5rem; color:#635b4e; 
-            border-bottom:1px solid #dfd7c8; display:block; margin-bottom:10px; padding-bottom:6px; 
-        }
-        .field textarea, .field input[type="text"] { 
-            width:100%; padding:14px; font-family:'Courier New',monospace; font-size:1rem; 
-            background:#fdfcf9; border:1px solid #ddd6c7; border-radius:10px; 
-            resize:vertical; line-height:1.7; color:#2c3e50; 
-        }
-        .field input[type="text"] { font-family:'Cairo',sans-serif; }
-        .preview-box { 
-            background:#fbf9f4; border:1px solid #e5ddce; border-radius:10px; 
-            padding:16px; min-height:60px; font-size:1.1rem; color:#2c3e50; 
-            margin-top:10px; overflow-x:auto; 
-        }
-        .preview-box h1, .preview-box h2, .preview-box h3 { 
-            color:#4a3f35; margin: 16px 0 8px; line-height: 1.3;
-            font-family: 'Amiri', serif;
-        }
-        .preview-box h1 { font-size: 2rem; border-bottom: 2px solid #ddd8cc; }
-        .preview-box h2 { font-size: 1.6rem; }
-        .preview-box h3 { font-size: 1.3rem; }
-        .preview-box p { margin: 8px 0; }
-        .preview-box ul, .preview-box ol { margin: 8px 0; padding-right: 20px; }
-        .preview-box li { margin: 4px 0; }
+        .btn-back:hover{background:rgba(255,255,255,.06)}
+        .btn-back svg{width:18px;height:18px}
+        .book-topbar-title{font-size:.9rem;font-weight:600}
 
-        .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:20px; }
-        .btn { 
-            padding:12px 20px; border:1px solid #d4cbba; border-radius:10px; cursor:pointer; 
-            font-family:'Cairo',sans-serif; font-size:0.95rem; font-weight:600; 
-            background:#f8f5ef; color:#4a3f35; transition:0.2s; 
-            display:inline-flex; align-items:center; gap:8px; box-shadow:0 2px 6px rgba(0,0,0,0.03); 
+        .btn-tool{
+            background:none;border:none;color:var(--text2);
+            width:34px;height:34px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;transition:all .2s;
         }
-        .btn:hover { background:#ece4d6; }
-        .btn.primary { background:#8daecf; color:white; border-color:#6b8aaf; }
-        .btn.primary:hover { background:#7b9cc0; }
-        .btn.danger { background:#d4837a; color:white; border-color:#b1625f; }
-        .btn.danger:hover { background:#c06e64; }
+        .btn-tool:hover{background:rgba(255,255,255,.06);color:var(--text)}
+        .btn-tool.active{color:var(--accent);background:var(--accent-glow)}
+        .btn-tool svg{width:17px;height:17px}
+        .btn-tool.focus-active{color:var(--gold);background:var(--gold-bg)}
 
-        .group-item-card {
-            padding:14px 18px;
-            background:#fcfaf5;
-            border:1px solid #e7dfd0;
-            border-radius:10px;
-            margin-bottom:10px;
+        /* Search Bar */
+        .search-bar{
+            display:flex;align-items:center;gap:.5rem;
+            padding:0 1rem;background:var(--bg3);
+            border-bottom:1px solid var(--border);flex-shrink:0;
+            max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;
+        }
+        .search-bar.open{max-height:60px;padding:.5rem 1rem}
+        .search-bar input{
+            flex:1;background:var(--bg);border:1px solid var(--border);
+            border-radius:20px;padding:.4rem 1rem;color:var(--text);
+            font-family:var(--font);font-size:.85rem;
+        }
+        .search-bar input:focus{outline:none;border-color:var(--accent)}
+        .search-bar input::placeholder{color:var(--text3)}
+        .btn-close-search{
+            background:none;border:none;color:var(--text2);
+            width:30px;height:30px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;transition:all .2s;
+        }
+        .btn-close-search:hover{background:rgba(255,255,255,.06);color:var(--text)}
+        .btn-close-search svg{width:15px;height:15px}
+
+        .book-body{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;background:var(--bg)}
+
+        .page-viewport{flex:1;position:relative;overflow:hidden}
+        .page{
+            position:absolute;inset:0;display:flex;flex-direction:column;
+            padding:1.2rem 1.2rem 0;overflow-y:auto;
+            background:var(--bg2);border-left:1px solid var(--border);border-right:1px solid var(--border);
+            transition:transform .5s cubic-bezier(.4,.0,.2,1),opacity .35s;
+            transform-origin:right center;
+        }
+        .page.flip-in-right{transform:rotateY(60deg);opacity:0}
+        .page.flip-in-left{transform:rotateY(-60deg);opacity:0}
+        .page.page-center{transform:rotateY(0);opacity:1}
+
+        .page-empty{
+            flex:1;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;
+            color:var(--text3);text-align:center;gap:.8rem;
+        }
+        .page-empty svg{width:56px;height:56px;opacity:.4}
+        .page-empty p{font-size:.9rem}
+
+        .page-title{font-size:1.1rem;font-weight:700;color:var(--accent2);margin-bottom:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+        .page-content{font-size:.88rem;line-height:1.9;color:var(--text);flex:1;word-wrap:break-word;overflow-wrap:break-word}
+        .page-content .katex{font-size:1em}
+
+        .page-content h1{font-size:1.3rem;font-weight:700;color:var(--accent2);margin:1rem 0 .5rem;padding-bottom:.3rem;border-bottom:1px solid var(--border)}
+        .page-content h2{font-size:1.15rem;font-weight:700;color:var(--accent2);margin:.9rem 0 .4rem}
+        .page-content h3{font-size:1.05rem;font-weight:600;color:var(--text);margin:.8rem 0 .3rem}
+        .page-content h4{font-size:.95rem;font-weight:600;color:var(--text);margin:.7rem 0 .3rem}
+        .page-content p{margin-bottom:.5rem}
+        .page-content strong{color:var(--gold-light);font-weight:600}
+        .page-content em{color:var(--accent2);font-style:italic}
+        .page-content hr{border:none;height:1px;background:var(--border);margin:1rem 0}
+        .page-content ul{margin:.5rem 0;padding-right:1.4rem}
+        .page-content li{margin-bottom:.25rem;color:var(--text)}
+        .page-content li::marker{color:var(--accent)}
+        .page-content code{background:var(--bg3);color:var(--accent2);padding:.1rem .4rem;border-radius:4px;font-family:var(--mono);font-size:.82rem}
+        .page-content blockquote{border-right:3px solid var(--accent);padding:.4rem .8rem;margin:.5rem 0;background:var(--accent-glow);border-radius:0 var(--radius-sm) var(--radius-sm) 0;color:var(--text2)}
+
+        .page-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.8rem;padding-top:.6rem;border-top:1px solid var(--border)}
+        .page-tag{background:var(--accent-glow);color:var(--accent);padding:.15rem .55rem;border-radius:4px;font-size:.72rem;font-weight:500}
+
+        .page-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:.6rem;padding-bottom:.8rem;flex-wrap:wrap}
+        .btn-fav{
+            background:none;border:1px solid var(--border);color:var(--text3);
+            padding:.3rem .7rem;border-radius:var(--radius-sm);font-size:.75rem;
+            font-family:var(--font);cursor:pointer;transition:all .2s;
+            display:flex;align-items:center;gap:.3rem;
+        }
+        .btn-fav:hover{border-color:var(--gold);color:var(--gold)}
+        .btn-fav.active{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
+        .btn-fav svg{width:14px;height:14px}
+        .btn-del-page{
+            background:none;border:1px solid var(--border);color:var(--text3);
+            padding:.3rem .7rem;border-radius:var(--radius-sm);font-size:.75rem;
+            font-family:var(--font);cursor:pointer;transition:all .2s;
+        }
+        .btn-del-page:hover{border-color:var(--red);color:var(--red)}
+
+        /* Page Nav */
+        .page-nav{
+            display:flex;align-items:center;gap:.5rem;
+            padding:.35rem .8rem;background:var(--bg2);
+            border-top:1px solid var(--border);flex-shrink:0;height:44px;
+        }
+        .btn-nav{
+            background:var(--bg3);border:1px solid var(--border);
+            color:var(--text);width:32px;height:32px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;transition:all .2s;flex-shrink:0;
+        }
+        .btn-nav:hover:not(:disabled){background:var(--bg4);border-color:var(--accent)}
+        .btn-nav:disabled{opacity:.2;cursor:default}
+        .btn-nav svg{width:14px;height:14px}
+
+        .slider-wrap{flex:1;display:flex;align-items:center;gap:.5rem;min-width:0}
+        .page-slider{
+            -webkit-appearance:none;appearance:none;
+            flex:1;height:4px;border-radius:2px;
+            background:var(--border);outline:none;cursor:pointer;
+            direction:ltr;
+        }
+        .page-slider::-webkit-slider-thumb{
+            -webkit-appearance:none;appearance:none;
+            width:16px;height:16px;border-radius:50%;
+            background:var(--accent);border:2px solid var(--bg2);
+            box-shadow:0 0 6px rgba(96,165,250,.4);
+            cursor:pointer;transition:transform .15s;
+        }
+        .page-slider::-webkit-slider-thumb:active{transform:scale(1.3)}
+        .page-slider::-moz-range-thumb{
+            width:16px;height:16px;border-radius:50%;
+            background:var(--accent);border:2px solid var(--bg2);
+            box-shadow:0 0 6px rgba(96,165,250,.4);
             cursor:pointer;
-            transition:0.2s ease;
-            font-size:1.1rem;
-            font-weight:600;
-            background: #fef7ec;
         }
-        .group-item-card:hover { background:#eef3fa; border-color:#b6c8dd; }
+        .page-num-label{font-size:.72rem;color:var(--text2);white-space:nowrap;min-width:36px;text-align:center;font-family:var(--mono)}
 
-        .btn-sm {
-            padding:6px 12px;
-            font-size:0.8rem;
+        /* Focus Mode */
+        body.focus-mode .book-topbar,
+        body.focus-mode .search-bar,
+        body.focus-mode .page-nav{
+            display:none !important;
         }
+        body.focus-mode .page{padding:1.5rem}
+        body.focus-mode .btn-focus-exit{display:flex !important}
 
-        .img-upload-area { 
-            display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:12px 0; 
-            background:#fdfcf9; border:1px dashed #ccc5b7; border-radius:10px; padding:12px; 
+        .btn-focus-exit{
+            display:none;position:fixed;top:1rem;left:1rem;z-index:100;
+            background:var(--bg3);border:1px solid var(--border);
+            color:var(--text);width:40px;height:40px;border-radius:50%;
+            align-items:center;justify-content:center;cursor:pointer;
+            transition:all .2s;box-shadow:var(--shadow);
         }
-        .img-upload-area .preview-img { width:80px; height:80px; object-fit:cover; border-radius:8px; border:1px solid #ddd; background:#fff; }
-        .img-upload-area .upload-btn { background:#f4f1ea; border:1px solid #c6b9a8; border-radius:8px; padding:8px 14px; cursor:pointer; font-size:0.9rem; font-weight:600; color:#4a3f35; }
-        .img-upload-area .remove-btn { background:transparent; border:1px solid #c6b9a8; color:#d4837a; padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:600; }
+        .btn-focus-exit:hover{background:var(--bg4);border-color:var(--accent)}
+        .btn-focus-exit svg{width:20px;height:20px}
 
-        .format-bar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
-        .format-btn { padding: 4px 10px; font-size: 0.85rem; }
-        .dir-btn { background: #dfd7c8; border:1px solid #c6b9a8; }
-        .dir-btn.active { background: #8daecf; color: white; }
-        .creator-signature { text-align:center; color:#8a8070; font-size:0.95rem; margin-top:20px; font-family:'Cairo',sans-serif; font-weight:500; }
-        @media (max-width:750px) { .main { padding:16px; } .sidebar { width:280px; right:-300px; } .card { padding:20px 16px; } }
+        /* ===== SETTINGS SCREEN ===== */
+        .settings-header{
+            display:flex;align-items:center;gap:.5rem;
+            padding:.7rem 1rem;background:var(--bg2);
+            border-bottom:1px solid var(--border);flex-shrink:0;
+        }
+        .settings-title{font-size:1.05rem;font-weight:600;flex:1}
+        .settings-body{flex:1;overflow-y:auto;padding:1.5rem 1rem}
+        .settings-section{
+            background:var(--bg2);border:1px solid var(--border);
+            border-radius:var(--radius);padding:1.2rem;margin-bottom:1rem;
+            max-width:500px;margin-left:auto;margin-right:auto;
+        }
+        .settings-section h3{font-size:1rem;font-weight:600;margin-bottom:.6rem;color:var(--accent2)}
+        .settings-section p{font-size:.82rem;color:var(--text2);margin-bottom:1rem;line-height:1.6}
+        .btn-settings{
+            width:100%;padding:.75rem;border:none;border-radius:var(--radius-sm);
+            font-family:var(--font);font-size:.88rem;font-weight:600;
+            cursor:pointer;transition:all .2s;display:flex;
+            align-items:center;justify-content:center;gap:.5rem;
+        }
+        .btn-settings svg{width:18px;height:18px}
+        .btn-export{background:linear-gradient(135deg,var(--accent),#3b82f6);color:#fff;margin-bottom:.6rem}
+        .btn-export:hover{box-shadow:0 4px 16px rgba(96,165,250,.3)}
+        .btn-import{background:var(--bg3);border:1px solid var(--border);color:var(--text)}
+        .btn-import:hover{border-color:var(--accent);color:var(--accent)}
+        .btn-danger{background:rgba(239,68,68,.1);border:1px solid var(--red);color:var(--red);margin-top:.6rem}
+        .btn-danger:hover{background:rgba(239,68,68,.2)}
+        #importInput{display:none}
+
+        /* ===== MODAL ===== */
+        .modal-overlay{
+            position:fixed;inset:0;background:rgba(0,0,0,.6);
+            backdrop-filter:blur(4px);z-index:100;
+            display:flex;align-items:center;justify-content:center;
+            padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s;
+        }
+        .modal-overlay.open{opacity:1;pointer-events:all}
+        .modal{
+            background:var(--bg2);border:1px solid var(--border);
+            border-radius:var(--radius);width:100%;max-width:480px;
+            max-height:90vh;overflow-y:auto;
+            transform:translateY(30px) scale(.95);transition:transform .3s;
+        }
+        .modal-overlay.open .modal{transform:translateY(0) scale(1)}
+        .modal-header{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:.9rem 1.2rem;border-bottom:1px solid var(--border);
+            position:sticky;top:0;background:var(--bg2);z-index:2;
+        }
+        .modal-header h3{font-size:1rem;font-weight:600}
+        .btn-close-modal{
+            background:none;border:none;color:var(--text2);cursor:pointer;
+            padding:.3rem;border-radius:var(--radius-sm);transition:all .2s;
+        }
+        .btn-close-modal:hover{color:var(--text);background:rgba(255,255,255,.06)}
+        .btn-close-modal svg{width:20px;height:20px}
+        .modal-body{padding:1.2rem}
+        .form-group{margin-bottom:1rem}
+        .form-group label{display:block;font-size:.8rem;color:var(--text2);margin-bottom:.35rem;font-weight:500}
+        .form-group input,.form-group textarea,.form-group select{
+            width:100%;padding:.65rem .9rem;background:var(--bg);
+            border:1px solid var(--border);border-radius:var(--radius-sm);
+            color:var(--text);font-size:.88rem;font-family:var(--font);transition:border-color .2s;
+        }
+        .form-group select{cursor:pointer}
+        .form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--accent)}
+        .form-group textarea{min-height:130px;resize:vertical;font-family:var(--mono);line-height:1.6}
+        .form-group input::placeholder,.form-group textarea::placeholder{color:var(--text3)}
+        .form-hint{font-size:.7rem;color:var(--text3);margin-top:.25rem;line-height:1.5}
+        .form-hint code{background:var(--bg3);color:var(--accent2);padding:.05rem .3rem;border-radius:3px;font-family:var(--mono);font-size:.68rem}
+        .btn-submit{
+            width:100%;padding:.75rem;border:none;border-radius:var(--radius-sm);
+            background:linear-gradient(135deg,var(--accent),#3b82f6);
+            color:#fff;font-size:.9rem;font-weight:600;font-family:var(--font);
+            cursor:pointer;transition:all .2s;margin-top:.5rem;
+        }
+        .btn-submit:hover{box-shadow:0 4px 16px rgba(96,165,250,.3)}
+        .btn-submit:active{transform:scale(.98)}
+
+        /* ===== TOAST ===== */
+        .toast{
+            position:fixed;bottom:2rem;left:50%;
+            transform:translateX(-50%) translateY(20px);
+            background:var(--bg3);border:1px solid var(--border);
+            color:var(--text);padding:.6rem 1.2rem;border-radius:20px;
+            font-size:.82rem;font-family:var(--font);
+            box-shadow:var(--shadow);opacity:0;transition:all .3s;z-index:200;white-space:nowrap;
+        }
+        .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+        .toast.success{border-color:var(--green)}
+
+        ::-webkit-scrollbar{width:4px}
+        ::-webkit-scrollbar-track{background:transparent}
+        ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+        @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        .book-item{animation:fadeUp .4s ease both}
+        .book-item:nth-child(2){animation-delay:.05s}
+        .book-item:nth-child(3){animation-delay:.1s}
+
+        @media(min-width:600px){
+            .books-list{max-width:600px}
+            .page-viewport{max-width:600px;margin:0 auto;width:100%}
+        }
     </style>
 </head>
 <body>
-    <button class="menu-toggle" id="menuToggle">☰ القائمة</button>
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <div class="sidebar" id="sidebar">
-        <h2>📁 المجموعات</h2>
-        <div class="add-group-row">
-            <input type="text" id="newGroupName" placeholder="اسم المجموعة الجديدة">
-            <button class="icon-btn" id="addGroupBtn">＋</button>
+<!-- HOME SCREEN -->
+<div class="screen active" id="homeScreen">
+    <header class="home-header">
+        <button class="btn-add-top" id="btnAddHome">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            إضافة تدوينة
+        </button>
+        <div class="logo">OM</div>
+        <button class="btn-icon" id="btnSettings" title="الإعدادات">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+        </button>
+    </header>
+    <div class="home-body">
+        <div class="books-list" id="booksList"></div>
+    </div>
+</div>
+
+<!-- BOOK SCREEN -->
+<div class="screen hidden" id="bookScreen">
+    <div class="book-topbar" id="bookTopbar">
+        <div class="book-topbar-left">
+            <button class="btn-add-top" id="btnAddBook" style="padding:.4rem .7rem;font-size:.78rem">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                إضافة
+            </button>
+            <button class="btn-back" id="btnBack">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                رجوع
+            </button>
         </div>
-        <ul class="group-list" id="groupList"></ul>
-        <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
-            <button class="btn" id="homeBtn">🏠 الرئيسية</button>
-            <button class="btn" id="settingsBtn">⚙️ الإعدادات</button>
+        <div class="book-topbar-center">
+            <span class="book-topbar-title" id="bookTopTitle"></span>
+        </div>
+        <div class="book-topbar-right">
+            <button class="btn-tool" id="btnSearchToggle" title="بحث">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+            </button>
+            <button class="btn-tool" id="btnFocus" title="وضع التركيز">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </svg>
+            </button>
         </div>
     </div>
+    <div class="search-bar" id="searchBar">
+        <input type="text" id="searchInput" placeholder="ابحث في التدوينات...">
+        <button class="btn-close-search" id="btnCloseSearch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+    <div class="book-body">
+        <div class="page-viewport" id="pageViewport"></div>
+        <div class="page-nav" id="pageNav">
+            <button class="btn-nav" id="btnPrev" title="السابقة">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="slider-wrap">
+                <input type="range" class="page-slider" id="pageSlider" min="1" max="1" value="1">
+                <span class="page-num-label" id="pageNum">0/0</span>
+            </div>
+            <button class="btn-nav" id="btnNext" title="التالية">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+        </div>
+    </div>
+</div>
 
-    <div class="main" id="mainContent"></div>
+<!-- SETTINGS SCREEN -->
+<div class="screen hidden" id="settingsScreen">
+    <header class="settings-header">
+        <button class="btn-back" id="btnBackSettings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            رجوع
+        </button>
+        <span class="settings-title">⚙️ الإعدادات</span>
+    </header>
+    <div class="settings-body">
+        <div class="settings-section">
+            <h3>📤 تصدير البيانات</h3>
+            <p>احفظ نسخة احتياطية من جميع تدويناتك في ملف JSON.</p>
+            <button class="btn-settings btn-export" id="btnExport">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                تصدير إلى JSON
+            </button>
+        </div>
+        <div class="settings-section">
+            <h3>📥 استيراد البيانات</h3>
+            <p>استعد تدويناتك من ملف JSON محفوظ مسبقاً.</p>
+            <button class="btn-settings btn-import" id="btnImport">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                استيراد من JSON
+            </button>
+            <input type="file" id="importInput" accept=".json">
+        </div>
+        <div class="settings-section">
+            <h3>🗑️ مسح البيانات</h3>
+            <p>احذف جميع التدوينات نهائياً. هذا الإجراء لا يمكن التراجع عنه.</p>
+            <button class="btn-settings btn-danger" id="btnClearAll">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                مسح جميع البيانات
+            </button>
+        </div>
+    </div>
+</div>
 
-    <script>
-        (function() {
-            let groups = [];
-            let activeGroupId = null;
-            let activeItemId = null;
-            let activeItemType = 'problem';
-            let view = 'home';
-            const STORAGE_KEY = 'math_lessons_groups_v1';
-            let clickTimer = null;
+<!-- FOCUS MODE EXIT BUTTON -->
+<button class="btn-focus-exit" id="btnFocusExit" title="الخروج من وضع التركيز">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+        <line x1="1" y1="1" x2="23" y2="23" stroke-width="2"/>
+    </svg>
+</button>
 
-            const menuToggle = document.getElementById('menuToggle');
-            const sidebar = document.getElementById('sidebar');
-            const sidebarOverlay = document.getElementById('sidebarOverlay');
-            const groupListEl = document.getElementById('groupList');
-            const mainContent = document.getElementById('mainContent');
-            const addGroupBtn = document.getElementById('addGroupBtn');
-            const newGroupNameInput = document.getElementById('newGroupName');
-            const homeBtn = document.getElementById('homeBtn');
-            const settingsBtn = document.getElementById('settingsBtn');
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>📝 تدوينة جديدة</h3>
+            <button class="btn-close-modal" id="btnCloseModal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="entryForm">
+                <div class="form-group">
+                    <label>الكتاب</label>
+                    <select id="bookSelect">
+                        <option value="arithmetique">🔢 Arithmétique</option>
+                        <option value="inegalite">⚖️ Inégalité</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>العنوان / المصدر</label>
+                    <input type="text" id="titleInput" placeholder="مثال: متباينة كوشي-شفارتز" required>
+                </div>
+                <div class="form-group">
+                    <label>المحتوى</label>
+                    <textarea id="contentInput" placeholder="اكتب المسألة أو التقنية هنا...&#10;&#10;#### عنوان فرعي&#10;**نص عريض** و *نص مائل*&#10;---&#10;- عنصر 1&#10;- عنصر 2&#10;&#10;صيغ LaTeX: $a^2+b^2=c^2$&#10;$$\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$$" required></textarea>
+                    <p class="form-hint">
+                        Markdown: <code>#</code> عنوان · <code>**عريض**</code> · <code>*مائل*</code> · <code>---</code> خط فاصل · <code>-</code> قائمة<br>
+                        LaTeX: <code>$...$</code> سطري · <code>$$...$$</code> عرضي
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label>الوسوم</label>
+                    <input type="text" id="tagsInput" placeholder="جبر، متباينات، IMO">
+                    <p class="form-hint">افصل بين الوسوم بفاصلة</p>
+                </div>
+                <button type="submit" class="btn-submit">💾 حفظ التدوينة</button>
+            </form>
+        </div>
+    </div>
+</div>
 
-            function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
+<div class="toast" id="toast"></div>
 
-            function makeProblems() {
-                const arr = [];
-                for (let i = 1; i <= 100; i++) {
-                    arr.push({
-                        id: generateId(),
-                        title: `Problème ${i}`,
-                        problem: '',
-                        solution: '',
-                        imageProblem: null,
-                        imageSolution: null
-                    });
+<script>
+// ===== DATA =====
+const STORAGE_KEY = 'om_notebook_v5';
+const BOOKS = {
+    arithmetique: { name: 'Arithmétique', nameAr: 'نظرية الأعداد', color: 'arithmetique', icon: '🔢' },
+    inegalite: { name: 'Inégalité', nameAr: 'المتباينات', color: 'inegalite', icon: '⚖️' },
+    favorites: { name: 'Favorites', nameAr: 'المفضلة', color: 'favorites', icon: '⭐' }
+};
+
+function loadData() {
+    try { const d = localStorage.getItem(STORAGE_KEY); if (d) return JSON.parse(d); } catch(e) {}
+    return { arithmetique: [], inegalite: [] };
+}
+function saveData(d) { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
+
+let data = loadData();
+let currentBook = null;
+let currentPage = 0;
+let searchQuery = '';
+let focusMode = false;
+
+// ===== TOAST =====
+function showToast(msg, type='') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + type;
+    requestAnimationFrame(() => t.classList.add('show'));
+    setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ===== ESCAPE HTML =====
+function esc(text) {
+    const d = document.createElement('div');
+    d.textContent = text;
+    return d.innerHTML;
+}
+
+// ===== MARKDOWN PARSER =====
+function parseMarkdown(text) {
+    const latexBlocks = [];
+    text = text.replace(/\$\$([\s\S]*?)\$\$/g, (m) => { latexBlocks.push(m); return `\x00LATEX${latexBlocks.length - 1}\x00`; });
+    text = text.replace(/\\\[([\s\S]*?)\\\]/g, (m) => { latexBlocks.push(m); return `\x00LATEX${latexBlocks.length - 1}\x00`; });
+    text = text.replace(/\$([^\$\n]+?)\$/g, (m) => { latexBlocks.push(m); return `\x00LATEX${latexBlocks.length - 1}\x00`; });
+    text = text.replace(/\\\(([\s\S]*?)\\\)/g, (m) => { latexBlocks.push(m); return `\x00LATEX${latexBlocks.length - 1}\x00`; });
+
+    const lines = text.split('\n');
+    let html = '';
+    let inList = false;
+    let inParagraph = false;
+
+    function closeList() { if (inList) { html += '</ul>'; inList = false; } }
+    function closeParagraph() { if (inParagraph) { html += '</p>'; inParagraph = false; } }
+
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i];
+        let trimmed = line.trim();
+
+        if (/^[-]{3,}$/.test(trimmed) || /^[*]{3,}$/.test(trimmed) || /^[_]{3,}$/.test(trimmed)) {
+            closeList(); closeParagraph();
+            html += '<hr>';
+            continue;
+        }
+
+        let headerMatch = trimmed.match(/^(#{1,4})\s+(.+)/);
+        if (headerMatch) {
+            closeList(); closeParagraph();
+            let level = headerMatch[1].length;
+            html += `<h${level}>${inlineFormat(headerMatch[2])}</h${level}>`;
+            continue;
+        }
+
+        if (/^>\s*(.*)/.test(trimmed)) {
+            closeList(); closeParagraph();
+            let content = trimmed.replace(/^>\s*/, '');
+            html += `<blockquote>${inlineFormat(content)}</blockquote>`;
+            continue;
+        }
+
+        if (/^[-*+]\s+(.+)/.test(trimmed)) {
+            closeParagraph();
+            if (!inList) { html += '<ul>'; inList = true; }
+            html += `<li>${inlineFormat(trimmed.replace(/^[-*+]\s+/, ''))}</li>`;
+            continue;
+        }
+
+        if (trimmed === '') {
+            closeList(); closeParagraph();
+            continue;
+        }
+
+        closeList();
+        if (!inParagraph) { html += '<p>'; inParagraph = true; }
+        else { html += '<br>'; }
+        html += inlineFormat(trimmed);
+    }
+    closeList();
+    closeParagraph();
+
+    html = html.replace(/\x00LATEX(\d+)\x00/g, (m, idx) => latexBlocks[parseInt(idx)]);
+    return html;
+}
+
+function inlineFormat(text) {
+    text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+    text = text.replace(/`(.+?)`/g, '<code>$1</code>');
+    return text;
+}
+
+// ===== RENDER HOME =====
+function renderHome() {
+    const list = document.getElementById('booksList');
+    
+    let favCount = 0;
+    ['arithmetique', 'inegalite'].forEach(key => {
+        (data[key] || []).forEach(entry => {
+            if (entry.favorite) favCount++;
+        });
+    });
+    
+    const books = [
+        { key: 'arithmetique', ...BOOKS.arithmetique, count: (data.arithmetique || []).length },
+        { key: 'inegalite', ...BOOKS.inegalite, count: (data.inegalite || []).length },
+        { key: 'favorites', ...BOOKS.favorites, count: favCount }
+    ];
+    
+    list.innerHTML = books.map(book => `
+        <div class="book-item ${book.color}" onclick="openBook('${book.key}')">
+            <span class="book-icon">${book.icon}</span>
+            <div class="book-info">
+                <div class="book-name">${book.name}</div>
+                <div class="book-count">${book.count} تدوينة</div>
+            </div>
+            <div class="book-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ===== SCREENS =====
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.classList.add('hidden'); });
+    document.getElementById(id).classList.remove('hidden');
+    document.getElementById(id).classList.add('active');
+}
+
+// ===== OPEN BOOK =====
+function openBook(key) {
+    currentBook = key;
+    currentPage = 0;
+    searchQuery = '';
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchBar').classList.remove('open');
+    document.getElementById('btnSearchToggle').classList.remove('active');
+    
+    const book = BOOKS[key];
+    document.getElementById('bookTopTitle').textContent = book.icon + ' ' + book.name;
+    showScreen('bookScreen');
+    renderPage();
+}
+
+// ===== GET ENTRIES FOR CURRENT BOOK =====
+function getEntries() {
+    if (currentBook === 'favorites') {
+        let favs = [];
+        ['arithmetique', 'inegalite'].forEach(key => {
+            (data[key] || []).forEach(entry => {
+                if (entry.favorite) {
+                    favs.push({ ...entry, _sourceBook: key });
                 }
-                return arr;
-            }
-
-            function loadData() {
-                try {
-                    const raw = localStorage.getItem(STORAGE_KEY);
-                    if (raw) groups = JSON.parse(raw);
-                } catch(e) { groups = []; }
-                if (!groups.length) {
-                    groups = [
-                        { id: generateId(), name: 'Inégalités', lessons: [], problems: makeProblems() },
-                        { id: generateId(), name: 'Géométrie', lessons: [], problems: makeProblems() },
-                        { id: generateId(), name: 'Théorie des nombres', lessons: [], problems: makeProblems() },
-                        { id: generateId(), name: 'Équations fonctionnelles', lessons: [], problems: makeProblems() }
-                    ];
-                    saveData();
-                }
-            }
-            function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(groups)); }
-
-            function openSidebar() { sidebar.classList.add('open'); sidebarOverlay.classList.add('show'); }
-            function closeSidebar() { sidebar.classList.remove('open'); sidebarOverlay.classList.remove('show'); }
-            menuToggle.addEventListener('click', () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
-            sidebarOverlay.addEventListener('click', closeSidebar);
-
-            function escapeHtml(t) { return String(t).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m]); }
-            function typeset(el) { if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(console.log); }
-
-            // معالجة Markdown كاملة (عناوين، تنسيقات، قوائم، خطوط)
-            function processMarkdown(text) {
-                if (!text) return '';
-                let lines = text.split('\n');
-                let inList = false;
-                let html = '';
-                for (let line of lines) {
-                    // كود مضمن
-                    line = line.replace(/`([^`]+)`/g, '<code>$1</code>');
-                    // عريض ومائل
-                    line = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-                    line = line.replace(/\*(.+?)\*/g, '<em>$1</em>');
-                    
-                    if (line.startsWith('### ')) {
-                        if (inList) { html += '</ul>'; inList = false; }
-                        html += `<h3>${line.substring(4)}</h3>`;
-                    } else if (line.startsWith('## ')) {
-                        if (inList) { html += '</ul>'; inList = false; }
-                        html += `<h2>${line.substring(3)}</h2>`;
-                    } else if (line.startsWith('# ')) {
-                        if (inList) { html += '</ul>'; inList = false; }
-                        html += `<h1>${line.substring(2)}</h1>`;
-                    } else if (line.startsWith('- ') || line.startsWith('* ')) {
-                        if (!inList) { html += '<ul>'; inList = true; }
-                        html += `<li>${line.substring(2)}</li>`;
-                    } else if (line.trim() === '---') {
-                        if (inList) { html += '</ul>'; inList = false; }
-                        html += '<hr>';
-                    } else {
-                        if (inList) { html += '</ul>'; inList = false; }
-                        html += line + '<br>';
-                    }
-                }
-                if (inList) html += '</ul>';
-                return html;
-            }
-
-            function updatePreviewFromTextarea(textarea, previewDiv) {
-                let rawText = textarea.value || ' ';
-                let html = processMarkdown(rawText);
-                previewDiv.innerHTML = html;
-                previewDiv.dir = textarea.dir || 'auto';
-                typeset(previewDiv);
-            }
-
-            // شريط التنسيق الجديد - فقط أزرار الاتجاه
-            function bindFormatBar(bar) {
-                const textarea = bar.parentElement.querySelector('textarea');
-                const previewDiv = bar.parentElement.querySelector('.preview-box');
-                bar.querySelectorAll('.dir-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const dir = btn.dataset.dir;
-                        if (textarea) {
-                            textarea.dir = dir;
-                            if (previewDiv) previewDiv.dir = dir;
-                            bar.querySelectorAll('.dir-btn').forEach(b => b.classList.remove('active'));
-                            btn.classList.add('active');
-                            textarea.dispatchEvent(new Event('input'));
-                        }
-                    });
-                });
-            }
-
-            function renderSidebar() {
-                groupListEl.innerHTML = '';
-                groups.forEach(g => {
-                    const li = document.createElement('li');
-                    li.className = 'group-folder';
-                    const header = document.createElement('div');
-                    header.className = 'folder-header';
-                    header.innerHTML = `<span>📁 ${escapeHtml(g.name)}</span><span class="arrow">▶</span>`;
-                    header.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        if (clickTimer) {
-                            clearTimeout(clickTimer);
-                            clickTimer = null;
-                            activeGroupId = g.id;
-                            activeItemId = null;
-                            view = 'group';
-                            closeSidebar();
-                            renderAll();
-                            return;
-                        }
-                        header.classList.toggle('expanded');
-                        li.querySelector('.group-content').classList.toggle('open');
-                        clickTimer = setTimeout(() => { clickTimer = null; }, 300);
-                    });
-                    li.appendChild(header);
-
-                    const groupContent = document.createElement('div');
-                    groupContent.className = 'group-content';
-
-                    if (g.lessons && g.lessons.length) {
-                        const lessonSectionHeader = document.createElement('div');
-                        lessonSectionHeader.className = 'section-header';
-                        lessonSectionHeader.innerHTML = `<span>📚 الدروس</span><span class="arrow">▶</span>`;
-                        lessonSectionHeader.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            lessonSectionHeader.classList.toggle('expanded');
-                            lessonSectionHeader.nextElementSibling.classList.toggle('open');
-                        });
-                        groupContent.appendChild(lessonSectionHeader);
-                        const lessonSectionContent = document.createElement('div');
-                        lessonSectionContent.className = 'section-content';
-                        g.lessons.forEach(item => {
-                            const sub = document.createElement('div');
-                            sub.className = 'subitem';
-                            sub.textContent = '📖 ' + item.title;
-                            sub.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                activeGroupId = g.id;
-                                activeItemId = item.id;
-                                activeItemType = 'lesson';
-                                view = 'item';
-                                closeSidebar();
-                                renderAll();
-                            });
-                            lessonSectionContent.appendChild(sub);
-                        });
-                        groupContent.appendChild(lessonSectionContent);
-                    }
-
-                    if (g.problems && g.problems.length) {
-                        const probSectionHeader = document.createElement('div');
-                        probSectionHeader.className = 'section-header';
-                        probSectionHeader.innerHTML = `<span>📝 المسائل</span><span class="arrow">▶</span>`;
-                        probSectionHeader.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            probSectionHeader.classList.toggle('expanded');
-                            probSectionHeader.nextElementSibling.classList.toggle('open');
-                        });
-                        groupContent.appendChild(probSectionHeader);
-                        const probSectionContent = document.createElement('div');
-                        probSectionContent.className = 'section-content';
-                        g.problems.forEach(item => {
-                            const sub = document.createElement('div');
-                            sub.className = 'subitem';
-                            sub.textContent = '📄 ' + item.title;
-                            sub.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                activeGroupId = g.id;
-                                activeItemId = item.id;
-                                activeItemType = 'problem';
-                                view = 'item';
-                                closeSidebar();
-                                renderAll();
-                            });
-                            probSectionContent.appendChild(sub);
-                        });
-                        groupContent.appendChild(probSectionContent);
-                    }
-
-                    li.appendChild(groupContent);
-                    groupListEl.appendChild(li);
-                });
-            }
-
-            function renderMain() {
-                if (view === 'home') {
-                    let totalLessons = 0, totalProblems = 0;
-                    groups.forEach(g => {
-                        totalLessons += (g.lessons || []).length;
-                        totalProblems += (g.problems || []).length;
-                    });
-                    mainContent.innerHTML = `
-                        <div class="card" style="text-align:center;">
-                            <h1 style="font-family:'Amiri',serif; color:#635b4e;">📐 مدير الدروس والمسائل</h1>
-                            <p style="color:#7b7265; margin:16px 0;">نظم دروسك ومسائلك الرياضية مع دعم LaTeX والصور</p>
-                            <div class="home-stats">
-                                <div class="stat-box"><div class="number">${groups.length}</div><div class="label">مجموعة</div></div>
-                                <div class="stat-box"><div class="number">${totalLessons}</div><div class="label">درس</div></div>
-                                <div class="stat-box"><div class="number">${totalProblems}</div><div class="label">مسألة</div></div>
-                            </div>
-                            <button class="btn primary" id="goToGroupsBtn">📂 عرض المجموعات</button>
-                        </div>`;
-                    document.getElementById('goToGroupsBtn').addEventListener('click', () => { view = 'groups-list'; renderAll(); });
-                }
-                else if (view === 'groups-list') {
-                    let html = `<div class="card"><h2 style="font-family:'Amiri',serif; color:#635b4e; margin-bottom:20px;">📂 جميع المجموعات</h2>`;
-                    if (!groups.length) html += '<p style="color:#a59a88;">لا توجد مجموعات بعد.</p>';
-                    else groups.forEach(g => html += `<div class="group-item-card" onclick="viewGroup('${g.id}')">📁 ${escapeHtml(g.name)}</div>`);
-                    html += `</div>`;
-                    mainContent.innerHTML = html;
-                }
-                else if (view === 'group') {
-                    const group = groups.find(g => g.id === activeGroupId);
-                    if (!group) { view = 'groups-list'; renderAll(); return; }
-                    let html = `
-                        <div class="card">
-                            <h2 style="font-family:'Amiri',serif; color:#635b4e;">📁 ${escapeHtml(group.name)}</h2>
-                            <div style="margin:16px 0;">
-                                <h3 style="font-family:'Amiri',serif; color:#6a8eb8; font-size:1.5rem;">📚 الدروس</h3>
-                                ${(!group.lessons || !group.lessons.length) ? '<p style="color:#a59a88;">لا توجد دروس بعد</p>' :
-                                  group.lessons.map(l => `<div class="group-item-card" onclick="viewItem('${group.id}','${l.id}','lesson')">📖 ${escapeHtml(l.title)}</div>`).join('')
-                                }
-                                <button class="btn primary btn-sm" id="addLessonBtn">＋ إضافة درس</button>
-                            </div>
-                            <div style="margin:16px 0;">
-                                <h3 style="font-family:'Amiri',serif; color:#6a8eb8; font-size:1.5rem;">📝 المسائل</h3>
-                                ${(!group.problems || !group.problems.length) ? '<p style="color:#a59a88;">لا توجد مسائل بعد</p>' :
-                                  group.problems.map(p => `<div class="group-item-card" onclick="viewItem('${group.id}','${p.id}','problem')">📄 ${escapeHtml(p.title)}</div>`).join('')
-                                }
-                                <button class="btn primary btn-sm" id="addProblemBtn">＋ إضافة مسألة</button>
-                            </div>
-                            <div class="actions">
-                                <button class="btn btn-sm" id="renameGroupBtn">✏️ تعديل الاسم</button>
-                                <button class="btn danger btn-sm" id="deleteGroupBtn">🗑️ حذف المجموعة</button>
-                            </div>
-                        </div>`;
-                    mainContent.innerHTML = html;
-                    document.getElementById('addLessonBtn')?.addEventListener('click', () => addItem(group, 'lesson'));
-                    document.getElementById('addProblemBtn')?.addEventListener('click', () => addItem(group, 'problem'));
-                    document.getElementById('renameGroupBtn')?.addEventListener('click', () => renameGroup(group));
-                    document.getElementById('deleteGroupBtn')?.addEventListener('click', () => deleteGroup(group));
-                }
-                else if (view === 'item') {
-                    const group = groups.find(g => g.id === activeGroupId);
-                    let item = null;
-                    if (activeItemType === 'lesson') item = group?.lessons?.find(l => l.id === activeItemId);
-                    else item = group?.problems?.find(p => p.id === activeItemId);
-                    if (!group || !item) { view = 'group'; renderAll(); return; }
-
-                    let contentHtml = '';
-                    if (activeItemType === 'lesson') {
-                        let processed = processMarkdown(item.content || 'لا يوجد محتوى');
-                        contentHtml = `
-                            <div class="field">
-                                <label>📖 محتوى الدرس</label>
-                                <div class="preview-box tex2jax_process" id="readContent" dir="auto">${processed}</div>
-                                ${item.image ? `<div style="margin-top:10px;"><img src="${item.image}" alt="صورة الدرس" style="max-width:100%; border-radius:8px; border:1px solid #ddd;"></div>` : ''}
-                            </div>`;
-                    } else {
-                        let processedProb = processMarkdown(item.problem || 'لا يوجد نص');
-                        let processedSol = processMarkdown(item.solution || 'لا يوجد حل بعد');
-                        contentHtml = `
-                            <div class="field">
-                                <label>📝 المسألة</label>
-                                <div class="preview-box tex2jax_process" id="readProblem" dir="auto">${processedProb}</div>
-                                ${item.imageProblem ? `<div style="margin-top:10px;"><img src="${item.imageProblem}" alt="صورة المسألة" style="max-width:100%; border-radius:8px; border:1px solid #ddd;"></div>` : ''}
-                            </div>
-                            <div class="field">
-                                <label>✅ الحل</label>
-                                <div class="preview-box tex2jax_process" id="readSolution" dir="auto">${processedSol}</div>
-                                ${item.imageSolution ? `<div style="margin-top:10px;"><img src="${item.imageSolution}" alt="صورة الحل" style="max-width:100%; border-radius:8px; border:1px solid #ddd;"></div>` : ''}
-                            </div>`;
-                    }
-
-                    mainContent.innerHTML = `
-                        <div class="card">
-                            <button class="btn" id="backToGroupBtn">↩ العودة للمجموعة</button>
-                            <h2 style="font-family:'Amiri',serif; color:#635b4e; margin-top:16px;">${escapeHtml(item.title)}</h2>
-                            ${contentHtml}
-                            <div class="actions">
-                                <button class="btn primary btn-sm" id="editItemBtn">✏️ تحرير</button>
-                                <button class="btn danger btn-sm" id="deleteItemBtn">🗑️ حذف</button>
-                            </div>
-                        </div>`;
-                    if (activeItemType === 'lesson') typeset(document.getElementById('readContent'));
-                    else { typeset(document.getElementById('readProblem')); typeset(document.getElementById('readSolution')); }
-                    document.getElementById('backToGroupBtn')?.addEventListener('click', () => { activeItemId=null; view='group'; renderAll(); });
-                    document.getElementById('editItemBtn')?.addEventListener('click', () => { view='edit-item'; renderMain(); });
-                    document.getElementById('deleteItemBtn')?.addEventListener('click', () => {
-                        if(confirm('حذف العنصر؟')) {
-                            if (activeItemType === 'lesson') group.lessons = group.lessons.filter(l => l.id !== activeItemId);
-                            else group.problems = group.problems.filter(p => p.id !== activeItemId);
-                            activeItemId = null; view = 'group'; saveData(); renderAll();
-                        }
-                    });
-                }
-                else if (view === 'edit-item') {
-                    const group = groups.find(g => g.id === activeGroupId);
-                    let item = null;
-                    if (activeItemType === 'lesson') item = group?.lessons?.find(l => l.id === activeItemId);
-                    else item = group?.problems?.find(p => p.id === activeItemId);
-                    if (!group || !item) { view = 'group'; renderAll(); return; }
-
-                    // شريط تنسيق مبسط: فقط أزرار الاتجاه
-                    const formatBar = `
-                        <div class="format-bar">
-                            <button class="btn format-btn dir-btn" data-dir="rtl" title="اتجاه عربي">↩ عربي</button>
-                            <button class="btn format-btn dir-btn" data-dir="ltr" title="اتجاه فرنسي">↪ Français</button>
-                        </div>`;
-
-                    let editorHtml = '';
-                    if (activeItemType === 'lesson') {
-                        editorHtml = `
-                            <div class="field">
-                                <label>العنوان</label>
-                                <input type="text" id="editTitle" value="${escapeHtml(item.title)}">
-                            </div>
-                            <div class="field">
-                                <label>المحتوى (Markdown مدعوم)</label>
-                                ${formatBar}
-                                <textarea id="editContent" dir="auto">${escapeHtml(item.content)}</textarea>
-                                <div class="preview-box" id="previewContent" dir="auto"></div>
-                                <div class="img-upload-area">
-                                    <span style="font-weight:600;">📷 صورة الدرس:</span>
-                                    <input type="file" id="imageFile" accept="image/*" style="display:none;">
-                                    <button class="upload-btn" id="uploadImageBtn">اختر صورة</button>
-                                    <button class="remove-btn" id="removeImageBtn" ${!item.image ? 'style="display:none;"' : ''}>إزالة</button>
-                                    <img id="imagePreview" class="preview-img" src="${item.image || ''}" style="${item.image ? '' : 'display:none;'}">
-                                </div>
-                            </div>`;
-                    } else {
-                        editorHtml = `
-                            <div class="field">
-                                <label>العنوان</label>
-                                <input type="text" id="editTitle" value="${escapeHtml(item.title)}">
-                            </div>
-                            <div class="field">
-                                <label>نص المسألة (Markdown مدعوم)</label>
-                                ${formatBar}
-                                <textarea id="editProblem" dir="auto">${escapeHtml(item.problem)}</textarea>
-                                <div class="preview-box" id="previewProblem" dir="auto"></div>
-                                <div class="img-upload-area">
-                                    <span style="font-weight:600;">📷 صورة المسألة:</span>
-                                    <input type="file" id="imageProblemFile" accept="image/*" style="display:none;">
-                                    <button class="upload-btn" id="uploadProblemImageBtn">اختر صورة</button>
-                                    <button class="remove-btn" id="removeProblemImage" ${!item.imageProblem ? 'style="display:none;"' : ''}>إزالة</button>
-                                    <img id="problemImagePreview" class="preview-img" src="${item.imageProblem || ''}" style="${item.imageProblem ? '' : 'display:none;'}">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label>الحل (Markdown مدعوم)</label>
-                                ${formatBar}
-                                <textarea id="editSolution" dir="auto">${escapeHtml(item.solution)}</textarea>
-                                <div class="preview-box" id="previewSolution" dir="auto"></div>
-                                <div class="img-upload-area">
-                                    <span style="font-weight:600;">📷 صورة الحل:</span>
-                                    <input type="file" id="imageSolutionFile" accept="image/*" style="display:none;">
-                                    <button class="upload-btn" id="uploadSolutionImageBtn">اختر صورة</button>
-                                    <button class="remove-btn" id="removeSolutionImage" ${!item.imageSolution ? 'style="display:none;"' : ''}>إزالة</button>
-                                    <img id="solutionImagePreview" class="preview-img" src="${item.imageSolution || ''}" style="${item.imageSolution ? '' : 'display:none;'}">
-                                </div>
-                            </div>`;
-                    }
-
-                    mainContent.innerHTML = `<div class="card">${editorHtml}<div class="actions"><button class="btn primary" id="saveItemBtn">💾 حفظ</button><button class="btn" id="cancelEditBtn">↩ إلغاء</button></div></div>`;
-
-                    document.querySelectorAll('.format-bar').forEach(bar => bindFormatBar(bar));
-
-                    if (activeItemType === 'lesson') {
-                        const titleInp = document.getElementById('editTitle');
-                        const contentTa = document.getElementById('editContent');
-                        const previewContent = document.getElementById('previewContent');
-                        contentTa.addEventListener('input', () => updatePreviewFromTextarea(contentTa, previewContent));
-                        updatePreviewFromTextarea(contentTa, previewContent);
-                        setupImageUpload('imageFile', 'uploadImageBtn', 'imagePreview', 'removeImageBtn', 'image', item);
-                        document.getElementById('saveItemBtn').addEventListener('click', () => {
-                            item.title = titleInp.value.trim() || 'درس';
-                            item.content = contentTa.value;
-                            saveData();
-                            view = 'item';
-                            renderAll();
-                        });
-                    } else {
-                        const titleInp = document.getElementById('editTitle');
-                        const probTa = document.getElementById('editProblem');
-                        const solTa = document.getElementById('editSolution');
-                        const previewProb = document.getElementById('previewProblem');
-                        const previewSol = document.getElementById('previewSolution');
-                        probTa.addEventListener('input', () => updatePreviewFromTextarea(probTa, previewProb));
-                        solTa.addEventListener('input', () => updatePreviewFromTextarea(solTa, previewSol));
-                        updatePreviewFromTextarea(probTa, previewProb);
-                        updatePreviewFromTextarea(solTa, previewSol);
-                        setupImageUpload('imageProblemFile', 'uploadProblemImageBtn', 'problemImagePreview', 'removeProblemImage', 'imageProblem', item);
-                        setupImageUpload('imageSolutionFile', 'uploadSolutionImageBtn', 'solutionImagePreview', 'removeSolutionImage', 'imageSolution', item);
-                        document.getElementById('saveItemBtn').addEventListener('click', () => {
-                            item.title = titleInp.value.trim() || 'مسألة';
-                            item.problem = probTa.value;
-                            item.solution = solTa.value;
-                            saveData();
-                            view = 'item';
-                            renderAll();
-                        });
-                    }
-                    document.getElementById('cancelEditBtn').addEventListener('click', () => { view = 'item'; renderAll(); });
-                }
-                else if (view === 'settings') {
-                    mainContent.innerHTML = `
-                        <div class="card">
-                            <h2 style="font-family:'Amiri',serif; color:#635b4e;">⚙️ الإعدادات</h2>
-                            <div class="actions">
-                                <button class="btn primary" id="exportBtn">📤 تصدير البيانات (JSON)</button>
-                                <button class="btn" id="importBtn">📥 استيراد بيانات</button>
-                                <input type="file" id="importFile" accept=".json" style="display:none;">
-                            </div>
-                            <div class="creator-signature">
-                                صُنع بواسطة <strong>Abderrahmane Fattasse</strong>
-                            </div>
-                        </div>`;
-                    document.getElementById('exportBtn').addEventListener('click', () => {
-                        const dataStr = JSON.stringify(groups, null, 2);
-                        const blob = new Blob([dataStr], {type:'application/json'});
-                        const a = document.createElement('a');
-                        a.href = URL.createObjectURL(blob);
-                        a.download = 'math_data_backup.json';
-                        a.click();
-                    });
-                    document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
-                    document.getElementById('importFile').addEventListener('change', (e) => {
-                        const file = e.target.files[0];
-                        if(!file) return;
-                        const reader = new FileReader();
-                        reader.onload = (ev) => {
-                            try {
-                                const imported = JSON.parse(ev.target.result);
-                                if(Array.isArray(imported)) {
-                                    groups = imported;
-                                    activeGroupId = groups.length ? groups[0].id : null;
-                                    activeItemId = null;
-                                    view = 'home';
-                                    saveData();
-                                    renderAll();
-                                    alert('تم استيراد البيانات بنجاح');
-                                } else alert('ملف غير صالح');
-                            } catch(ex) { alert('فشل قراءة الملف'); }
-                        };
-                        reader.readAsText(file);
-                    });
-                }
-            }
-
-            function setupImageUpload(inputId, uploadBtnId, previewId, removeBtnId, propertyName, item) {
-                const fileInput = document.getElementById(inputId);
-                const uploadBtn = document.getElementById(uploadBtnId);
-                const preview = document.getElementById(previewId);
-                const removeBtn = document.getElementById(removeBtnId);
-                if (!fileInput) return;
-                uploadBtn.addEventListener('click', () => fileInput.click());
-                fileInput.addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-                    const reader = new FileReader();
-                    reader.onload = (ev) => {
-                        item[propertyName] = ev.target.result;
-                        preview.src = ev.target.result;
-                        preview.style.display = 'block';
-                        removeBtn.style.display = 'inline-flex';
-                    };
-                    reader.readAsDataURL(file);
-                });
-                removeBtn.addEventListener('click', () => {
-                    item[propertyName] = null;
-                    preview.src = '';
-                    preview.style.display = 'none';
-                    removeBtn.style.display = 'none';
-                });
-            }
-
-            window.viewItem = (groupId, itemId, type) => {
-                activeGroupId = groupId;
-                activeItemId = itemId;
-                activeItemType = type;
-                view = 'item';
-                renderAll();
-            };
-            window.viewGroup = (groupId) => {
-                activeGroupId = groupId;
-                activeItemId = null;
-                view = 'group';
-                renderAll();
-            };
-
-            function addItem(group, type) {
-                const newItem = {
-                    id: generateId(),
-                    title: type === 'lesson' ? 'درس جديد' : 'مسألة جديدة',
-                };
-                if (type === 'lesson') {
-                    newItem.content = '';
-                    newItem.image = null;
-                    group.lessons = group.lessons || [];
-                    group.lessons.push(newItem);
-                } else {
-                    newItem.problem = '';
-                    newItem.solution = '';
-                    newItem.imageProblem = null;
-                    newItem.imageSolution = null;
-                    group.problems = group.problems || [];
-                    group.problems.push(newItem);
-                }
-                activeItemId = newItem.id;
-                activeItemType = type;
-                view = 'edit-item';
-                saveData();
-                renderAll();
-            }
-
-            function renameGroup(group) {
-                const newName = prompt('اسم المجموعة الجديد:', group.name);
-                if (newName && newName.trim()) { group.name = newName.trim(); saveData(); renderAll(); }
-            }
-            function deleteGroup(group) {
-                if (confirm(`حذف مجموعة "${group.name}" وكل محتوياتها؟`)) {
-                    groups = groups.filter(g => g.id !== group.id);
-                    activeGroupId = groups.length ? groups[0].id : null;
-                    activeItemId = null;
-                    view = activeGroupId ? 'group' : 'home';
-                    saveData(); renderAll();
-                }
-            }
-            function renderAll() { renderSidebar(); renderMain(); }
-
-            addGroupBtn.addEventListener('click', () => {
-                const name = newGroupNameInput.value.trim();
-                if (!name) return;
-                const newGroup = { id: generateId(), name, lessons: [], problems: [] };
-                groups.push(newGroup);
-                activeGroupId = newGroup.id;
-                activeItemId = null;
-                view = 'group';
-                newGroupNameInput.value = '';
-                saveData();
-                closeSidebar();
-                renderAll();
             });
-            homeBtn.addEventListener('click', () => { view = 'home'; activeGroupId = null; activeItemId = null; closeSidebar(); renderAll(); });
-            settingsBtn.addEventListener('click', () => { view = 'settings'; activeGroupId = null; activeItemId = null; closeSidebar(); renderAll(); });
+        });
+        return favs;
+    }
+    return data[currentBook] || [];
+}
 
-            loadData();
-            if (groups.length && !activeGroupId) activeGroupId = groups[0].id;
-            renderAll();
-        })();
-    </script>
+// ===== RENDER PAGE =====
+function renderPage(direction) {
+    let entries = getEntries();
+    
+    if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        entries = entries.filter(e => e.title.toLowerCase().includes(q));
+    }
+    
+    const viewport = document.getElementById('pageViewport');
+    const total = entries.length;
+
+    if (currentPage >= total) currentPage = Math.max(0, total - 1);
+    if (currentPage < 0) currentPage = 0;
+
+    const entry = entries[currentPage];
+    let animClass = 'page-center';
+    if (direction === 'next') animClass = 'flip-in-right';
+    if (direction === 'prev') animClass = 'flip-in-left';
+
+    if (!entry) {
+        viewport.innerHTML = `
+            <div class="page page-center">
+                <div class="page-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    <p>${searchQuery ? 'لا توجد نتائج' : 'هذا الكتاب فارغ'}<br>${searchQuery ? '' : 'اضغط + لإضافة تدوينة جديدة'}</p>
+                </div>
+            </div>`;
+    } else {
+        const tagsHtml = entry.tags.length
+            ? `<div class="page-tags">${entry.tags.map(t => `<span class="page-tag">${esc(t)}</span>`).join('')}</div>`
+            : '';
+        const contentHtml = parseMarkdown(entry.content);
+        const favClass = entry.favorite ? 'active' : '';
+        const favText = entry.favorite ? '⭐ مفضلة' : '☆ إضافة للمفضلة';
+
+        viewport.innerHTML = `
+            <div class="page ${animClass}" id="currentPageEl">
+                <div class="page-title">${esc(entry.title)}</div>
+                <div class="page-content">${contentHtml}</div>
+                ${tagsHtml}
+                <div class="page-actions">
+                    <button class="btn-fav ${favClass}" onclick="toggleFavorite('${entry.id}')">
+                        <svg viewBox="0 0 24 24" fill="${entry.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                        ${favText}
+                    </button>
+                    <button class="btn-del-page" onclick="deletePage('${entry.id}')">🗑️ حذف</button>
+                </div>
+            </div>`;
+
+        renderMathInElement(viewport, {
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false },
+                { left: '\\(', right: '\\)', display: false },
+                { left: '\\[', right: '\\]', display: true }
+            ],
+            throwOnError: false
+        });
+
+        if (direction) {
+            requestAnimationFrame(() => {
+                const el = document.getElementById('currentPageEl');
+                if (el) { el.classList.remove('flip-in-right', 'flip-in-left'); el.classList.add('page-center'); }
+            });
+        }
+    }
+
+    const slider = document.getElementById('pageSlider');
+    slider.max = Math.max(1, total);
+    slider.value = total > 0 ? currentPage + 1 : 0;
+
+    document.getElementById('pageNum').textContent = total > 0 ? `${currentPage + 1}/${total}` : '0/0';
+    document.getElementById('btnPrev').disabled = currentPage <= 0;
+    document.getElementById('btnNext').disabled = currentPage >= total - 1;
+
+    updateSliderFill(slider);
+}
+
+function updateSliderFill(slider) {
+    const val = slider.max > 1 ? ((slider.value - slider.min) / (slider.max - slider.min)) * 100 : 0;
+    slider.style.background = `linear-gradient(to right, var(--accent) 0%, var(--accent) ${val}%, var(--border) ${val}%, var(--border) 100%)`;
+}
+
+// ===== TOGGLE FAVORITE =====
+function toggleFavorite(id) {
+    let found = false;
+    let newFavState = false;
+    ['arithmetique', 'inegalite'].forEach(key => {
+        (data[key] || []).forEach(entry => {
+            if (entry.id === id) {
+                entry.favorite = !entry.favorite;
+                newFavState = entry.favorite;
+                found = true;
+            }
+        });
+    });
+    if (found) {
+        saveData(data);
+        renderPage();
+        showToast(newFavState ? 'تمت الإضافة للمفضلة ⭐' : 'تمت الإزالة من المفضلة');
+    }
+}
+
+// ===== NAV BUTTONS =====
+document.getElementById('btnPrev').addEventListener('click', () => {
+    if (currentPage > 0) { currentPage--; renderPage('prev'); }
+});
+document.getElementById('btnNext').addEventListener('click', () => {
+    let entries = getEntries();
+    if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        entries = entries.filter(e => e.title.toLowerCase().includes(q));
+    }
+    if (currentPage < entries.length - 1) { currentPage++; renderPage('next'); }
+});
+
+// ===== SLIDER =====
+document.getElementById('pageSlider').addEventListener('input', function() {
+    const val = parseInt(this.value);
+    const newPage = val - 1;
+    if (newPage !== currentPage) {
+        const dir = newPage > currentPage ? 'next' : 'prev';
+        currentPage = newPage;
+        renderPage(dir);
+    }
+    updateSliderFill(this);
+});
+
+// ===== SWIPE =====
+let touchStartX = 0, touchStartY = 0, swiping = false;
+document.getElementById('pageViewport').addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    swiping = true;
+}, { passive: true });
+document.getElementById('pageViewport').addEventListener('touchend', e => {
+    if (!swiping) return;
+    swiping = false;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx)) return;
+    let entries = getEntries();
+    if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        entries = entries.filter(e => e.title.toLowerCase().includes(q));
+    }
+    if (dx > 0 && currentPage > 0) { currentPage--; renderPage('prev'); }
+    if (dx < 0 && currentPage < entries.length - 1) { currentPage++; renderPage('next'); }
+});
+
+// ===== BACK =====
+document.getElementById('btnBack').addEventListener('click', () => {
+    showScreen('homeScreen');
+    renderHome();
+    currentBook = null;
+    focusMode = false;
+    document.body.classList.remove('focus-mode');
+});
+
+// ===== DELETE =====
+function deletePage(id) {
+    if (!confirm('حذف هذه الصفحة؟')) return;
+    ['arithmetique', 'inegalite'].forEach(key => {
+        data[key] = (data[key] || []).filter(e => e.id !== id);
+    });
+    saveData(data);
+    let entries = getEntries();
+    if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        entries = entries.filter(e => e.title.toLowerCase().includes(q));
+    }
+    if (currentPage >= entries.length) {
+        currentPage = Math.max(0, entries.length - 1);
+    }
+    renderPage();
+    showToast('تم حذف الصفحة');
+}
+
+// ===== SEARCH =====
+document.getElementById('btnSearchToggle').addEventListener('click', function() {
+    const searchBar = document.getElementById('searchBar');
+    searchBar.classList.toggle('open');
+    this.classList.toggle('active');
+    if (searchBar.classList.contains('open')) {
+        document.getElementById('searchInput').focus();
+    } else {
+        searchQuery = '';
+        document.getElementById('searchInput').value = '';
+        currentPage = 0;
+        renderPage();
+    }
+});
+
+document.getElementById('btnCloseSearch').addEventListener('click', () => {
+    document.getElementById('searchBar').classList.remove('open');
+    document.getElementById('btnSearchToggle').classList.remove('active');
+    searchQuery = '';
+    document.getElementById('searchInput').value = '';
+    currentPage = 0;
+    renderPage();
+});
+
+document.getElementById('searchInput').addEventListener('input', function() {
+    searchQuery = this.value;
+    currentPage = 0;
+    renderPage();
+});
+
+// ===== FOCUS MODE =====
+document.getElementById('btnFocus').addEventListener('click', function() {
+    focusMode = !focusMode;
+    document.body.classList.toggle('focus-mode', focusMode);
+    this.classList.toggle('focus-active', focusMode);
+});
+
+document.getElementById('btnFocusExit').addEventListener('click', () => {
+    focusMode = false;
+    document.body.classList.remove('focus-mode');
+    document.getElementById('btnFocus').classList.remove('focus-active');
+});
+
+// ===== SETTINGS =====
+document.getElementById('btnSettings').addEventListener('click', () => {
+    showScreen('settingsScreen');
+});
+
+document.getElementById('btnBackSettings').addEventListener('click', () => {
+    showScreen('homeScreen');
+    renderHome();
+});
+
+// ===== EXPORT =====
+document.getElementById('btnExport').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `om-notebook-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('تم تصدير البيانات ✓', 'success');
+});
+
+// ===== IMPORT =====
+document.getElementById('btnImport').addEventListener('click', () => {
+    document.getElementById('importInput').click();
+});
+
+document.getElementById('importInput').addEventListener('change', function(e) {
+    if (e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        try {
+            const imported = JSON.parse(event.target.result);
+            if (!imported.arithmetique || !imported.inegalite) {
+                throw new Error('Invalid format');
+            }
+            if (confirm('هل تريد استبدال البيانات الحالية؟')) {
+                data = imported;
+                saveData(data);
+                showToast('تم استيراد البيانات ✓', 'success');
+            }
+        } catch (err) {
+            showToast('خطأ في قراءة الملف');
+            console.error(err);
+        }
+    };
+    reader.readAsText(file);
+    this.value = '';
+});
+
+// ===== CLEAR ALL =====
+document.getElementById('btnClearAll').addEventListener('click', () => {
+    if (confirm('هل أنت متأكد من حذف جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه!')) {
+        if (confirm('تأكيد نهائي: سيتم حذف كل شيء!')) {
+            data = { arithmetique: [], inegalite: [] };
+            saveData(data);
+            showToast('تم مسح جميع البيانات');
+        }
+    }
+});
+
+// ===== MODAL =====
+const modalOverlay = document.getElementById('modalOverlay');
+function openModal(bookKey) {
+    if (bookKey && bookKey !== 'favorites') {
+        document.getElementById('bookSelect').value = bookKey;
+    } else if (currentBook && currentBook !== 'favorites') {
+        document.getElementById('bookSelect').value = currentBook;
+    }
+    modalOverlay.classList.add('open');
+    setTimeout(() => document.getElementById('titleInput').focus(), 300);
+}
+function closeModal() {
+    modalOverlay.classList.remove('open');
+    document.getElementById('entryForm').reset();
+}
+
+document.getElementById('btnAddHome').addEventListener('click', () => openModal());
+document.getElementById('btnAddBook').addEventListener('click', () => openModal(currentBook));
+document.getElementById('btnCloseModal').addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+
+// ===== FORM SUBMIT =====
+document.getElementById('entryForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const bookKey = document.getElementById('bookSelect').value;
+    const title = document.getElementById('titleInput').value.trim();
+    const content = document.getElementById('contentInput').value.trim();
+    const tagsStr = document.getElementById('tagsInput').value;
+
+    if (!title || !content) {
+        showToast('يرجى ملء العنوان والمحتوى');
+        return;
+    }
+
+    const tags = tagsStr.split(',').map(t => t.trim()).filter(t => t);
+    const entry = {
+        id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+        title, content, tags,
+        favorite: false,
+        createdAt: new Date().toISOString()
+    };
+
+    if (!data[bookKey]) data[bookKey] = [];
+    data[bookKey].push(entry);
+    saveData(data);
+
+    closeModal();
+    showToast('تم حفظ التدوينة ✓', 'success');
+
+    if (currentBook === bookKey) {
+        currentPage = data[bookKey].length - 1;
+        renderPage('next');
+    }
+    renderHome();
+});
+
+// ===== INIT =====
+renderHome();
+</script>
 </body>
 </html>
+
