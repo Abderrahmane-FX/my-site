@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="OM">
+<title>OM — Olympiad Archive</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon.svg">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@latest/latin-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-500-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-600-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-700-normal.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+    --bg:#0a0e14;--bg2:#111820;--bg3:#1a2230;--bg4:#222d3d;
+    --border:#2a3545;--border2:#3a4a5e;
+    --text:#e2e8f0;--text2:#8899aa;--text3:#5a6a7a;
+    --accent:#60a5fa;--accent2:#93c5fd;--accent-glow:rgba(96,165,250,.12);
+    --radius:16px;--radius-sm:10px;
+    --shadow:0 8px 32px rgba(0,0,0,.4);
+    --font-en:'Inter',sans-serif;
+    --mono:'IBM Plex Mono',monospace;
+    --safe-top:env(safe-area-inset-top,0px);
+    --safe-bottom:env(safe-area-inset-bottom,0px);
+    --safe-left:env(safe-area-inset-left,0px);
+    --safe-right:env(safe-area-inset-right,0px);
+}
+html,body{height:100%;height:100dvh;overflow:hidden;overscroll-behavior:none}
+body{font-family:var(--font-en);background:var(--bg);color:var(--text);line-height:1.7;position:fixed;inset:0;-webkit-text-size-adjust:100%}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;transition:opacity .35s,transform .35s;z-index:1;padding-left:var(--safe-left);padding-right:var(--safe-right)}
+.screen.hidden{opacity:0;pointer-events:none;transform:scale(.97)}
+.screen.active{opacity:1;pointer-events:all;transform:scale(1)}
+
+.home-header{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;gap:.5rem;padding-top:calc(.85rem + var(--safe-top));min-height:calc(60px + var(--safe-top))}
+.logo{font-size:1.65rem;font-weight:700;letter-spacing:1.5px;font-family:Georgia,serif;background:linear-gradient(135deg,var(--accent),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.btn-icon{background:none;border:none;color:var(--text2);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.btn-icon:hover,.btn-icon:active{background:rgba(255,255,255,.06);color:var(--text)}
+.btn-icon svg{width:22px;height:22px}
+.header-spacer{width:44px;height:44px;flex-shrink:0}
+
+.home-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.8rem 1.2rem calc(2rem + var(--safe-bottom));background:radial-gradient(circle at 20% 10%,rgba(96,165,250,.05) 0%,transparent 55%),radial-gradient(circle at 80% 85%,rgba(251,191,36,.035) 0%,transparent 55%)}
+.home-subtitle{text-align:center;font-size:.78rem;color:var(--text3);margin-bottom:1.6rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:500}
+
+.books-list{display:flex;flex-direction:column;gap:1rem;max-width:440px;margin:0 auto}
+.book-item{position:relative;display:flex;align-items:stretch;border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 20px rgba(0,0,0,.3),0 0 0 1px var(--border);min-height:110px}
+.book-item:active{transform:translateY(-1px) scale(.99)}
+.book-spine{width:8px;flex-shrink:0;position:relative}
+.book-spine::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.15),transparent)}
+.book-item.theorems .book-spine{background:linear-gradient(135deg,#1e3a8a,#1d4ed8,#2563eb)}
+.book-item.problems .book-spine{background:linear-gradient(135deg,#7f1d1d,#991b1b,#b91c1c)}
+.book-cover{flex:1;padding:1.1rem 1.2rem;display:flex;align-items:center;gap:1rem;position:relative;overflow:hidden}
+.book-item.theorems .book-cover{background:linear-gradient(135deg,#0a0f1f 0%,#0f1a35 60%,#0a0f1f 100%)}
+.book-item.problems .book-cover{background:linear-gradient(135deg,#1a0a0a 0%,#2a0f0f 60%,#1a0a0a 100%)}
+.book-cover::before{content:'';position:absolute;inset:0;opacity:.06;background-image:radial-gradient(circle at 2px 2px,rgba(255,255,255,.4) 1px,transparent 0);background-size:18px 18px}
+.book-icon-wrap{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;flex-shrink:0;position:relative;z-index:1;box-shadow:0 4px 12px rgba(0,0,0,.3);font-family:Georgia,serif;font-weight:700}
+.book-item.theorems .book-icon-wrap{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#dbeafe}
+.book-item.problems .book-icon-wrap{background:linear-gradient(135deg,#7f1d1d,#b91c1c);color:#fee2e2}
+.book-info{flex:1;min-width:0;position:relative;z-index:1}
+.book-name{font-size:1.05rem;font-weight:700;margin-bottom:.3rem;letter-spacing:.2px;line-height:1.35}
+.book-item.theorems .book-name{color:#93c5fd}
+.book-item.problems .book-name{color:#fca5a5}
+.book-count{display:inline-flex;align-items:center;gap:.35rem;font-size:.72rem;color:var(--text2);background:rgba(255,255,255,.05);padding:.2rem .65rem;border-radius:12px}
+.book-arrow{color:var(--text3);flex-shrink:0;display:flex;align-items:center;padding:0 .3rem;position:relative;z-index:1}
+.book-arrow svg{width:18px;height:18px}
+
+.subs-grid{display:grid;grid-template-columns:1fr;gap:.9rem;max-width:440px;margin:0 auto}
+@media(min-width:640px){.subs-grid{grid-template-columns:1fr 1fr;max-width:640px}}
+.sub-card{position:relative;display:flex;align-items:center;gap:.9rem;padding:1.15rem 1.2rem;border-radius:var(--radius);cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);border:1px solid var(--border);overflow:hidden;min-height:76px}
+.sub-card:active{transform:scale(.985);border-color:var(--border2)}
+.sub-card::before{content:'';position:absolute;inset:0;opacity:.05;background-image:radial-gradient(circle at 2px 2px,rgba(255,255,255,.5) 1px,transparent 0);background-size:16px 16px}
+.sub-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;position:relative;z-index:1;font-family:Georgia,serif;font-weight:700;box-shadow:0 3px 10px rgba(0,0,0,.3)}
+.sub-name{font-size:.98rem;font-weight:600;position:relative;z-index:1;flex:1;line-height:1.35}
+.sub-count{font-size:.72rem;color:var(--text3);position:relative;z-index:1;font-family:var(--mono);white-space:nowrap}
+.sub-card.algebra{background:linear-gradient(135deg,#0a0f1f,#0f1a35)}
+.sub-card.algebra .sub-icon{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#dbeafe}
+.sub-card.algebra .sub-name{color:#93c5fd}
+.sub-card.geometry{background:linear-gradient(135deg,#08160f,#0d2419)}
+.sub-card.geometry .sub-icon{background:linear-gradient(135deg,#065f46,#10b981);color:#d1fae5}
+.sub-card.geometry .sub-name{color:#6ee7b7}
+.sub-card.combinatorics{background:linear-gradient(135deg,#150a1f,#1f0f2e)}
+.sub-card.combinatorics .sub-icon{background:linear-gradient(135deg,#6b21a8,#a855f7);color:#e9d5ff}
+.sub-card.combinatorics .sub-name{color:#c4b5fd}
+.sub-card.number-theory{background:linear-gradient(135deg,#1a1408,#2a1f0a)}
+.sub-card.number-theory .sub-icon{background:linear-gradient(135deg,#92400e,#f59e0b);color:#fef3c7}
+.sub-card.number-theory .sub-name{color:#fcd34d}
+
+.book-topbar{display:flex;align-items:center;justify-content:space-between;padding:.5rem .6rem;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;gap:.3rem;padding-top:calc(.5rem + var(--safe-top));min-height:calc(52px + var(--safe-top))}
+.book-topbar-left,.book-topbar-right{display:flex;align-items:center;gap:.15rem;flex-shrink:0}
+.book-topbar-center{flex:1;text-align:center;min-width:0;padding:0 .4rem}
+.btn-back{background:none;border:none;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:.25rem;font-family:var(--font-en);font-size:.8rem;font-weight:500;padding:.5rem .65rem;border-radius:var(--radius-sm);transition:background .2s;min-height:40px}
+.btn-back:hover,.btn-back:active{background:rgba(255,255,255,.06)}
+.btn-back svg{width:18px;height:18px}
+.book-topbar-title{font-size:.9rem;font-weight:600;display:block;line-height:1.2}
+.book-topbar-sub{font-size:.68rem;color:var(--text3);display:block;margin-top:1px;line-height:1.2}
+.btn-tool{background:none;border:none;color:var(--text2);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.btn-tool:hover,.btn-tool:active{background:rgba(255,255,255,.06);color:var(--text)}
+.btn-tool.active{color:var(--accent);background:var(--accent-glow)}
+.btn-tool svg{width:18px;height:18px}
+.btn-tool.focus-active{color:#fbbf24;background:rgba(251,191,36,.1)}
+.btn-add{background:linear-gradient(135deg,var(--accent),#3b82f6);color:#fff;border:none;padding:.55rem .9rem;border-radius:22px;font-family:var(--font-en);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.35rem;box-shadow:0 2px 12px rgba(96,165,250,.3);white-space:nowrap;min-height:38px}
+.btn-add:active{transform:scale(.97)}
+.btn-add svg{width:14px;height:14px}
+
+.search-bar{display:flex;align-items:center;gap:.5rem;padding:0 1rem;background:var(--bg3);border-bottom:1px solid var(--border);flex-shrink:0;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s}
+.search-bar.open{max-height:64px;padding:.55rem 1rem}
+.search-bar input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:.55rem 1rem;color:var(--text);font-family:var(--font-en);font-size:16px;outline:none}
+.search-bar input:focus{border-color:var(--accent)}
+.search-bar input::placeholder{color:var(--text3)}
+.btn-close-search{background:none;border:none;color:var(--text2);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.btn-close-search:hover{background:rgba(255,255,255,.06);color:var(--text)}
+.btn-close-search svg{width:16px;height:16px}
+
+.book-body{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;background:var(--bg)}
+.page-viewport{flex:1;position:relative;overflow:hidden}
+.page{position:absolute;inset:0;display:flex;flex-direction:column;padding:1.4rem 1.3rem 0;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg2);border-left:1px solid var(--border);border-right:1px solid var(--border);transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .35s;transform-origin:center}
+.page.flip-in-right{transform:perspective(1200px) rotateY(35deg);opacity:0}
+.page.flip-in-left{transform:perspective(1200px) rotateY(-35deg);opacity:0}
+.page.page-center{transform:perspective(1200px) rotateY(0);opacity:1}
+.page-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text3);text-align:center;gap:.9rem;padding:2rem 1rem}
+.page-empty svg{width:60px;height:60px;opacity:.35}
+.page-empty p{font-size:.9rem;line-height:1.8}
+
+.page-title{font-size:clamp(1.1rem,4.5vw,1.25rem);font-weight:700;color:var(--accent2);margin-bottom:.8rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);line-height:1.4}
+.page-content{font-size:clamp(.92rem,3.9vw,1rem);line-height:1.9;color:var(--text);flex:1;word-wrap:break-word;overflow-wrap:break-word}
+.page-content .katex{font-size:1em}
+.page-content .katex,.page-content .katex-display,.page-content .katex-html,.page-content .base{direction:ltr !important;unicode-bidi:isolate !important;text-align:left !important}
+.page-content .katex-display{margin:1.1rem 0;display:block !important;overflow-x:auto;overflow-y:hidden}
+.page-content h1{font-size:1.25em;font-weight:700;color:var(--accent2);margin:1rem 0 .5rem;padding-bottom:.3rem;border-bottom:1px solid var(--border)}
+.page-content h2{font-size:1.12em;font-weight:700;color:var(--accent2);margin:.9rem 0 .4rem}
+.page-content h3{font-size:1.03em;font-weight:600;color:var(--text);margin:.8rem 0 .3rem}
+.page-content h4{font-size:.95em;font-weight:600;color:var(--text);margin:.7rem 0 .3rem}
+.page-content p{margin-bottom:.55rem}
+.page-content strong{color:#fcd34d;font-weight:600}
+.page-content em{color:var(--accent2);font-style:italic}
+.page-content hr{border:none;height:1px;background:var(--border);margin:1rem 0}
+.page-content ul{margin:.5rem 0;padding-left:1.4rem}
+.page-content li{margin-bottom:.25rem}
+.page-content li::marker{color:var(--accent)}
+.page-content code{background:var(--bg3);color:var(--accent2);padding:.1rem .4rem;border-radius:4px;font-family:var(--mono);font-size:.85em;word-break:break-word}
+.page-content blockquote{border-left:3px solid var(--accent);padding:.4rem .8rem;margin:.6rem 0;background:var(--accent-glow);border-radius:0 var(--radius-sm) var(--radius-sm) 0;color:var(--text2)}
+
+.page-images{display:flex;flex-direction:column;gap:.8rem;margin-top:1rem;padding-top:1rem;border-top:1px dashed var(--border)}
+.page-images img{max-width:100%;border-radius:10px;border:1px solid var(--border);cursor:zoom-in;display:block;background:#fff}
+.page-images img:active{opacity:.85}
+
+.page-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem;padding-bottom:1rem;flex-wrap:wrap}
+.btn-edit,.btn-del-page{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.6rem 1rem;border-radius:22px;font-size:.8rem;font-family:var(--font-en);font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.35rem;min-height:40px}
+.btn-edit:active{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
+.btn-del-page:active{border-color:#ef4444;color:#ef4444;background:rgba(239,68,68,.08)}
+.btn-edit svg{width:13px;height:13px}
+
+.page-nav{display:flex;align-items:center;gap:.5rem;padding:.35rem .8rem;background:var(--bg2);border-top:1px solid var(--border);flex-shrink:0;min-height:calc(46px + var(--safe-bottom));padding-bottom:calc(.35rem + var(--safe-bottom))}
+.btn-nav{background:var(--bg3);border:1px solid var(--border);color:var(--text);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.btn-nav:active:not(:disabled){background:var(--bg4);border-color:var(--accent)}
+.btn-nav:disabled{opacity:.2;cursor:default}
+.btn-nav svg{width:16px;height:16px}
+.slider-wrap{flex:1;display:flex;align-items:center;gap:.5rem;min-width:0}
+.page-slider{-webkit-appearance:none;appearance:none;flex:1;height:6px;border-radius:3px;background:var(--border);outline:none;cursor:pointer;direction:ltr}
+.page-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--accent);border:2px solid var(--bg2);box-shadow:0 0 8px rgba(96,165,250,.5);cursor:pointer}
+.page-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--accent);border:2px solid var(--bg2);cursor:pointer}
+.page-num-label{font-size:.72rem;color:var(--text2);white-space:nowrap;min-width:44px;text-align:center;font-family:var(--mono)}
+
+body.focus-mode .book-topbar,body.focus-mode .search-bar,body.focus-mode .page-nav,body.focus-mode .page-actions{display:none !important}
+body.focus-mode .page{padding:2rem 1.4rem calc(2rem + var(--safe-bottom))}
+body.focus-mode .btn-focus-exit{display:flex !important}
+.btn-focus-exit{display:none;position:fixed;z-index:100;top:calc(1rem + var(--safe-top));left:calc(1rem + var(--safe-left));background:var(--bg3);border:1px solid var(--border);color:var(--text);width:44px;height:44px;border-radius:50%;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.btn-focus-exit:active{background:var(--bg4);border-color:var(--accent)}
+.btn-focus-exit svg{width:22px;height:22px}
+
+.editor-topbar{display:flex;align-items:center;justify-content:space-between;padding:.5rem .7rem;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;gap:.4rem;padding-top:calc(.5rem + var(--safe-top));min-height:calc(52px + var(--safe-top))}
+.editor-topbar-title{font-size:.92rem;font-weight:600;flex:1;text-align:center;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 .3rem}
+.editor-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.1rem 1rem calc(1.5rem + var(--safe-bottom));background:var(--bg)}
+.editor-inner{max-width:640px;margin:0 auto}
+.editor-actions{display:none}
+.editor-savebar{display:flex;gap:.6rem;padding:.7rem .9rem;background:var(--bg2);border-top:1px solid var(--border);padding-bottom:calc(.7rem + var(--safe-bottom));flex-shrink:0}
+.editor-savebar .btn-cancel,.editor-savebar .btn-save{flex:1;padding:.85rem;min-height:48px}
+@media(min-width:900px){
+    .editor-savebar{display:none}
+    .editor-actions{display:flex;gap:.7rem;margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+    .editor-actions .btn-cancel{flex:1}
+    .editor-actions .btn-save{flex:2}
+}
+.field{margin-bottom:1.2rem}
+.field-label{display:block;font-size:.7rem;font-weight:600;color:var(--text2);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:1px}
+.field input[type="text"],.field textarea{width:100%;padding:.9rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:16px;font-family:var(--font-en);outline:none;transition:border-color .2s;-webkit-appearance:none}
+.field textarea{min-height:240px;resize:vertical;line-height:1.75;font-family:var(--mono);font-size:15px}
+.field input:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(96,165,250,.1)}
+.field input::placeholder,.field textarea::placeholder{color:var(--text3)}
+.field-hint{font-size:.7rem;color:var(--text3);margin-top:.5rem;line-height:1.7}
+.field-hint code{background:var(--bg3);color:var(--accent2);padding:.05rem .35rem;border-radius:4px;font-family:var(--mono);font-size:.72rem}
+.upload-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.15rem;background:var(--bg2);border:1px dashed var(--border);border-radius:12px;font-size:.85rem;color:var(--text2);cursor:pointer;transition:all .2s;font-weight:500;min-height:46px}
+.upload-btn:active{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
+.upload-btn svg{width:16px;height:16px}
+.image-list{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.9rem}
+.image-item{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--border);width:110px;height:110px;flex-shrink:0}
+.image-item img{width:100%;height:100%;object-fit:cover;display:block;background:#fff}
+.image-item button{position:absolute;top:4px;right:4px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.8);color:#fff;display:grid;place-items:center;font-size:14px;cursor:pointer;transition:all .2s;border:none}
+.image-item button:active{background:#ef4444;transform:scale(1.08)}
+.btn-cancel{padding:.85rem;border-radius:12px;font-weight:600;font-size:.88rem;color:var(--text2);border:1px solid var(--border);background:var(--bg2);cursor:pointer;transition:all .2s}
+.btn-cancel:active{color:var(--text);border-color:var(--border2)}
+.btn-save{padding:.85rem;border-radius:12px;font-weight:600;font-size:.88rem;background:linear-gradient(135deg,var(--accent),#3b82f6);color:#fff;border:none;cursor:pointer;transition:all .2s;box-shadow:0 3px 14px rgba(96,165,250,.25)}
+.btn-save:active{transform:scale(.98)}
+
+.settings-header{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;padding-top:calc(.7rem + var(--safe-top));min-height:calc(56px + var(--safe-top))}
+.settings-title{font-size:1rem;font-weight:600;flex:1;text-align:center}
+.settings-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.3rem 1rem calc(1.5rem + var(--safe-bottom));background:var(--bg)}
+.settings-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;margin-bottom:1rem;max-width:500px;margin-left:auto;margin-right:auto}
+.settings-section h3{font-size:.95rem;font-weight:600;margin-bottom:.5rem;color:var(--accent2)}
+.settings-section p{font-size:.8rem;color:var(--text2);margin-bottom:1rem;line-height:1.65}
+.btn-settings{width:100%;padding:.85rem;border:none;border-radius:var(--radius-sm);font-family:var(--font-en);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.5rem;min-height:48px}
+.btn-settings:last-child{margin-bottom:0}
+.btn-settings svg{width:17px;height:17px}
+.btn-export{background:linear-gradient(135deg,var(--accent),#3b82f6);color:#fff}
+.btn-export:active{transform:scale(.98)}
+.btn-import{background:var(--bg3);border:1px solid var(--border);color:var(--text)}
+.btn-import:active{border-color:var(--accent);color:var(--accent)}
+.btn-danger{background:rgba(239,68,68,.1);border:1px solid #ef4444;color:#f87171}
+.btn-danger:active{background:rgba(239,68,68,.2)}
+.import-file{display:none}
+
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.96);display:none;align-items:center;justify-content:center;padding:calc(1rem + var(--safe-top)) 1rem calc(1rem + var(--safe-bottom));z-index:500;cursor:zoom-out}
+.lightbox.open{display:flex}
+.lightbox img{max-width:95%;max-height:95%;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.7)}
+
+.toast{position:fixed;left:50%;bottom:calc(2rem + var(--safe-bottom));transform:translateX(-50%) translateY(20px);background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.7rem 1.3rem;border-radius:22px;font-size:.82rem;font-family:var(--font-en);font-weight:500;box-shadow:var(--shadow);opacity:0;transition:all .3s;z-index:600;max-width:calc(100vw - 2rem);text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:#4ade80}
+.toast.error{border-color:#ef4444}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.book-item,.sub-card{animation:fadeUp .45s ease both}
+.book-item:nth-child(2),.sub-card:nth-child(2){animation-delay:.06s}
+.sub-card:nth-child(3){animation-delay:.12s}
+.sub-card:nth-child(4){animation-delay:.18s}
+@media(min-width:600px){
+    .books-list{max-width:520px}
+    .page-viewport{max-width:720px;margin:0 auto;width:100%}
+    .book-item{min-height:120px}
+    .book-icon-wrap{width:62px;height:62px;font-size:1.85rem}
+    .home-header{padding:.85rem 1.4rem}
+    .editor-body{padding:1.5rem 1.5rem 2rem}
+}
+img,pre,code,table{max-width:100%}
+
+/* Installing hint banner */
+.install-hint{display:none;background:linear-gradient(135deg,rgba(96,165,250,.15),rgba(251,191,36,.1));border:1px solid var(--accent);border-radius:var(--radius);padding:1rem 1.1rem;margin:0 auto 1.2rem;max-width:440px;font-size:.82rem;color:var(--text2);line-height:1.7}
+.install-hint.show{display:block}
+.install-hint strong{color:var(--accent2);display:block;margin-bottom:.35rem;font-size:.88rem}
+.install-hint button{margin-top:.7rem;background:var(--accent);color:#fff;border:none;padding:.5rem 1rem;border-radius:20px;font-size:.78rem;font-weight:600;cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- ============ HOME ============ -->
+<div class="screen active" id="homeScreen">
+    <header class="home-header">
+        <div class="header-spacer"></div>
+        <div class="logo">OM</div>
+        <button class="btn-icon" id="btnSettings" title="Settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+        </button>
+    </header>
+    <div class="home-body">
+        <div class="install-hint" id="installHint">
+            <strong>📲 Install as app</strong>
+            Tap Brave's menu ⋮ → "Add to Home screen". After that, it works fully offline.
+            <button id="dismissHint">Got it</button>
+        </div>
+        <p class="home-subtitle">Olympiad Archive</p>
+        <div class="books-list" id="booksList"></div>
+    </div>
+</div>
+
+<!-- ============ SUBCATEGORIES ============ -->
+<div class="screen hidden" id="subsScreen">
+    <header class="home-header">
+        <button class="btn-back" id="btnBackHome">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+        </button>
+        <div class="logo" id="subsLogo">OM</div>
+        <div class="header-spacer"></div>
+    </header>
+    <div class="home-body">
+        <p class="home-subtitle" id="subsCatLabel">Category</p>
+        <div class="subs-grid" id="subsGrid"></div>
+    </div>
+</div>
+
+<!-- ============ ENTRIES ============ -->
+<div class="screen hidden" id="entriesScreen">
+    <div class="book-topbar">
+        <div class="book-topbar-left">
+            <button class="btn-back" id="btnBackSubs">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                Back
+            </button>
+        </div>
+        <div class="book-topbar-center">
+            <span class="book-topbar-title" id="bookTopTitle"></span>
+            <span class="book-topbar-sub" id="bookTopSub"></span>
+        </div>
+        <div class="book-topbar-right">
+            <button class="btn-tool" id="btnSearchToggle" title="Search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+            </button>
+            <button class="btn-tool" id="btnFocus" title="Focus mode">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+            </button>
+            <button class="btn-add" id="btnAddEntry">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+            </button>
+        </div>
+    </div>
+    <div class="search-bar" id="searchBar">
+        <input type="text" id="searchInput" placeholder="Search entries..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <button class="btn-close-search" id="btnCloseSearch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+    <div class="book-body">
+        <div class="page-viewport" id="pageViewport"></div>
+        <div class="page-nav">
+            <button class="btn-nav" id="btnPrev">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="slider-wrap">
+                <input type="range" class="page-slider" id="pageSlider" min="1" max="1" value="1">
+                <span class="page-num-label" id="pageNum">0/0</span>
+            </div>
+            <button class="btn-nav" id="btnNext">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ============ EDITOR ============ -->
+<div class="screen hidden" id="editorScreen">
+    <div class="editor-topbar">
+        <button class="btn-back" id="btnCancelEditor">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Cancel
+        </button>
+        <span class="editor-topbar-title" id="editorTitle">New entry</span>
+        <button class="btn-add" id="btnSaveEditorTop">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+            </svg>
+            Save
+        </button>
+    </div>
+    <div class="editor-body">
+        <div class="editor-inner">
+            <div class="field">
+                <label class="field-label">Title</label>
+                <input type="text" id="editorTitleInput" placeholder="e.g. Cauchy–Schwarz Inequality" autocomplete="off" autocorrect="off" autocapitalize="sentences">
+            </div>
+            <div class="field">
+                <label class="field-label">Content</label>
+                <textarea id="editorContentInput" placeholder="Write freely.&#10;&#10;Inline math:  $a^2 + b^2 \ge 2ab$&#10;Display math: $$\sum_{i=1}^{n} a_i \ge n\sqrt[n]{\prod a_i}$$" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                <p class="field-hint">
+                    Markdown: <code># H1</code> · <code>## H2</code> · <code>**bold**</code> · <code>*italic*</code> · <code>---</code> divider · <code>- item</code> · <code>&gt; quote</code> · <code>`code`</code><br>
+                    LaTeX: <code>$...$</code> inline · <code>$$...$$</code> display
+                </p>
+            </div>
+            <div class="field">
+                <label class="field-label">Images</label>
+                <label class="upload-btn" for="fileInput">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                    Add images
+                </label>
+                <input type="file" id="fileInput" accept="image/*" multiple hidden>
+                <div class="image-list" id="imageList"></div>
+            </div>
+            <div class="editor-actions">
+                <button class="btn-cancel" id="btnCancelEditor2">Cancel</button>
+                <button class="btn-save" id="btnSaveEditor2">Save entry</button>
+            </div>
+        </div>
+    </div>
+    <div class="editor-savebar">
+        <button class="btn-cancel" id="btnCancelEditor3">Cancel</button>
+        <button class="btn-save" id="btnSaveEditor3">Save entry</button>
+    </div>
+</div>
+
+<!-- ============ SETTINGS ============ -->
+<div class="screen hidden" id="settingsScreen">
+    <header class="settings-header">
+        <button class="btn-back" id="btnBackSettings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+        </button>
+        <span class="settings-title">Settings</span>
+        <div style="width:44px"></div>
+    </header>
+    <div class="settings-body">
+        <div class="settings-section">
+            <h3>Storage</h3>
+            <p>This app stores everything on your device using IndexedDB. Nothing is sent anywhere. Works offline after first load.</p>
+            <p id="storageInfo" style="font-family:var(--mono);font-size:.75rem;color:var(--text3)">Loading…</p>
+        </div>
+        <div class="settings-section">
+            <h3>Backup</h3>
+            <p>Export all entries (text + images) to a JSON file, or restore from a previous backup.</p>
+            <button class="btn-settings btn-export" id="btnExport">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Export archive
+            </button>
+            <button class="btn-settings btn-import" id="btnImport">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Import archive
+            </button>
+            <input type="file" id="importFile" class="import-file" accept=".json">
+        </div>
+        <div class="settings-section">
+            <h3>Danger zone</h3>
+            <p>Permanently delete every entry from all categories. This cannot be undone.</p>
+            <button class="btn-settings btn-danger" id="btnClearAll">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                Clear all data
+            </button>
+        </div>
+    </div>
+</div>
+
+<button class="btn-focus-exit" id="btnFocusExit" title="Exit focus mode">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/><line x1="1" y1="1" x2="23" y2="23" stroke-width="2"/>
+    </svg>
+</button>
+
+<div class="lightbox" id="lightbox"><img id="lightboxImg" alt=""></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONSTANTS
+============================================================ */
+const DB_NAME = 'om_archive_db';
+const DB_VERSION = 1;
+const STORE = 'archive';
+const KEY_MAIN = 'main';
+
+const CATS = {
+    theorems: { name: 'Theorems & Techniques', short: 'Theorems', icon: '◈' },
+    problems: { name: 'Problems',              short: 'Problems', icon: '★' }
+};
+const SUBS = {
+    algebra:         { name: 'Algebra',        icon: 'ƒ' },
+    geometry:        { name: 'Geometry',       icon: '△' },
+    combinatorics:   { name: 'Combinatorics',  icon: '⋮⋮' },
+    'number-theory': { name: 'Number Theory',  icon: 'ℕ' }
+};
+
+/* ============================================================
+   INDEXEDDB WRAPPER
+============================================================ */
+let dbPromise = null;
+
+function openDB() {
+    if (dbPromise) return dbPromise;
+    dbPromise = new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = e => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE);
+        };
+        req.onsuccess = e => resolve(e.target.result);
+        req.onerror = e => reject(e.target.error);
+    });
+    return dbPromise;
+}
+
+async function idbGet(key) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, 'readonly');
+        const req = tx.objectStore(STORE).get(key);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+    });
+}
+
+async function idbSet(key, value) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, 'readwrite');
+        const req = tx.objectStore(STORE).put(value, key);
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+    });
+}
+
+async function idbDelete(key) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, 'readwrite');
+        const req = tx.objectStore(STORE).delete(key);
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+    });
+}
+
+/* ============================================================
+   STATE
+============================================================ */
+let data = null;
+let state = {
+    cat: null, sub: null,
+    page: 0,
+    search: '',
+    editingId: null,
+    editorImages: [],
+    editorCat: null, editorSub: null
+};
+let focusMode = false;
+
+/* ============================================================
+   HELPERS
+============================================================ */
+const $ = s => document.getElementById(s);
+const $$ = s => document.querySelectorAll(s);
+function esc(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+function showToast(msg, type = '') {
+    const t = $('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + type;
+    requestAnimationFrame(() => t.classList.add('show'));
+    setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function emptyData() {
+    const d = {};
+    for (const c of Object.keys(CATS)) {
+        d[c] = {};
+        for (const s of Object.keys(SUBS)) d[c][s] = [];
+    }
+    return d;
+}
+
+function normalize(d) {
+    const tpl = emptyData();
+    if (!d || typeof d !== 'object') return tpl;
+    for (const c of Object.keys(tpl)) {
+        if (!d[c]) d[c] = {};
+        for (const s of Object.keys(SUBS)) {
+            if (!Array.isArray(d[c][s])) d[c][s] = [];
+        }
+    }
+    return d;
+}
+
+/* ============================================================
+   LOAD / SAVE
+============================================================ */
+async function loadData() {
+    try {
+        let stored = await idbGet(KEY_MAIN);
+
+        // Migrate from old localStorage if present and IndexedDB is empty
+        if (!stored) {
+            const legacy = localStorage.getItem('om_archive_v1');
+            if (legacy) {
+                try {
+                    const old = JSON.parse(legacy);
+                    stored = normalize(old);
+                    await idbSet(KEY_MAIN, stored);
+                    console.log('Migrated from localStorage');
+                } catch (e) { console.warn('Migration failed:', e); }
+            }
+        }
+
+        if (stored) return normalize(stored);
+    } catch (e) { console.error('loadData failed:', e); }
+    return emptyData();
+}
+
+async function saveData() {
+    try {
+        await idbSet(KEY_MAIN, data);
+    } catch (e) {
+        console.error('saveData failed:', e);
+        if (e && e.name === 'QuotaExceededError') {
+            showToast('Storage full — try removing some images.', 'error');
+        } else {
+            showToast('Could not save.', 'error');
+        }
+    }
+}
+
+async function updateStorageInfo() {
+    const el = $('storageInfo');
+    if (!el) return;
+    try {
+        if (navigator.storage && navigator.storage.estimate) {
+            const est = await navigator.storage.estimate();
+            const used = (est.usage / 1024 / 1024).toFixed(1);
+            const quota = (est.quota / 1024 / 1024).toFixed(0);
+            el.textContent = `${used} MB used of ~${quota} MB available`;
+        } else {
+            el.textContent = 'Storage estimate not available on this browser.';
+        }
+    } catch (e) {
+        el.textContent = '';
+    }
+}
+
+/* ============================================================
+   MARKDOWN
+============================================================ */
+function parseMarkdown(text) {
+    const L = [];
+    text = String(text || '');
+    text = text.replace(/\$\$([\s\S]*?)\$\$/g, m => { L.push(m); return `\x00L${L.length - 1}\x00`; });
+    text = text.replace(/\\\[([\s\S]*?)\\\]/g, m => { L.push(m); return `\x00L${L.length - 1}\x00`; });
+    text = text.replace(/\$([^\$\n]+?)\$/g,     m => { L.push(m); return `\x00L${L.length - 1}\x00`; });
+    text = text.replace(/\\\(([\s\S]*?)\\\)/g, m => { L.push(m); return `\x00L${L.length - 1}\x00`; });
+
+    const lines = text.split('\n');
+    let html = '', inList = false, inP = false;
+    const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
+    const closeP    = () => { if (inP)    { html += '</p>';  inP = false; } };
+
+    for (const line of lines) {
+        const t = line.trim();
+        if (/^[-*_]{3,}$/.test(t)) { closeList(); closeP(); html += '<hr>'; continue; }
+        const h = t.match(/^(#{1,4})\s+(.+)/);
+        if (h) { closeList(); closeP(); html += `<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`; continue; }
+        if (/^>\s*(.*)/.test(t)) { closeList(); closeP(); html += `<blockquote>${inline(t.replace(/^>\s*/, ''))}</blockquote>`; continue; }
+        if (/^[-*+]\s+(.+)/.test(t)) {
+            closeP();
+            if (!inList) { html += '<ul>'; inList = true; }
+            html += `<li>${inline(t.replace(/^[-*+]\s+/, ''))}</li>`;
+            continue;
+        }
+        if (t === '') { closeList(); closeP(); continue; }
+        closeList();
+        if (!inP) { html += '<p>'; inP = true; } else { html += '<br>'; }
+        html += inline(t);
+    }
+    closeList(); closeP();
+    return html.replace(/\x00L(\d+)\x00/g, (m, i) => L[+i]);
+}
+function inline(text) {
+    return text
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
+        .replace(/`(.+?)`/g, '<code>$1</code>');
+}
+
+/* ============================================================
+   NAV
+============================================================ */
+function showScreen(id) {
+    $$('.screen').forEach(s => { s.classList.remove('active'); s.classList.add('hidden'); });
+    const el = $(id);
+    el.classList.remove('hidden');
+    el.classList.add('active');
+    if (id === 'settingsScreen') updateStorageInfo();
+}
+
+/* ============================================================
+   HOME
+============================================================ */
+function renderHome() {
+    $('booksList').innerHTML = Object.entries(CATS).map(([key, c]) => {
+        let count = 0;
+        for (const s of Object.keys(SUBS)) count += (data[key][s] || []).length;
+        return `
+            <div class="book-item ${key}" onclick="openCategory('${key}')">
+                <div class="book-spine"></div>
+                <div class="book-cover">
+                    <div class="book-icon-wrap">${c.icon}</div>
+                    <div class="book-info">
+                        <div class="book-name">${esc(c.name)}</div>
+                        <div class="book-count">📄 ${count} ${count === 1 ? 'entry' : 'entries'}</div>
+                    </div>
+                    <div class="book-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </div>
+                </div>
+            </div>`;
+    }).join('');
+}
+function openCategory(cat) { state.cat = cat; renderSubs(); showScreen('subsScreen'); }
+
+function renderSubs() {
+    $('subsLogo').textContent = CATS[state.cat].short;
+    $('subsCatLabel').textContent = CATS[state.cat].name;
+    $('subsGrid').innerHTML = Object.entries(SUBS).map(([key, s]) => {
+        const count = (data[state.cat][key] || []).length;
+        return `
+            <div class="sub-card ${key}" onclick="openSub('${key}')">
+                <div class="sub-icon">${s.icon}</div>
+                <div class="sub-name">${esc(s.name)}</div>
+                <div class="sub-count">${count}</div>
+            </div>`;
+    }).join('');
+}
+function openSub(sub) {
+    state.sub = sub;
+    state.page = 0;
+    state.search = '';
+    $('searchInput').value = '';
+    $('searchBar').classList.remove('open');
+    $('btnSearchToggle').classList.remove('active');
+    $('bookTopTitle').textContent = SUBS[sub].name;
+    $('bookTopSub').textContent = CATS[state.cat].short;
+    showScreen('entriesScreen');
+    renderPage();
+}
+
+/* ============================================================
+   ENTRIES
+============================================================ */
+function getEntries() {
+    if (!state.cat || !state.sub) return [];
+    let list = data[state.cat][state.sub] || [];
+    if (state.search.trim()) {
+        const q = state.search.toLowerCase().trim();
+        list = list.filter(e =>
+            e.title.toLowerCase().includes(q) ||
+            (e.content || '').toLowerCase().includes(q)
+        );
+    }
+    return list;
+}
+
+function renderPage(direction) {
+    const entries = getEntries();
+    const total = entries.length;
+    if (state.page >= total) state.page = Math.max(0, total - 1);
+    if (state.page < 0) state.page = 0;
+
+    const entry = entries[state.page];
+    const viewport = $('pageViewport');
+
+    let cls = 'page-center';
+    if (direction === 'next') cls = 'flip-in-right';
+    if (direction === 'prev') cls = 'flip-in-left';
+
+    if (!entry) {
+        viewport.innerHTML = `
+            <div class="page page-center">
+                <div class="page-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    <p>${state.search ? 'No results match your search' : 'This section is empty'}<br>${state.search ? '' : 'Tap + to add the first entry'}</p>
+                </div>
+            </div>`;
+    } else {
+        const imagesHTML = (entry.images && entry.images.length)
+            ? `<div class="page-images">${entry.images.map(im => `<img src="${im.data}" alt="" loading="lazy">`).join('')}</div>`
+            : '';
+
+        viewport.innerHTML = `
+            <div class="page ${cls}" id="currentPageEl">
+                <div class="page-title">${esc(entry.title)}</div>
+                <div class="page-content">${parseMarkdown(entry.content)}</div>
+                ${imagesHTML}
+                <div class="page-actions">
+                    <button class="btn-edit" onclick="editEntry('${entry.id}')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                        Edit
+                    </button>
+                    <button class="btn-del-page" onclick="deleteEntry('${entry.id}')">🗑️ Delete</button>
+                </div>
+            </div>`;
+
+        if (window.renderMathInElement) {
+            renderMathInElement(viewport, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$',  right: '$',  display: false },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true }
+                ],
+                throwOnError: false
+            });
+            viewport.querySelectorAll('.katex, .katex-display, .katex-html').forEach(el => el.setAttribute('dir', 'ltr'));
+        }
+
+        viewport.querySelectorAll('.page-images img').forEach(img => {
+            img.onclick = () => {
+                $('lightboxImg').src = img.src;
+                $('lightbox').classList.add('open');
+            };
+        });
+
+        if (direction) {
+            requestAnimationFrame(() => {
+                const el = $('currentPageEl');
+                if (el) { el.classList.remove('flip-in-right', 'flip-in-left'); el.classList.add('page-center'); }
+            });
+        }
+    }
+
+    const slider = $('pageSlider');
+    slider.max = Math.max(1, total);
+    slider.value = total > 0 ? state.page + 1 : 0;
+    $('pageNum').textContent = total > 0 ? `${state.page + 1}/${total}` : '0/0';
+    $('btnPrev').disabled = state.page <= 0;
+    $('btnNext').disabled = state.page >= total - 1;
+    updateSliderFill(slider);
+}
+function updateSliderFill(slider) {
+    const val = slider.max > 1
+        ? ((slider.value - slider.min) / (slider.max - slider.min)) * 100
+        : 0;
+    slider.style.background = `linear-gradient(to right, var(--accent) 0%, var(--accent) ${val}%, var(--border) ${val}%, var(--border) 100%)`;
+}
+
+/* ============================================================
+   EDITOR
+============================================================ */
+function openEditor(entryId) {
+    state.editingId = entryId || null;
+    state.editorImages = [];
+    state.editorCat = state.cat;
+    state.editorSub = state.sub;
+
+    $('editorTitle').textContent = entryId ? 'Edit entry' : 'New entry';
+    $('editorTitleInput').value = '';
+    $('editorContentInput').value = '';
+
+    if (entryId) {
+        const e = data[state.cat][state.sub].find(x => x.id === entryId);
+        if (e) {
+            $('editorTitleInput').value = e.title;
+            $('editorContentInput').value = e.content || '';
+            state.editorImages = e.images ? e.images.map(i => ({ data: i.data })) : [];
+        }
+    }
+    renderImageList();
+    showScreen('editorScreen');
+    $('editorScreen').querySelector('.editor-body').scrollTop = 0;
+    setTimeout(() => $('editorTitleInput').focus(), 250);
+}
+
+function renderImageList() {
+    const box = $('imageList');
+    if (!state.editorImages.length) { box.innerHTML = ''; return; }
+    box.innerHTML = state.editorImages.map((im, i) => `
+        <div class="image-item" data-i="${i}">
+            <img src="${im.data}" alt="">
+            <button type="button" title="Remove" aria-label="Remove">✕</button>
+        </div>
+    `).join('');
+    box.querySelectorAll('.image-item button').forEach(btn => {
+        btn.onclick = () => {
+            const i = +btn.closest('.image-item').dataset.i;
+            state.editorImages.splice(i, 1);
+            renderImageList();
+        };
+    });
+}
+
+async function handleFiles(files) {
+    const arr = [...files].filter(f => f.type.startsWith('image/'));
+    if (!arr.length) return;
+    showToast(`Processing ${arr.length} image${arr.length > 1 ? 's' : ''}…`);
+    for (const f of arr) {
+        try {
+            const data = await compressImage(f);
+            state.editorImages.push({ data });
+        } catch (e) {
+            console.error('Compress failed:', e);
+            showToast('One image failed to load.', 'error');
+        }
+    }
+    renderImageList();
+}
+
+/**
+ * Compress image → WebP at high quality.
+ * Keeps detail for diagrams with small text.
+ * Max dimension 2000px, quality 0.92.
+ * Falls back to JPEG if WebP unsupported.
+ */
+function compressImage(file, maxDim = 2000, quality = 0.92) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            const img = new Image();
+            img.onload = () => {
+                let w = img.width, h = img.height;
+                const scale = Math.min(1, maxDim / Math.max(w, h));
+                w = Math.round(w * scale);
+                h = Math.round(h * scale);
+
+                const c = document.createElement('canvas');
+                c.width = w; c.height = h;
+                const ctx = c.getContext('2d');
+                // White background (JPEG-friendly, sharpens line art)
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, w, h);
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.drawImage(img, 0, 0, w, h);
+
+                // Try WebP first
+                let out = c.toDataURL('image/webp', quality);
+                if (!out.startsWith('data:image/webp')) {
+                    // Fallback to JPEG
+                    out = c.toDataURL('image/jpeg', quality);
+                }
+                resolve(out);
+            };
+            img.onerror = reject;
+            img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+function saveEditor() {
+    const title = $('editorTitleInput').value.trim();
+    const content = $('editorContentInput').value;
+    if (!title) { $('editorTitleInput').focus(); return; }
+
+    const cat = state.editorCat;
+    const sub = state.editorSub;
+
+    if (state.editingId) {
+        const list = data[cat][sub];
+        const i = list.findIndex(x => x.id === state.editingId);
+        if (i > -1) list[i] = { ...list[i], title, content, images: state.editorImages };
+    } else {
+        data[cat][sub].push({
+            id: uid(), title, content,
+            images: state.editorImages,
+            createdAt: Date.now()
+        });
+    }
+    saveData(); // async, fire and forget
+
+    const entries = data[cat][sub];
+    state.page = state.editingId
+        ? entries.findIndex(x => x.id === state.editingId)
+        : entries.length - 1;
+
+    state.cat = cat; state.sub = sub;
+    $('bookTopTitle').textContent = SUBS[sub].name;
+    $('bookTopSub').textContent = CATS[cat].short;
+    showScreen('entriesScreen');
+    renderPage();
+    showToast(state.editingId ? 'Entry updated ✓' : 'Entry saved ✓', 'success');
+    state.editingId = null;
+}
+
+/* ============================================================
+   ACTIONS
+============================================================ */
+function editEntry(id) { openEditor(id); }
+
+function deleteEntry(id) {
+    if (!confirm('Delete this entry?')) return;
+    const list = data[state.cat][state.sub];
+    const i = list.findIndex(x => x.id === id);
+    if (i === -1) return;
+    list.splice(i, 1);
+    saveData();
+    if (state.page >= list.length) state.page = Math.max(0, list.length - 1);
+    renderPage();
+    showToast('Entry deleted');
+}
+
+/* ============================================================
+   EVENTS
+============================================================ */
+$('btnSettings').onclick = () => showScreen('settingsScreen');
+$('btnBackHome').onclick = () => { showScreen('homeScreen'); renderHome(); };
+$('btnBackSubs').onclick = () => {
+    showScreen('subsScreen'); renderSubs(); state.sub = null;
+    if (focusMode) {
+        focusMode = false;
+        document.body.classList.remove('focus-mode');
+        $('btnFocus').classList.remove('focus-active');
+    }
+};
+$('btnAddEntry').onclick = () => openEditor(null);
+
+$('btnPrev').onclick = () => { if (state.page > 0) { state.page--; renderPage('prev'); } };
+$('btnNext').onclick = () => {
+    const entries = getEntries();
+    if (state.page < entries.length - 1) { state.page++; renderPage('next'); }
+};
+
+$('pageSlider').addEventListener('input', function () {
+    const np = parseInt(this.value) - 1;
+    if (np !== state.page) {
+        const dir = np > state.page ? 'next' : 'prev';
+        state.page = np;
+        renderPage(dir);
+    }
+    updateSliderFill(this);
+});
+
+let touchX = 0, touchY = 0, swiping = false, touchTime = 0;
+$('pageViewport').addEventListener('touchstart', e => {
+    touchX = e.touches[0].clientX;
+    touchY = e.touches[0].clientY;
+    touchTime = Date.now();
+    swiping = true;
+}, { passive: true });
+$('pageViewport').addEventListener('touchend', e => {
+    if (!swiping) return;
+    swiping = false;
+    const dx = e.changedTouches[0].clientX - touchX;
+    const dy = e.changedTouches[0].clientY - touchY;
+    const dt = Date.now() - touchTime;
+    if (Math.abs(dx) < 55 || Math.abs(dy) > Math.abs(dx) || dt > 800) return;
+    const entries = getEntries();
+    if (dx > 0 && state.page > 0) { state.page--; renderPage('prev'); }
+    if (dx < 0 && state.page < entries.length - 1) { state.page++; renderPage('next'); }
+}, { passive: true });
+
+$('btnSearchToggle').onclick = function () {
+    const bar = $('searchBar');
+    bar.classList.toggle('open');
+    this.classList.toggle('active');
+    if (bar.classList.contains('open')) {
+        setTimeout(() => $('searchInput').focus(), 150);
+    } else {
+        state.search = ''; $('searchInput').value = ''; state.page = 0; renderPage();
+    }
+};
+$('btnCloseSearch').onclick = () => {
+    $('searchBar').classList.remove('open');
+    $('btnSearchToggle').classList.remove('active');
+    state.search = ''; $('searchInput').value = ''; state.page = 0; renderPage();
+};
+$('searchInput').addEventListener('input', function () {
+    state.search = this.value;
+    state.page = 0;
+    renderPage();
+});
+
+$('btnFocus').onclick = function () {
+    focusMode = !focusMode;
+    document.body.classList.toggle('focus-mode', focusMode);
+    this.classList.toggle('focus-active', focusMode);
+};
+$('btnFocusExit').onclick = () => {
+    focusMode = false;
+    document.body.classList.remove('focus-mode');
+    $('btnFocus').classList.remove('focus-active');
+};
+
+$('fileInput').onchange = e => { handleFiles(e.target.files); e.target.value = ''; };
+
+function closeEditor() {
+    showScreen('entriesScreen');
+    renderPage();
+    state.editingId = null;
+}
+$('btnCancelEditor').onclick  = closeEditor;
+$('btnCancelEditor2').onclick = closeEditor;
+$('btnCancelEditor3').onclick = closeEditor;
+$('btnSaveEditorTop').onclick = saveEditor;
+$('btnSaveEditor2').onclick   = saveEditor;
+$('btnSaveEditor3').onclick   = saveEditor;
+
+$('btnBackSettings').onclick = () => { showScreen('homeScreen'); renderHome(); };
+
+$('btnExport').onclick = () => {
+    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `olympiad-archive-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    showToast('Archive exported ✓', 'success');
+};
+
+$('btnImport').onclick = () => $('importFile').click();
+$('importFile').onchange = e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = ev => {
+        try {
+            const imported = JSON.parse(ev.target.result);
+            if (typeof imported !== 'object' || Array.isArray(imported)) throw new Error('bad format');
+            const merged = confirm('Import archive?\n\nOK = merge with existing entries\nCancel = replace everything');
+            if (merged) {
+                for (const c of Object.keys(CATS)) {
+                    for (const s of Object.keys(SUBS)) {
+                        const incoming = (imported[c] && imported[c][s]) || [];
+                        const ids = new Set(data[c][s].map(x => x.id));
+                        incoming.forEach(x => { if (x && x.id && !ids.has(x.id)) data[c][s].push(x); });
+                    }
+                }
+                showToast('Archive merged ✓', 'success');
+            } else {
+                data = normalize(imported);
+                showToast('Archive replaced ✓', 'success');
+            }
+            saveData();
+            renderHome();
+        } catch (err) {
+            console.error(err);
+            showToast('Invalid file', 'error');
+        }
+    };
+    r.readAsText(f);
+    e.target.value = '';
+};
+
+$('btnClearAll').onclick = () => {
+    if (!confirm('Delete ALL entries? This cannot be undone.')) return;
+    if (!confirm('Are you absolutely sure?')) return;
+    data = emptyData();
+    saveData();
+    renderHome();
+    showToast('All data cleared');
+};
+
+$('lightbox').onclick = () => $('lightbox').classList.remove('open');
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') $('lightbox').classList.remove('open');
+});
+
+// Install hint
+const HINT_KEY = 'om_hint_dismissed_v1';
+if (!localStorage.getItem(HINT_KEY)) {
+    setTimeout(() => $('installHint').classList.add('show'), 1200);
+}
+$('dismissHint').onclick = () => {
+    $('installHint').classList.remove('show');
+    localStorage.setItem(HINT_KEY, '1');
+};
+
+/* ============================================================
+   SERVICE WORKER REGISTRATION
+============================================================ */
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW registered:', reg.scope))
+            .catch(err => console.warn('SW registration failed:', err));
+    });
+}
+
+/* ============================================================
+   BOOT
+============================================================ */
+document.addEventListener('DOMContentLoaded', async () => {
+    data = await loadData();
+
+    // First-ever run → seed an example
+    const stored = await idbGet(KEY_MAIN);
+    if (!stored) {
+        data.theorems.algebra.push({
+            id: uid(),
+            title: 'AM-GM Inequality',
+            content: 'For positive reals $a_1, a_2, \\dots, a_n$:\n\n$$\\frac{a_1 + a_2 + \\cdots + a_n}{n} \\;\\ge\\; \\sqrt[n]{a_1 a_2 \\cdots a_n}$$\n\n**Equality** holds if and only if $a_1 = a_2 = \\cdots = a_n$.',
+            images: [],
+            createdAt: Date.now()
+        });
+        await saveData();
+    }
+
+    renderHome();
+});
+</script>
+</body>
+</html>
